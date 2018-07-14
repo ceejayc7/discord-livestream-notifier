@@ -4,8 +4,8 @@
   "description": "Notify discord channels when livestream has gone live",
   "main": "src/discord.js",
   "author": "Ceejay",
-  "scripts" : {
-    "start" : "node src/discord.js"
+  "scripts": {
+    "start": "node src/discord.js"
   },
   "dependencies": {
     "discord.js": "^11.3.2",
