@@ -1,0 +1,17 @@
+{
+  "name": "discord-livestream-notifier",
+  "version": "1.0.0",
+  "description": "Notify discord channels when livestream has gone live",
+  "main": "src/discord.js",
+  "author": "Ceejay",
+  "scripts" : {
+    "start" : "node src/discord.js"
+  },
+  "dependencies": {
+    "discord.js": "^11.3.2",
+    "uws": "^10.148.1"
+  },
+  "devDependencies": {
+    "babel-core": "^6.26.3"
+  }
+}
