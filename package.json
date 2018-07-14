@@ -9,6 +9,8 @@
   },
   "dependencies": {
     "discord.js": "^11.3.2",
+    "lodash": "^4.17.10",
+    "request": "^2.87.0",
     "uws": "^10.148.1"
   },
   "devDependencies": {
