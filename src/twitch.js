@@ -47,15 +47,19 @@ function announceIfStreamIsNew(stream) {
     let currentLiveChannels = _.map(currentLiveStreams, 'channelName');
     if(!_.includes(currentLiveChannels, stream.channelName)) {
         console.log(stream);
-        return true;
+        // fire an event to discordjs to write a message
     }
 }
 
 function requestResponseCallback(error, response, body) {
     if(!error && response.statusCode === 200) {
         let newStreams = reduceResponse(body);
-        _.forEach(newStreams, announceIfStreamIsNew); 
-        
+
+        if (newStreams) {
+            _.forEach(newStreams, announceIfStreamIsNew);
+            currentLiveStreams = newStreams;
+        }
+
     } else {
         logError(error);
     }
