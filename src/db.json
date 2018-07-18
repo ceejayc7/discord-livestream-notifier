@@ -1,6 +1,14 @@
 {
-    "twitch": [
-        "cametek",
-        "lezapio"
-    ]
+    "reflectedtest":{
+        "twitch": [
+            "cametek",
+            "lezapio"
+        ]
+    },
+    "reflectedtest2":{
+        "twitch": [
+            "cametek",
+            "lezapio"
+        ]
+    }
 }

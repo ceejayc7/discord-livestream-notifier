@@ -5,7 +5,12 @@
   "main": "src/discord.js",
   "author": "Ceejay",
   "scripts": {
-    "start": "node src/discord.js"
+    "start": "node dist/discord.js",
+    "build": "babel src/ -d dist/ --copy-files",
+    "watch": "babel -w src/ -d dist/ --copy-files"
+  },
+  "engines": {
+    "node": "8.11.3"
   },
   "dependencies": {
     "discord.js": "^11.3.2",
@@ -14,6 +19,11 @@
     "uws": "^10.148.1"
   },
   "devDependencies": {
-    "babel-core": "^6.26.3"
+    "babel": "^6.5.2",
+    "babel-cli": "^6.6.5",
+    "babel-preset-es2015": "^6.16.0",
+    "babel-preset-stage-0": "^6.5.0",
+    "babel-watch": "^2.0.7",
+    "nodemon": "^1.18.2"
   }
 }

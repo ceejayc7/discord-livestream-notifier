@@ -1,23 +1,46 @@
-module.exports = function (_, constants, request, streamsDatabase, streamEmitter) {
+import {TWITCH_API_ENDPOINT, TWITCH_CLIENT_ID} from './constants.js';
+import _ from 'lodash';
+import Emitter from 'events';
+import Request from 'request';
 
-    let options = {
-        url: constants.TWITCH_API_ENDPOINT,
-        headers: {
-            'Client-ID' : constants.TWITCH_CLIENT_ID,
-            'content-type' : 'application/json'
-        },
-        json: true,
-        method: "GET"
-    },
-        currentLiveStreams = [];
+class Twitch {
 
-    function updateStreams() {
-        options.url = constants.TWITCH_API_ENDPOINT+streamsDatabase.twitch.toString();
-        request(options, requestResponseCallback);
+    constructor(streamEmitter) {
+        this.twitchAPIOptions = {
+            url: TWITCH_API_ENDPOINT,
+            headers: {
+                'Client-ID' : TWITCH_CLIENT_ID,
+                'content-type' : 'application/json'
+            },
+            json: true,
+            method: "GET"
+        };
+        this.currentLiveStreams = [];
+        this.streamEmitter = streamEmitter;
+        this.streamsDatabase = require('./db.json');
     }
 
+    updateStreams() {
+        let flattenStreamsString = _.uniq(_.flatten(_.map(this.streamsDatabase, 'twitch'))).toString();
+        this.twitchAPIOptions.url = TWITCH_API_ENDPOINT+flattenStreamsString;
+        Request(this.twitchAPIOptions, (error, response, body) => {
+            if(!error && response.statusCode === 200) {
+                let newStreams = this.constructor.reduceResponse(body);
+    
+                if (newStreams) {
+                    _.forEach(newStreams, (stream) => {
+                        this.announceIfStreamIsNew(stream);
+                    });
+                    this.currentLiveStreams = newStreams;
+                }
+    
+            } else {
+                this.logError(error);
+            }
+        });
+    }
 
-    function reduceResponse(response) {
+    static reduceResponse(response) {
         let reducedResponse = [];
         _.forOwn(response.streams, function(stream) {
             reducedResponse.push(
@@ -36,31 +59,16 @@ module.exports = function (_, constants, request, streamsDatabase, streamEmitter
         return reducedResponse;
     }
 
-    function logError(error) {
+    logError(error) {
         console.log('Twitch API error: ' + error);
     }
 
-    function announceIfStreamIsNew(stream) {
-        let currentLiveChannels = _.map(currentLiveStreams, 'channelName');
+    announceIfStreamIsNew(stream) {
+        let currentLiveChannels = _.map(this.currentLiveStreams, 'channelName');
         if(!_.includes(currentLiveChannels, stream.channelName)) {
-            console.log('EMIT');
-            streamEmitter.emit('event:streamlive', stream);
+            this.streamEmitter.emit('event:streamlive', stream);
         }
     }
-
-    function requestResponseCallback(error, response, body) {
-        if(!error && response.statusCode === 200) {
-            let newStreams = reduceResponse(body);
-
-            if (newStreams) {
-                _.forEach(newStreams, announceIfStreamIsNew);
-                currentLiveStreams = newStreams;
-            }
-
-        } else {
-            logError(error);
-        }
-    }
-
-    updateStreams();
 }
+
+export default Twitch;
