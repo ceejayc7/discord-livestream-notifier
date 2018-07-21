@@ -9,18 +9,18 @@ class Bot {
         this.loginToken = loginToken;
     }
 
-    loginToDiscord() {
+    loginToDiscord = () => {
         this.client.login(this.loginToken);
     };
 
-    attachListeners() {
+    attachListeners = () => {
         this.client.on('ready', () => {
             console.log(`Logged in as ${this.client.user.tag}!`);
             this.isLoggedIn = true;
         });
     }
 
-    sendLiveMessage(stream) {
+    sendLiveMessage = (stream) => {
         if(this.isLoggedIn) {
             // TO DO: Hardcoded to general channel
             switch(stream.platform) {
