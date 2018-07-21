@@ -1,6 +1,5 @@
 import {TWITCH_API_ENDPOINT, TWITCH_CLIENT_ID} from './constants.js';
 import _ from 'lodash';
-import Emitter from 'events';
 import Request from 'request';
 
 class Twitch {
@@ -20,12 +19,12 @@ class Twitch {
         this.streamsDatabase = require('./db.json');
     }
 
-    updateStreams() {
+    updateStreams = () => {
         let flattenStreamsString = _.uniq(_.flatten(_.map(this.streamsDatabase, 'twitch'))).toString();
         this.twitchAPIOptions.url = TWITCH_API_ENDPOINT+flattenStreamsString;
         Request(this.twitchAPIOptions, (error, response, body) => {
             if(!error && response.statusCode === 200) {
-                let newStreams = this.constructor.reduceResponse(body);
+                let newStreams = this.reduceResponse(body);
     
                 if (newStreams) {
                     _.forEach(newStreams, (stream) => {
@@ -40,32 +39,34 @@ class Twitch {
         });
     }
 
-    static reduceResponse(response) {
+    reduceResponse = (response) => {
         let reducedResponse = [];
         _.forOwn(response.streams, function(stream) {
             reducedResponse.push(
                 {
                     "platform" : "twitch",
-                    "channelName": _.get(stream, ['channel','display_name']),
+                    "name": _.get(stream, ['channel','name']),
+                    "displayName": _.get(stream, ['channel','display_name']),
                     "game": _.get(stream, 'game'),
-                    "preview": _.get(stream, ['preview', 'medium']),
+                    "preview": _.get(stream, ['preview', 'large']),
                     "viewers": _.get(stream, 'viewers'),
                     "title": _.get(stream, ['channel','status']),
                     "logo": _.get(stream, ['channel','logo']),
-                    "url": _.get(stream, ['channel','url'])
+                    "url": _.get(stream, ['channel','url']),
+                    "created_at": _.get(stream, 'created_at')
                 }
             );
         });
         return reducedResponse;
     }
 
-    logError(error) {
+    logError = (error) => {
         console.log('Twitch API error: ' + error);
     }
 
-    announceIfStreamIsNew(stream) {
-        let currentLiveChannels = _.map(this.currentLiveStreams, 'channelName');
-        if(!_.includes(currentLiveChannels, stream.channelName)) {
+    announceIfStreamIsNew = (stream) => {
+        let currentLiveChannels = _.map(this.currentLiveStreams, 'name');
+        if(!_.includes(currentLiveChannels, stream.name)) {
             this.streamEmitter.emit('event:streamlive', stream);
         }
     }

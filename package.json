@@ -7,7 +7,8 @@
   "scripts": {
     "start": "node dist/discord.js",
     "build": "babel src/ -d dist/ --copy-files",
-    "watch": "babel -w src/ -d dist/ --copy-files"
+    "watch": "babel -w src/ -d dist/ --copy-files",
+    "debug": "babel-node --inspect-brk src/discord.js --presets es2015,stage-0"
   },
   "engines": {
     "node": "8.11.3"
@@ -15,6 +16,7 @@
   "dependencies": {
     "discord.js": "^11.3.2",
     "lodash": "^4.17.10",
+    "moment": "^2.22.2",
     "request": "^2.87.0",
     "uws": "^10.148.1"
   },

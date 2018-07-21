@@ -2,13 +2,19 @@
     "reflectedtest":{
         "twitch": [
             "cametek",
-            "lezapio"
+            "lezapio",
+            "amusetown",
+            "mira",
+            "jinnytty",
+            "ennopp112"
         ]
     },
     "reflectedtest2":{
         "twitch": [
             "cametek",
-            "lezapio"
+            "lezapio",
+            "joniosan",
+            "bjw"
         ]
     }
 }
