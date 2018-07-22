@@ -14,6 +14,7 @@ class Bot {
     };
 
     logoutOfDiscord = () => {
+        console.log("Destroying discord client");
         return this.client.destroy();
     };
 
@@ -47,7 +48,7 @@ class Bot {
                         twitchLogo = "https://cdn.discordapp.com/emojis/287637883022737418",
                         title = _.get(stream, 'title'),
                         game = _.get(stream, 'game'),
-                        created_at = moment(_.get(stream, 'created_at')).format('MMMM Do YYYY, h:mm:ss a'),
+                        created_at = _.get(stream, 'created_at'),
                         viewers = _.get(stream, 'viewers').toLocaleString(),
                         streamMessage = `${streamDisplayName} is now live at ${streamUrl}`,
                         color = 6570404,
@@ -60,7 +61,7 @@ class Bot {
                             .setThumbnail(logo)
                             .addField("Game", game, true)
                             .addField("Viewers", viewers, true)
-                            .setFooter(`Live since ${created_at}`);
+                            .setTimestamp(`${created_at}`);
 
                     this.client.channels.find('name',discordChannelToSendMessage).send(streamMessage, embed)
                         .catch((error) => {
