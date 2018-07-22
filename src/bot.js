@@ -13,10 +13,24 @@ class Bot {
         this.client.login(this.loginToken);
     };
 
+    logoutOfDiscord = () => {
+        return this.client.destroy();
+    };
+
     attachListeners = () => {
         this.client.on('ready', () => {
             console.log(`Logged in as ${this.client.user.tag}!`);
             this.isLoggedIn = true;
+        });
+
+        this.client.on('error', (error) => {
+            console.log(`An error occured with the discord client. ${error}!`);
+            this.isLoggedIn = false;
+            this.logoutOfDiscord()
+                .then(loginToDiscord)
+                .catch((error) => {
+                    console.log(`Unable to re-login back to discord. ${error}`);
+                });
         });
     }
 
@@ -34,7 +48,7 @@ class Bot {
                         title = _.get(stream, 'title'),
                         game = _.get(stream, 'game'),
                         created_at = moment(_.get(stream, 'created_at')).format('MMMM Do YYYY, h:mm:ss a'),
-                        viewers = _.get(stream, 'viewers'),
+                        viewers = _.get(stream, 'viewers').toLocaleString(),
                         streamMessage = `${streamDisplayName} is now live at ${streamUrl}`,
                         color = 6570404,
                         embed = new Discord.RichEmbed()
@@ -49,8 +63,8 @@ class Bot {
                             .setFooter(`Live since ${created_at}`);
 
                     this.client.channels.find('name',discordChannelToSendMessage).send(streamMessage, embed)
-                        .catch((err) => {
-                            console.log("Unable to send message. err:"+err);
+                        .catch((error) => {
+                            console.log(`Unable to send message. ${error}`);
                         });
             }
         }
