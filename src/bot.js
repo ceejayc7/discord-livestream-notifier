@@ -1,6 +1,5 @@
 import Discord from 'discord.js';
 import _ from 'lodash';
-import moment from 'moment';
 
 class Bot {
     constructor(loginToken) {
