@@ -26,7 +26,7 @@ Edit src/db.json to include the streams to be watching
 }
 ```
 
-Edit constants.js to include your tokens
+Edit src/constants.js to include your tokens
 ```js
 export const TWITCH_CLIENT_ID='YOUR_TWITCH_CLIENT_ID_HERE',
     TWITCH_API_ENDPOINT='https://api.twitch.tv/kraken/streams?channel=',
