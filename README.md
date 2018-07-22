@@ -41,3 +41,5 @@ Build and run
 $ npm run build
 $ npm run start
 ```
+
+For further help on setting up a Discord bot, visit https://discordpy.readthedocs.io/en/rewrite/discord.html
