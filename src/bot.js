@@ -17,6 +17,10 @@ class Bot {
         return this.client.destroy();
     };
 
+    getRandomEmoji = (emojiList) => {
+        return emojiList[Math.floor(Math.random()*emojiList.length)];
+    }
+
     attachListeners = () => {
         this.client.on('ready', () => {
             console.log(`Logged in as ${this.client.user.tag}!`);
@@ -32,6 +36,21 @@ class Bot {
                     console.log(`Unable to re-login back to discord. ${error}`);
                 });
         });
+
+        this.client.on('message', (msg) => {
+            const SLOTS = '!slots';
+            if(_.startsWith(msg.content, SLOTS)) {
+                const emojiList = msg.guild.emojis.map((emoji) => (emoji)),
+                    randomList = [],
+                    numberOfSlots = 5;
+
+                for(let slot=1; slot <=numberOfSlots; slot++) {
+                    randomList.push(this.getRandomEmoji(emojiList));
+                }
+                msg.channel.send(randomList.join(''));
+            }
+        });
+
     }
 
     sendLiveMessage = (stream) => {
