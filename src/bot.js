@@ -41,7 +41,7 @@ class Bot {
         this.client.on('message', (msg) => {
             const SLOTS = '!slots',
                 currentTime = (new Date).getTime(),
-                spamTimer = 5000;
+                spamTimer = 2500;
 
             if(_.startsWith(msg.content, SLOTS)) {
                 // reduce slots spam
