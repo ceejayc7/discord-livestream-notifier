@@ -40,7 +40,7 @@ class Bot {
 
         this.client.on('message', (msg) => {
             const SLOTS = '!slots',
-                currentTime = (new Date).getTime();
+                currentTime = (new Date).getTime(),
                 spamTimer = 5000;
 
             if(_.startsWith(msg.content, SLOTS)) {
