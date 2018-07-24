@@ -6,6 +6,7 @@ class Bot {
         this.client = new Discord.Client();
         this.isLoggedIn = false;
         this.loginToken = loginToken;
+        this.lastSlotsSentTime = null;
     }
 
     loginToDiscord = () => {
@@ -38,8 +39,16 @@ class Bot {
         });
 
         this.client.on('message', (msg) => {
-            const SLOTS = '!slots';
+            const SLOTS = '!slots',
+                currentTime = (new Date).getTime();
+                spamTimer = 5000;
+
             if(_.startsWith(msg.content, SLOTS)) {
+                // reduce slots spam
+                if(this.lastSlotsSentTime && (currentTime - this.lastSlotsSentTime) < spamTimer) {
+                    return;
+                }
+
                 const emojiList = msg.guild.emojis.map((emoji) => (emoji)),
                     randomList = [],
                     numberOfSlots = 5;
@@ -47,7 +56,9 @@ class Bot {
                 for(let slot=1; slot <=numberOfSlots; slot++) {
                     randomList.push(this.getRandomEmoji(emojiList));
                 }
-                msg.channel.send(randomList.join(''));
+                msg.channel.send(randomList.join(' '));
+
+                this.lastSlotsSentTime = currentTime;
             }
         });
 
