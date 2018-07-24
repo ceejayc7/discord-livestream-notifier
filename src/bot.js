@@ -44,11 +44,6 @@ class Bot {
     }
 
     handleSlots = (msg) => {
-        // Don't send a message if we're spamming
-        if(this.isSlotsSpam()) {
-            return;
-        }
-
         const emojiList = msg.guild.emojis.map((emoji) => (emoji)),
             randomList = this.generateRandomEmojiList(emojiList);
 
