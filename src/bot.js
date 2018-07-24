@@ -22,6 +22,39 @@ class Bot {
         return emojiList[Math.floor(Math.random()*emojiList.length)];
     }
 
+    generateRandomEmojiList = (emojiList) => {
+        let randomList = [];
+        const numberOfSlots = 5;
+
+        for(let slot=1; slot <=numberOfSlots; slot++) {
+            randomList.push(this.getRandomEmoji(emojiList));
+        }
+        return randomList;
+    }
+
+    isSlotsSpam = () => {
+        const currentTime = (new Date).getTime(),
+            spamTimer = 2000;
+
+        if(this.lastSlotsSentTime && (currentTime - this.lastSlotsSentTime) < spamTimer) {
+            return true;
+        }
+        this.lastSlotsSentTime = currentTime;
+        return false;
+    }
+
+    handleSlots = (msg) => {
+        // Don't send a message if we're spamming
+        if(this.isSlotsSpam()) {
+            return;
+        }
+
+        const emojiList = msg.guild.emojis.map((emoji) => (emoji)),
+            randomList = this.generateRandomEmojiList(emojiList);
+
+        msg.channel.send(randomList.join(' '));
+    }
+
     attachListeners = () => {
         this.client.on('ready', () => {
             console.log(`Logged in as ${this.client.user.tag}!`);
@@ -39,26 +72,10 @@ class Bot {
         });
 
         this.client.on('message', (msg) => {
-            const SLOTS = '!slots',
-                currentTime = (new Date).getTime(),
-                spamTimer = 2500;
+            const SLOTS = '!slots';
 
             if(_.startsWith(msg.content, SLOTS)) {
-                // reduce slots spam
-                if(this.lastSlotsSentTime && (currentTime - this.lastSlotsSentTime) < spamTimer) {
-                    return;
-                }
-
-                const emojiList = msg.guild.emojis.map((emoji) => (emoji)),
-                    randomList = [],
-                    numberOfSlots = 5;
-
-                for(let slot=1; slot <=numberOfSlots; slot++) {
-                    randomList.push(this.getRandomEmoji(emojiList));
-                }
-                msg.channel.send(randomList.join(' '));
-
-                this.lastSlotsSentTime = currentTime;
+                this.handleSlots(msg);
             }
         });
 
