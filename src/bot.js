@@ -1,12 +1,12 @@
 import Discord from 'discord.js';
 import _ from 'lodash';
+import {Slots} from './slots.js';
 
 class Bot {
     constructor(loginToken) {
         this.client = new Discord.Client();
         this.isLoggedIn = false;
         this.loginToken = loginToken;
-        this.lastSlotsSentTime = null;
     }
 
     loginToDiscord = () => {
@@ -17,48 +17,6 @@ class Bot {
         console.log("Destroying discord client");
         return this.client.destroy();
     };
-
-    getRandomEmoji = (emojiList) => {
-        return emojiList[Math.floor(Math.random()*emojiList.length)];
-    }
-
-    generateRandomEmojiList = (emojiList) => {
-        let randomList = [];
-        const numberOfSlots = 5;
-
-        for(let slot=1; slot <=numberOfSlots; slot++) {
-            randomList.push(this.getRandomEmoji(emojiList));
-        }
-        return randomList;
-    }
-
-    isSlotsSpam = () => {
-        const currentTime = (new Date).getTime(),
-            spamTimer = 2000;
-
-        if(this.lastSlotsSentTime && (currentTime - this.lastSlotsSentTime) < spamTimer) {
-            return true;
-        }
-        this.lastSlotsSentTime = currentTime;
-        return false;
-    }
-
-    isBlacklistedChannel = (msg) => {
-        if(msg && msg.channel.name === "general" && msg.channel.guild.name === "silkroad") {
-            return true;
-        }
-        return false;
-    }
-
-    handleSlots = (msg) => {
-        if (this.isBlacklistedChannel(msg)) {
-            return;
-        }
-        const emojiList = msg.guild.emojis.map((emoji) => (emoji)),
-            randomList = this.generateRandomEmojiList(emojiList);
-
-        msg.channel.send(randomList.join(' '));
-    }
 
     attachListeners = () => {
         this.client.on('ready', () => {
@@ -79,8 +37,10 @@ class Bot {
         this.client.on('message', (msg) => {
             const SLOTS = '!slots';
 
-            if(_.startsWith(msg.content, SLOTS)) {
-                this.handleSlots(msg);
+            switch(msg.content) {
+                case "!slots":
+                    Slots.handleSlots(msg);
+                    break;
             }
         });
 
