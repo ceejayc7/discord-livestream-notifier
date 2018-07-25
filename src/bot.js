@@ -43,7 +43,17 @@ class Bot {
         return false;
     }
 
+    isBlacklistedChannel = (msg) => {
+        if(msg && msg.channel.name === "general" && msg.channel.guild.name === "silkroad") {
+            return true;
+        }
+        return false;
+    }
+
     handleSlots = (msg) => {
+        if (this.isBlacklistedChannel(msg)) {
+            return;
+        }
         const emojiList = msg.guild.emojis.map((emoji) => (emoji)),
             randomList = this.generateRandomEmojiList(emojiList);
 
