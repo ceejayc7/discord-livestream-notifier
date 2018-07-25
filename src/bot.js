@@ -1,5 +1,6 @@
 import Discord from 'discord.js';
 import _ from 'lodash';
+import Blackjack from './blackjack.js';
 
 class Bot {
     constructor(loginToken) {
@@ -7,6 +8,7 @@ class Bot {
         this.isLoggedIn = false;
         this.loginToken = loginToken;
         this.lastSlotsSentTime = null;
+        this.blackjack = null;
     }
 
     loginToDiscord = () => {
@@ -67,10 +69,16 @@ class Bot {
         });
 
         this.client.on('message', (msg) => {
-            const SLOTS = '!slots';
-
-            if(_.startsWith(msg.content, SLOTS)) {
-                this.handleSlots(msg);
+            const SLOTS = '!slots',
+                BLACKJACK = '!21',
+                BLACKJACK_HIT = '!hit';
+            switch(msg.content) {
+                case SLOTS:
+                    this.handleSlots(msg);
+                    break;
+                case BLACKJACK:
+                    this.blackjack = new Blackjack(msg);
+                    break;
             }
         });
 
@@ -108,6 +116,7 @@ class Bot {
                         .catch((error) => {
                             console.log(`Unable to send message. ${error}`);
                         });
+                    break;
             }
         }
     }
