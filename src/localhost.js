@@ -13,7 +13,7 @@ class Localhost {
             json: true,
             method: "GET"
         };
-        this.currentLiveStreams = [];
+        this.currentLiveStreams = {};
         this.streamEmitter = streamEmitter;
     }
 
@@ -38,7 +38,7 @@ class Localhost {
     }
 
     announceIfStreamIsNew = (stream) => {
-        if(!_.includes(this.currentLiveChannels, stream)) {
+        if(!_.includes(Object.keys(this.currentLiveStreams), stream)) {
             let streamObj = {};
             streamObj.name = stream;
             streamObj.platform = "localhost";
