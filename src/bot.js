@@ -82,6 +82,18 @@ class Bot {
                         .catch((error) => {
                             console.log(`Unable to send message. ${error}`);
                         });
+                    break;
+
+                case "localhost":
+                    const channel = "general",
+                        livestreamviewer = "SERVER",
+                        messageToSend = `${stream.name} is now live - ${livestreamviewer}`;
+
+                    this.client.channels.find('name',channel).send(messageToSend)
+                        .catch((error) => {
+                            console.log(`Unable to send message. ${error}`);
+                        });
+                    break;
             }
         }
     }
