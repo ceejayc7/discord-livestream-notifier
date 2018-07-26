@@ -41,6 +41,10 @@ class Bot {
                 case "!slots":
                     Slots.handleSlots(msg);
                     break;
+                case "!slotslb": {
+                    Slots.leaderboard(msg);
+                    break;
+                }
             }
         });
 

@@ -1,4 +1,7 @@
 import _ from 'lodash';
+//import JsonDB from 'node-json-db';
+
+//const db = new JsonDB("dist/slots", true, true);
 
 function getRandomEmoji(emojiList) {
     return emojiList[Math.floor(Math.random()*emojiList.length)];
@@ -12,17 +15,6 @@ function generateRandomEmojiList(emojiList) {
         randomList.push(getRandomEmoji(emojiList));
     }
     return randomList;
-}
-
-function isSlotsSpam() {
-    const currentTime = (new Date).getTime(),
-        spamTimer = 2000;
-
-    if(lastSlotsSentTime && (currentTime - lastSlotsSentTime) < spamTimer) {
-        return true;
-    }
-    lastSlotsSentTime = currentTime;
-    return false;
 }
 
 function isBlacklistedChannel(msg) {
@@ -39,7 +31,9 @@ function handleSlots(msg) {
     const emojiList = msg.guild.emojis.map((emoji) => (emoji)),
         randomList = generateRandomEmojiList(emojiList);
 
-    if(_.get(randomList, 0)) {
+    if(_.first(randomList)) {
+        //const dbKey = `${msg.channel.guild.name}/${msg.channel.name}/${msg.author.username}`;
+        //db.push(dbKey, 1);
         msg.channel.send(randomList.join(' '));
     }
     else {
@@ -47,11 +41,28 @@ function handleSlots(msg) {
     }
 }
 
+function leaderboard(msg) {
+    
+}
 
 export const Slots = {
     handleSlots: handleSlots,
     isBlacklistedChannel: isBlacklistedChannel,
-    isSlotsSpam: isSlotsSpam,
     generateRandomEmojiList: generateRandomEmojiList,
-    getRandomEmoji: getRandomEmoji
+    getRandomEmoji: getRandomEmoji,
+    leaderboard: leaderboard
 };
+
+
+
+/*
+function isSlotsSpam() {
+    const currentTime = (new Date).getTime(),
+        spamTimer = 2000;
+
+    if(lastSlotsSentTime && (currentTime - lastSlotsSentTime) < spamTimer) {
+        return true;
+    }
+    lastSlotsSentTime = currentTime;
+    return false;
+} */
