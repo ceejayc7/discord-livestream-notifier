@@ -8,7 +8,7 @@ $ git clone https://github.com/ceejayc7/discord-livestream-notifier.git
 $ npm install
 ```
 
-Edit `src/db.json` to include the streams to be watching
+Add `src/db.json` to include the streams to be watching
 ```js
 {
     "SERVER_ONE_NAME":{
@@ -26,14 +26,17 @@ Edit `src/db.json` to include the streams to be watching
 }
 ```
 
-Edit `src/constants.js` to include your tokens
+Add `src/constants.js` to include your tokens
 ```js
-export const TWITCH_CLIENT_ID='YOUR_TWITCH_CLIENT_ID_HERE',
+export const TWITCH_CLIENT_ID='TWITCH_CLIENT_ID_HERE',
     TWITCH_API_ENDPOINT='https://api.twitch.tv/kraken/streams?channel=',
     DISCORD_TOKENS={
-        SERVER_ONE_NAME: 'DISCORD_TOKEN_FOR_SERVER_ONE_NAME',
-        SERVER_TWO_NAME: 'DISCORD_TOKEN_FOR_SERVER_TWO_NAME'
-    };
+        SERVER_ONE_NAME: 'TOKEN_ONE',
+        SERVER_TWO_NAME: 'TOKEN_TWO'
+    },
+    LOCALHOST_ENDPOINT='localhost',
+    LOCALHOST_VIEWER='localhost',
+    CHANNEL_TO_SEND_LIVESTREAM_NOTIFICATIONS='general';
 ```
 
 Build and run
