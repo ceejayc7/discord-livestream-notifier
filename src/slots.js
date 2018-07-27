@@ -34,7 +34,7 @@ function getData(key) {
 
 function saveResults(msg, randomList) {
     const uniqueEmojiIds = _.countBy(randomList, 'id'),
-        key = `/${msg.channel.guild.name}/${msg.channel.name}/${msg.author.username}`,
+        key = `/${msg.channel.guild.name}/${msg.author.username}`,
         slotsCountKey = `${key}/total`,
         slotsCountKeyData = getData(slotsCountKey) + 1;
 
