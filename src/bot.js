@@ -36,16 +36,16 @@ class Bot {
         });
 
         this.client.on('message', (msg) => {
-            const SLOTS = '!slots';
+            const SLOTS = '!slots',
+                SLOTS_LB = '!slotslb';
 
             switch(msg.content) {
-                case "!slots":
+                case SLOTS:
                     Slots.handleSlots(msg);
                     break;
-                case "!slotslb": {
+                case SLOTS_LB:
                     Slots.leaderboard(msg);
                     break;
-                }
             }
         });
 

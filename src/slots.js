@@ -1,7 +1,7 @@
 import _ from 'lodash';
-//import JsonDB from 'node-json-db';
+import JsonDB from 'node-json-db';
 
-//const db = new JsonDB("dist/slots", true, true);
+const db = new JsonDB("slots_database", true, true);
 
 function getRandomEmoji(emojiList) {
     return emojiList[Math.floor(Math.random()*emojiList.length)];
@@ -24,6 +24,33 @@ function isBlacklistedChannel(msg) {
     return false;
 }
 
+function getData(key) {
+    try {
+        return db.getData(key);
+    } catch(error) {
+        return 0;
+    }
+}
+
+function saveResults(msg, randomList) {
+    const uniqueEmojiIds = _.countBy(randomList, 'id'),
+        key = `${msg.channel.guild.name}/${msg.channel.name}/${msg.author.username}`,
+        slotsCountKey = `${key}/total`,
+        slotsCountKeyData = getData(slotsCountKey) + 1;
+
+    _.forEach(uniqueEmojiIds, (count, emoji_id) => {
+        // dont count x1's in slots, no point
+        if(count === 1) {
+            return;
+        }
+        const currentDBIdentifer = `${key}/x${count}`,
+            currentDBCount = getData(currentDBIdentifer);
+        db.push(currentDBIdentifer, currentDBCount+1);
+    });
+
+    db.push(`${slotsCountKey}`, slotsCountKeyData);
+}
+
 function handleSlots(msg) {
     if (isBlacklistedChannel(msg)) {
         return;
@@ -32,9 +59,13 @@ function handleSlots(msg) {
         randomList = generateRandomEmojiList(emojiList);
 
     if(_.first(randomList)) {
-        //const dbKey = `${msg.channel.guild.name}/${msg.channel.name}/${msg.author.username}`;
-        //db.push(dbKey, 1);
-        msg.channel.send(randomList.join(' '));
+        msg.channel.send(randomList.join(' '))
+            .then( () => {
+                saveResults(msg, randomList);
+            })
+            .catch((error) => {
+                console.log(`Unable to send message. ${error}`);
+            });
     }
     else {
         msg.channel.send("Server has no custom emoji's for slots!");

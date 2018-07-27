@@ -2,3 +2,4 @@ node_modules/*
 src/constants.js
 dist/*
 src/db.json
+slots_database.json
