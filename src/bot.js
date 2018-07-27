@@ -1,6 +1,7 @@
 import Discord from 'discord.js';
 import _ from 'lodash';
 import {Slots} from './slots.js';
+import {LOCALHOST_VIEWER, CHANNEL_TO_SEND_LIVESTREAM_NOTIFICATIONS} from './constants.js';
 
 class Bot {
     constructor(loginToken) {
@@ -50,13 +51,16 @@ class Bot {
 
     }
 
+    livestreamError = (error) => {
+        console.log(`Unable to send message. ${error}`);
+    }
+
     sendLiveMessage = (stream) => {
         if(this.isLoggedIn) {
             // TO DO: Hardcoded to general channel
             switch(stream.platform) {
                 case "twitch":
-                    const discordChannelToSendMessage = "general",
-                        streamUrl = _.get(stream,'url'),
+                    const streamUrl = _.get(stream,'url'),
                         image = _.get(stream, 'preview'),
                         streamDisplayName = _.get(stream, 'displayName'),
                         logo = _.get(stream, 'logo'),
@@ -78,21 +82,15 @@ class Bot {
                             .addField("Viewers", viewers, true)
                             .setTimestamp(`${created_at}`);
 
-                    this.client.channels.find('name',discordChannelToSendMessage).send(streamMessage, embed)
-                        .catch((error) => {
-                            console.log(`Unable to send message. ${error}`);
-                        });
+                    this.client.channels.find('name', CHANNEL_TO_SEND_LIVESTREAM_NOTIFICATIONS).send(streamMessage, embed)
+                        .catch(this.livestreamError);
                     break;
 
                 case "localhost":
-                    const channel = "general",
-                        livestreamviewer = "SERVER",
-                        messageToSend = `${stream.name} is now live - ${livestreamviewer}`;
+                    const messageToSend = `${stream.name} is now live - ${LOCALHOST_VIEWER}`;
 
-                    this.client.channels.find('name',channel).send(messageToSend)
-                        .catch((error) => {
-                            console.log(`Unable to send message. ${error}`);
-                        });
+                    this.client.channels.find('name', CHANNEL_TO_SEND_LIVESTREAM_NOTIFICATIONS).send(messageToSend)
+                        .catch(this.livestreamError);
                     break;
             }
         }

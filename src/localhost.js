@@ -1,10 +1,11 @@
 import _ from 'lodash';
 import Request from 'request';
+import {LOCALHOST_ENDPOINT} from './constants.js';
 
 class Localhost {
 
     constructor(streamEmitter) {
-        this.endpoint = "http://localhost:8080/live/";
+        this.endpoint = LOCALHOST_ENDPOINT;
         this.endpointOptions = {
             url: this.endpoint,
             headers: {
@@ -26,7 +27,6 @@ class Localhost {
                     });
                     this.currentLiveStreams = body;
                 }
-    
             } else {
                 this.logError(error);
             }
