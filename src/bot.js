@@ -78,9 +78,13 @@ class Bot {
                             .setTitle(title)
                             .setURL(streamUrl)
                             .setThumbnail(logo)
-                            .addField("Game", game, true)
                             .addField("Viewers", viewers, true)
                             .setTimestamp(`${created_at}`);
+
+                    // game is an optional string and we cant pass in an empty field into an embed
+                    if(game) {
+                        embed.addField("Game", game, true);
+                    }
 
                     this.client.channels.find('name', CHANNEL_TO_SEND_LIVESTREAM_NOTIFICATIONS).send(streamMessage, embed)
                         .catch(this.livestreamError);

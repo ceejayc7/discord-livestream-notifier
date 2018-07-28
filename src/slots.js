@@ -24,7 +24,7 @@ function isBlacklistedChannel(msg) {
     return false;
 }
 
-function getData(key) {
+function getSlotsData(key) {
     try {
         return db.getData(key);
     } catch(error) {
@@ -32,11 +32,25 @@ function getData(key) {
     }
 }
 
+function initializeResults(key) {
+    // Init columns to default or 0
+    db.push(`${key}/x2`, getSlotsData(`${key}/x2`));
+    db.push(`${key}/x3`, getSlotsData(`${key}/x3`));
+    db.push(`${key}/x4`, getSlotsData(`${key}/x4`));
+    db.push(`${key}/x5`, getSlotsData(`${key}/x5`));
+}
+
 function saveResults(msg, randomList) {
     const uniqueEmojiIds = _.countBy(randomList, 'id'),
         key = `/${msg.channel.guild.name}/${msg.author.username}`,
         slotsCountKeyTotal = `${key}/total`,
-        slotsCountKeyTotalData = getData(slotsCountKeyTotal) + 1;
+        slotsCountKeyTotalData = getSlotsData(slotsCountKeyTotal) + 1;
+
+    initializeResults(key);
+
+    // push name and increment total
+    db.push(`${key}/name`, msg.author.username);
+    db.push(`${slotsCountKeyTotal}`, slotsCountKeyTotalData);
 
     _.forEach(uniqueEmojiIds, (count, emoji_id) => {
         // dont count x1's in slots, no point
@@ -44,18 +58,9 @@ function saveResults(msg, randomList) {
             return;
         }
         const currentDBIdentifer = `${key}/x${count}`,
-            currentDBCount = getData(currentDBIdentifer);
+            currentDBCount = getSlotsData(currentDBIdentifer);
         db.push(currentDBIdentifer, currentDBCount+1);
     });
-
-    // Init columns to default or 0
-    db.push(`${key}/x2`, getData(`${key}/x2`));
-    db.push(`${key}/x3`, getData(`${key}/x3`));
-    db.push(`${key}/x4`, getData(`${key}/x4`));
-    db.push(`${key}/x5`, getData(`${key}/x5`));
-
-    db.push(`${key}/name`, msg.author.username);
-    db.push(`${slotsCountKeyTotal}`, slotsCountKeyTotalData);
 }
 
 function handleSlots(msg) {
@@ -80,7 +85,7 @@ function handleSlots(msg) {
 }
 
 function leaderboard(msg) {
-    const serverData = getData(`/${msg.channel.guild.name}`),
+    const serverData = getSlotsData(`/${msg.channel.guild.name}`),
         sorted = _.orderBy(serverData, ['x2','x3','x4','x5'], 'desc');
     let dataToDisplay = '';
 
@@ -105,22 +110,5 @@ function leaderboard(msg) {
 
 export const Slots = {
     handleSlots: handleSlots,
-    isBlacklistedChannel: isBlacklistedChannel,
-    generateRandomEmojiList: generateRandomEmojiList,
-    getRandomEmoji: getRandomEmoji,
     leaderboard: leaderboard
 };
-
-
-
-/*
-function isSlotsSpam() {
-    const currentTime = (new Date).getTime(),
-        spamTimer = 2000;
-
-    if(lastSlotsSentTime && (currentTime - lastSlotsSentTime) < spamTimer) {
-        return true;
-    }
-    lastSlotsSentTime = currentTime;
-    return false;
-} */
