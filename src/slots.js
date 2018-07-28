@@ -86,7 +86,7 @@ function handleSlots(msg) {
 
 function leaderboard(msg) {
     const serverData = getSlotsData(`/${msg.channel.guild.name}`),
-        sorted = _.orderBy(serverData, ['x5','x4','x3','x2'], 'asc').reverse();
+        sorted = _.orderBy(serverData, ['x5','x4','x3','x2', 'total'], 'asc').reverse();
     let dataToDisplay = '';
 
     _.forEach(sorted, (player, index) => {
