@@ -35,8 +35,8 @@ function getData(key) {
 function saveResults(msg, randomList) {
     const uniqueEmojiIds = _.countBy(randomList, 'id'),
         key = `/${msg.channel.guild.name}/${msg.author.username}`,
-        slotsCountKey = `${key}/total`,
-        slotsCountKeyData = getData(slotsCountKey) + 1;
+        slotsCountKeyTotal = `${key}/total`,
+        slotsCountKeyTotalData = getData(slotsCountKeyTotal) + 1;
 
     _.forEach(uniqueEmojiIds, (count, emoji_id) => {
         // dont count x1's in slots, no point
@@ -48,7 +48,14 @@ function saveResults(msg, randomList) {
         db.push(currentDBIdentifer, currentDBCount+1);
     });
 
-    db.push(`${slotsCountKey}`, slotsCountKeyData);
+    // Init columns to default or 0
+    db.push(`${key}/x2`, getData(`${key}/x2`));
+    db.push(`${key}/x3`, getData(`${key}/x3`));
+    db.push(`${key}/x4`, getData(`${key}/x4`));
+    db.push(`${key}/x5`, getData(`${key}/x5`));
+
+    db.push(`${key}/name`, msg.author.username);
+    db.push(`${slotsCountKeyTotal}`, slotsCountKeyTotalData);
 }
 
 function handleSlots(msg) {
@@ -73,7 +80,27 @@ function handleSlots(msg) {
 }
 
 function leaderboard(msg) {
-    
+    const serverData = getData(`/${msg.channel.guild.name}`),
+        sorted = _.orderBy(serverData, ['x2','x3','x4','x5'], 'desc');
+    let dataToDisplay = '';
+
+    _.forEach(sorted, (player, index) => {
+        dataToDisplay += `${index+1}. ${player.name} with a total of ${player.total} rolls `;
+        if(player.x5 > 0) {
+            dataToDisplay += `& ${player.x5} wins`;
+        }
+        else if(player.x4 > 0) {
+            dataToDisplay += `& ${player.x4} quad slots`;
+        }
+        else if(player.x3 > 0) {
+            dataToDisplay += `& ${player.x3} triple slots`;
+        }
+        else if(player.x2 > 0) {
+            dataToDisplay += `& ${player.x2} double slots`;
+        }
+        dataToDisplay += `\n`;
+    });
+    msg.channel.send("```perl\n"+dataToDisplay+"```");
 }
 
 export const Slots = {
