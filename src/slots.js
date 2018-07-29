@@ -63,6 +63,10 @@ function saveResults(msg, randomList) {
     });
 }
 
+function unableToSendMessage(error) {
+    console.log(`Unable to send message. ${error}`);
+}
+
 function handleSlots(msg) {
     if (isBlacklistedChannel(msg)) {
         return;
@@ -75,12 +79,11 @@ function handleSlots(msg) {
             .then( () => {
                 saveResults(msg, randomList);
             })
-            .catch((error) => {
-                console.log(`Unable to send message. ${error}`);
-            });
+            .catch(unableToSendMessage);
     }
     else {
-        msg.channel.send("Server has no custom emoji's for slots!");
+        msg.channel.send("Server has no custom emoji's for slots!")
+            .catch(unableToSendMessage);
     }
 }
 
@@ -105,7 +108,8 @@ function leaderboard(msg) {
         }
         dataToDisplay += `\n`;
     });
-    msg.channel.send("```perl\n"+dataToDisplay+"```");
+    msg.channel.send("```perl\n"+dataToDisplay+"```")
+        .catch(unableToSendMessage);
 }
 
 export const Slots = {
