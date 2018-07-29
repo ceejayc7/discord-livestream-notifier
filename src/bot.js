@@ -33,12 +33,13 @@ class Bot {
         });
 
         this.client.on('error', (error) => {
-            console.log(`An error occured with the discord client. ${error}!`);
-            this.logoutOfDiscord()
-                .then(this.initializeDiscordClient)
-                .catch((error) => {
-                    console.log(`Unable to re-login back to discord. ${error}`);
-                });
+            console.log(`An error occured with the discord client. ${error.message}!`);
+            //this.initializeDiscordClient();
+            //this.logoutOfDiscord()
+               // .then(this.initializeDiscordClient)
+               // .catch((error) => {
+                //    console.log(`Unable to re-login back to discord. ${error}`);
+               // });
         });
 
         this.client.on('message', (msg) => {
