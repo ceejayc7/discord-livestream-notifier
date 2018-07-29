@@ -1,15 +1,22 @@
 import Discord from 'discord.js';
 import _ from 'lodash';
 import Blackjack from './blackjack.js';
+import {Slots} from './slots.js';
+import {LOCALHOST_VIEWER, CHANNEL_TO_SEND_LIVESTREAM_NOTIFICATIONS} from './constants.js';
 
 class Bot {
     constructor(loginToken) {
         this.client = new Discord.Client();
         this.isLoggedIn = false;
         this.loginToken = loginToken;
-        this.lastSlotsSentTime = null;
         this.blackjack = null;
     }
+
+    initializeDiscordClient = () => {
+        this.client = new Discord.Client();
+        this.client.attachListeners();
+        this.client.loginToDiscord();
+    };
 
     loginToDiscord = () => {
         this.client.login(this.loginToken);
@@ -17,40 +24,9 @@ class Bot {
 
     logoutOfDiscord = () => {
         console.log("Destroying discord client");
+        this.isLoggedIn = false;
         return this.client.destroy();
     };
-
-    getRandomEmoji = (emojiList) => {
-        return emojiList[Math.floor(Math.random()*emojiList.length)];
-    }
-
-    generateRandomEmojiList = (emojiList) => {
-        let randomList = [];
-        const numberOfSlots = 5;
-
-        for(let slot=1; slot <=numberOfSlots; slot++) {
-            randomList.push(this.getRandomEmoji(emojiList));
-        }
-        return randomList;
-    }
-
-    isSlotsSpam = () => {
-        const currentTime = (new Date).getTime(),
-            spamTimer = 2000;
-
-        if(this.lastSlotsSentTime && (currentTime - this.lastSlotsSentTime) < spamTimer) {
-            return true;
-        }
-        this.lastSlotsSentTime = currentTime;
-        return false;
-    }
-
-    handleSlots = (msg) => {
-        const emojiList = msg.guild.emojis.map((emoji) => (emoji)),
-            randomList = this.generateRandomEmojiList(emojiList);
-
-        msg.channel.send(randomList.join(' '));
-    }
 
     attachListeners = () => {
         this.client.on('ready', () => {
@@ -59,29 +35,33 @@ class Bot {
         });
 
         this.client.on('error', (error) => {
-            console.log(`An error occured with the discord client. ${error}!`);
-            this.isLoggedIn = false;
-            this.logoutOfDiscord()
-                .then(loginToDiscord)
-                .catch((error) => {
-                    console.log(`Unable to re-login back to discord. ${error}`);
-                });
+            console.log(`An error occured with the discord client. ${error.message}!`);
+            //this.initializeDiscordClient();
+            //this.logoutOfDiscord()
+               // .then(this.initializeDiscordClient)
+               // .catch((error) => {
+                //    console.log(`Unable to re-login back to discord. ${error}`);
+               // });
         });
 
         this.client.on('message', (msg) => {
             const SLOTS = '!slots',
-                BLACKJACK = '!21',
-                BLACKJACK_HIT = '!hit';
+                SLOTS_LB = '!slotslb';
+
             switch(msg.content) {
                 case SLOTS:
-                    this.handleSlots(msg);
+                    Slots.handleSlots(msg);
                     break;
-                case BLACKJACK:
-                    this.blackjack = new Blackjack(msg);
+                case SLOTS_LB:
+                    Slots.leaderboard(msg);
                     break;
             }
         });
 
+    }
+
+    livestreamError = (error) => {
+        console.log(`Unable to send message. ${error}`);
     }
 
     sendLiveMessage = (stream) => {
@@ -89,8 +69,7 @@ class Bot {
             // TO DO: Hardcoded to general channel
             switch(stream.platform) {
                 case "twitch":
-                    const discordChannelToSendMessage = "general",
-                        streamUrl = _.get(stream,'url'),
+                    const streamUrl = _.get(stream,'url'),
                         image = _.get(stream, 'preview'),
                         streamDisplayName = _.get(stream, 'displayName'),
                         logo = _.get(stream, 'logo'),
@@ -108,14 +87,23 @@ class Bot {
                             .setTitle(title)
                             .setURL(streamUrl)
                             .setThumbnail(logo)
-                            .addField("Game", game, true)
                             .addField("Viewers", viewers, true)
                             .setTimestamp(`${created_at}`);
 
-                    this.client.channels.find('name',discordChannelToSendMessage).send(streamMessage, embed)
-                        .catch((error) => {
-                            console.log(`Unable to send message. ${error}`);
-                        });
+                    // game is an optional string and we cant pass in an empty field into an embed
+                    if(game) {
+                        embed.addField("Game", game, true);
+                    }
+
+                    this.client.channels.find('name', CHANNEL_TO_SEND_LIVESTREAM_NOTIFICATIONS).send(streamMessage, embed)
+                        .catch(this.livestreamError);
+                    break;
+
+                case "localhost":
+                    const messageToSend = `${stream.name} is now live - ${LOCALHOST_VIEWER}`;
+
+                    this.client.channels.find('name', CHANNEL_TO_SEND_LIVESTREAM_NOTIFICATIONS).send(messageToSend)
+                        .catch(this.livestreamError);
                     break;
             }
         }

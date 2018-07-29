@@ -1,5 +1,6 @@
 import Bot from './bot.js';
 import Twitch from './twitch.js';
+import Localhost from './localhost.js';
 import {EventEmitter} from 'events';
 import {DISCORD_TOKENS} from './constants.js';
 import _ from 'lodash';
@@ -21,8 +22,10 @@ function initBots() {
         }
     });
 
-    const twitch = new Twitch(streamEmitter);
+    const twitch = new Twitch(streamEmitter),
+        localhost = new Localhost(streamEmitter);
     streamsList.push(twitch);
+    streamsList.push(localhost);
 }
 
 function setTimers() {
