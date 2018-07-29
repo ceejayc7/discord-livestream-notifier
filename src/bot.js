@@ -10,12 +10,19 @@ class Bot {
         this.loginToken = loginToken;
     }
 
+    initializeDiscordClient = () => {
+        this.client = new Discord.Client();
+        this.client.attachListeners();
+        this.client.loginToDiscord();
+    };
+
     loginToDiscord = () => {
         this.client.login(this.loginToken);
     };
 
     logoutOfDiscord = () => {
         console.log("Destroying discord client");
+        this.isLoggedIn = false;
         return this.client.destroy();
     };
 
@@ -27,9 +34,8 @@ class Bot {
 
         this.client.on('error', (error) => {
             console.log(`An error occured with the discord client. ${error}!`);
-            this.isLoggedIn = false;
             this.logoutOfDiscord()
-                .then(loginToDiscord)
+                .then(this.initializeDiscordClient)
                 .catch((error) => {
                     console.log(`Unable to re-login back to discord. ${error}`);
                 });
