@@ -34,9 +34,24 @@ class Blackjack {
             this.clearGame();
         }
         else if(isDealerBlackjack) {
-            this.sendMessageToChannel(`Dealer has Blackjack. Get owned bro`);
+            this.sendMessageToChannel(`Dealer's hand is ${this.stringifyHand(this.dealerHand, this.cardTypes.DISPLAY).join(' ')} \n Dealer has Blackjack. Get owned bro`);
             this.clearGame();
         }
+    }
+
+    timeout = () => {
+        this.sendMessageToChannel(`${this.msg.author.username} timed out, cmon bro`);
+        this.clearGame();
+    }
+
+    setTimer = () => {
+        const THIRTY_SECONDS = 30000;
+        return setTimeout(this.timeout, THIRTY_SECONDS);
+    }
+
+    clearAndResetTimer = () => {
+        clearTimeout(this.timer);
+        this.timer = this.setTimer();
     }
 
     initGame = (msg) => {
@@ -55,6 +70,7 @@ class Blackjack {
             isDealerBlackjack = this.isBlackJack(this.dealerHand);
 
         this.handleInitialBlackjack(isPlayerBlackjack, isDealerBlackjack);
+        this.timer = this.setTimer();
     }
 
     clearGame = () => {
@@ -64,6 +80,7 @@ class Blackjack {
         this.deck.shuffleToTop(this.dealerHand);
         this.playerHand = null
         this.dealerHand = null;
+        clearTimeout(this.timer);
     } 
 
     isValidUser = (msg) => {
@@ -126,6 +143,7 @@ class Blackjack {
         if(!this.isValidUser(msg)) {
             return;
         }
+        this.clearAndResetTimer();
         this.playerHand.push(this.drawCards(1));
         this.sendMessageToChannel(`${this.msg.author.username}'s hand is **${this.stringifyHand(this.playerHand, this.cardTypes.DISPLAY).join(' ')}**`);
         const playerHandValue = this.sumifyHand(this.playerHand);
