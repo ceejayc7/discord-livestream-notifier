@@ -51,7 +51,7 @@ class Bot {
                 BLACKJACK_HIT = '!hit',
                 BLACKJACK_STAND = '!stand';
 
-            if(Slots.isBlacklistedChannel()) {
+            if(Slots.isBlacklistedChannel(msg)) {
                 return;
             }
 
