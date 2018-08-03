@@ -71,8 +71,8 @@ class Blackjack {
         let isPlayerBlackjack = this.isBlackJack(this.playerHand),
             isDealerBlackjack = this.isBlackJack(this.dealerHand);
 
-        this.handleInitialBlackjack(isPlayerBlackjack, isDealerBlackjack);
         this.timer = this.setTimer();
+        this.handleInitialBlackjack(isPlayerBlackjack, isDealerBlackjack);
     }
 
     clearGame = () => {
