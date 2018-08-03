@@ -62,6 +62,7 @@ class Blackjack {
         this.msg = null;
         this.playerHand = null
         this.dealerHand = null;
+        this.deck = null;
     } 
 
     isValidUser = (msg) => {
@@ -116,10 +117,6 @@ class Blackjack {
             this.sendMessageToChannel(`Dealer has **${this.stringifyHand(this.dealerHand, this.cardTypes.DISPLAY).join(' ')}**` + `\n`);
 
             dealerHandValue = this.sumifyHand(this.dealerHand);
-
-            if(dealerHandValue > playerHandValue && dealerHandValue <= 21) {
-                break;
-            }
         }
         this.endGame(dealerHandValue, playerHandValue);
     }
