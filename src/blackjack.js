@@ -46,12 +46,13 @@ class Blackjack {
         this.deck.shuffle();
         this.playerHand = this.drawCards(2);
         this.dealerHand = this.drawCards(2);
-        let isPlayerBlackjack = this.isBlackJack(this.playerHand),
-            isDealerBlackjack = this.isBlackJack(this.dealerHand);
 
         let initalMessageToSend = `Dealer has **${this.dealerHand[0].display}**` + `\n` + `${this.msg.author.username}'s hand is **${this.stringifyHand(this.playerHand, this.cardTypes.DISPLAY).join(' ')}**` + `\n` + this.hitOrStand();
 
         this.sendMessageToChannel(initalMessageToSend);
+
+        let isPlayerBlackjack = this.isBlackJack(this.playerHand),
+            isDealerBlackjack = this.isBlackJack(this.dealerHand);
 
         this.handleInitialBlackjack(isPlayerBlackjack, isDealerBlackjack);
     }
