@@ -114,5 +114,6 @@ function leaderboard(msg) {
 
 export const Slots = {
     handleSlots: handleSlots,
-    leaderboard: leaderboard
+    leaderboard: leaderboard,
+    isBlacklistedChannel: isBlacklistedChannel
 };

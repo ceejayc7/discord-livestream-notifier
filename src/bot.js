@@ -9,7 +9,7 @@ class Bot {
         this.client = new Discord.Client();
         this.isLoggedIn = false;
         this.loginToken = loginToken;
-        this.blackjack = null;
+        this.blackjack = new Blackjack();
     }
 
     initializeDiscordClient = () => {
@@ -46,7 +46,14 @@ class Bot {
 
         this.client.on('message', (msg) => {
             const SLOTS = '!slots',
-                SLOTS_LB = '!slotslb';
+                SLOTS_LB = '!slotslb',
+                BLACKJACK = '!21',
+                BLACKJACK_HIT = '!hit',
+                BLACKJACK_STAND = '!stand';
+
+            if(Slots.isBlacklistedChannel()) {
+                return;
+            }
 
             switch(msg.content) {
                 case SLOTS:
@@ -54,6 +61,15 @@ class Bot {
                     break;
                 case SLOTS_LB:
                     Slots.leaderboard(msg);
+                    break;
+                case BLACKJACK:
+                    !this.blackjack.isGameStarted ? this.blackjack.initGame(msg) : false;
+                    break;
+                case BLACKJACK_HIT:
+                    this.blackjack.isGameStarted ? this.blackjack.hit(msg) : false;
+                    break;
+                case BLACKJACK_STAND:
+                    this.blackjack.isGameStarted ? this.blackjack.stand(msg) : false;
                     break;
             }
         });

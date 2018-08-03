@@ -62,7 +62,7 @@
     {
       "suit": "hearts",
       "display": "A",
-      "value" : [1,11]
+      "value" : 11
     },
     {
       "suit": "diamonds",
@@ -127,7 +127,7 @@
     {
       "suit": "diamonds",
       "display": "A",
-      "value" : [1,11]
+      "value" : 11
     },
     {
       "suit": "clubs",
@@ -192,7 +192,7 @@
     {
       "suit": "clubs",
       "display": "A",
-      "value" : [1,11]
+      "value" : 11
     },
     {
       "suit": "spades",
@@ -257,6 +257,6 @@
     {
       "suit": "spades",
       "display": "A",
-      "value" : [1,11]
+      "value" : 11
     }
   ]

@@ -3,3 +3,5 @@ src/constants.js
 dist/*
 src/db.json
 slots_database.json
+constants.js
+db.json
