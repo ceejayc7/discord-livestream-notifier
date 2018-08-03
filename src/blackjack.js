@@ -40,8 +40,10 @@ class Blackjack {
     }
 
     timeout = () => {
-        this.sendMessageToChannel(`${this.msg.author.username} timed out, cmon bro`);
-        this.clearGame();
+        if(this.msg) {
+            this.sendMessageToChannel(`${this.msg.author.username} timed out, cmon bro`);
+            this.clearGame();
+        }
     }
 
     setTimer = () => {
