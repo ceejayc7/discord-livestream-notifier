@@ -34,7 +34,7 @@ class Blackjack {
             this.clearGame();
         }
         else if(isDealerBlackjack) {
-            this.sendMessageToChannel(`Dealer's hand is ${this.stringifyHand(this.dealerHand, this.cardTypes.DISPLAY).join(' ')} \n Dealer has Blackjack. Get owned bro`);
+            this.sendMessageToChannel(`Dealer's hand is **${this.stringifyHand(this.dealerHand, this.cardTypes.DISPLAY).join(' ')}** \nDealer has Blackjack. Get owned bro`);
             this.clearGame();
         }
     }
