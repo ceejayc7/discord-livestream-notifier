@@ -60,9 +60,10 @@ class Blackjack {
     clearGame = () => {
         this.isGameStarted = false;
         this.msg = null;
+        this.deck.shuffleToTop(this.playerHand);
+        this.deck.shuffleToTop(this.dealerHand);
         this.playerHand = null
         this.dealerHand = null;
-        this.deck = null;
     } 
 
     isValidUser = (msg) => {
