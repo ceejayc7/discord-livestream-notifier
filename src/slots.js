@@ -1,4 +1,5 @@
 import _ from 'lodash';
+import {Helpers} from './helpers.js';
 import JsonDB from 'node-json-db';
 
 const db = new JsonDB("slots_database", true, true);
@@ -17,13 +18,6 @@ function generateRandomEmojiList(emojiList) {
     return randomList;
 }
 
-function isBlacklistedChannel(msg) {
-    if(msg && msg.channel.name === "general" && msg.channel.guild.name === "silkroad") {
-        return true;
-    }
-    return false;
-}
-
 function getSlotsData(key) {
     try {
         return db.getData(key);
@@ -33,6 +27,11 @@ function getSlotsData(key) {
 }
 
 function initializeResults(key) {
+    // check to see if data exists before we initalize a new slots user
+    if(getSlotsData(key)) {
+        return;
+    }
+
     // Init columns to default or 0
     db.push(`${key}/x2`, getSlotsData(`${key}/x2`));
     db.push(`${key}/x3`, getSlotsData(`${key}/x3`));
@@ -63,27 +62,16 @@ function saveResults(msg, randomList) {
     });
 }
 
-function unableToSendMessage(error) {
-    console.log(`Unable to send message. ${error}`);
-}
-
 function handleSlots(msg) {
-    if (isBlacklistedChannel(msg)) {
-        return;
-    }
     const emojiList = msg.guild.emojis.map((emoji) => (emoji)),
         randomList = generateRandomEmojiList(emojiList);
 
     if(_.first(randomList)) {
-        msg.channel.send(randomList.join(' '))
-            .then( () => {
+        Helpers.sendMessageToChannel(msg, randomList.join(' '))
+            .then(() => {
                 saveResults(msg, randomList);
             })
-            .catch(unableToSendMessage);
-    }
-    else {
-        msg.channel.send("Server has no custom emoji's for slots!")
-            .catch(unableToSendMessage);
+            .catch(Helpers.messageError);
     }
 }
 
@@ -93,27 +81,25 @@ function leaderboard(msg) {
     let dataToDisplay = '';
 
     _.forEach(sorted, (player, index) => {
-        dataToDisplay += `${index+1}. ${player.name} with a total of ${player.total} rolls `;
+        dataToDisplay += `${index+1}. ${player.name} with a total of ${player.total.toLocaleString()} rolls `;
         if(player.x5 > 0) {
-            dataToDisplay += `& ${player.x5} wins`;
+            dataToDisplay += `& ${player.x5.toLocaleString()} wins & ${player.x4.toLocaleString()} quad slots`;
         }
         else if(player.x4 > 0) {
-            dataToDisplay += `& ${player.x4} quad slots`;
+            dataToDisplay += `& ${player.x4.toLocaleString()} quad slots & ${player.x3.toLocaleString()} triple slots`;
         }
         else if(player.x3 > 0) {
-            dataToDisplay += `& ${player.x3} triple slots`;
+            dataToDisplay += `& ${player.x3.toLocaleString()} triple slots`;
         }
         else if(player.x2 > 0) {
-            dataToDisplay += `& ${player.x2} double slots`;
+            dataToDisplay += `& ${player.x2.toLocaleString()} double slots`;
         }
         dataToDisplay += `\n`;
     });
-    msg.channel.send("```perl\n"+dataToDisplay+"```")
-        .catch(unableToSendMessage);
+    Helpers.sendMessageToChannel(msg, "```perl\n"+dataToDisplay+"```")
 }
 
 export const Slots = {
-    handleSlots: handleSlots,
-    leaderboard: leaderboard,
-    isBlacklistedChannel: isBlacklistedChannel
+    handleSlots,
+    leaderboard
 };

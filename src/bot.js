@@ -2,6 +2,7 @@ import Discord from 'discord.js';
 import _ from 'lodash';
 import Blackjack from './blackjack.js';
 import {Slots} from './slots.js';
+import {Helpers} from './helpers.js';
 import {LOCALHOST_VIEWER, CHANNEL_TO_SEND_LIVESTREAM_NOTIFICATIONS} from './constants.js';
 
 class Bot {
@@ -36,12 +37,6 @@ class Bot {
 
         this.client.on('error', (error) => {
             console.log(`An error occured with the discord client. ${error.message}!`);
-            //this.initializeDiscordClient();
-            //this.logoutOfDiscord()
-               // .then(this.initializeDiscordClient)
-               // .catch((error) => {
-                //    console.log(`Unable to re-login back to discord. ${error}`);
-               // });
         });
 
         this.client.on('message', (msg) => {
@@ -51,7 +46,7 @@ class Bot {
                 BLACKJACK_HIT = '!hit',
                 BLACKJACK_STAND = '!stand';
 
-            if(Slots.isBlacklistedChannel(msg)) {
+            if(Helpers.isBlacklistedChannel(msg)) {
                 return;
             }
 
@@ -74,10 +69,6 @@ class Bot {
             }
         });
 
-    }
-
-    livestreamError = (error) => {
-        console.log(`Unable to send message. ${error}`);
     }
 
     sendLiveMessage = (stream) => {
@@ -112,14 +103,14 @@ class Bot {
                     }
 
                     this.client.channels.find('name', CHANNEL_TO_SEND_LIVESTREAM_NOTIFICATIONS).send(streamMessage, embed)
-                        .catch(this.livestreamError);
+                        .catch(Helpers.messageError);
                     break;
 
                 case "localhost":
                     const messageToSend = `${stream.name} is now live - ${LOCALHOST_VIEWER}`;
 
                     this.client.channels.find('name', CHANNEL_TO_SEND_LIVESTREAM_NOTIFICATIONS).send(messageToSend)
-                        .catch(this.livestreamError);
+                        .catch(Helpers.messageError);
                     break;
             }
         }

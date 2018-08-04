@@ -1,5 +1,6 @@
 import Deck from 'card-deck';
 import _ from 'lodash';
+import {Helpers} from './helpers.js';
 
 class Blackjack {
     constructor() {
@@ -10,14 +11,11 @@ class Blackjack {
             DISPLAY: 'display',
             VALUE: 'value'
         };
+        this.deck = new Deck(require('./cards.json'));
     }
 
     hitOrStand = () => {
         return `!hit or !stand`;
-    }
-
-    messageError = (error) => {
-        console.log(`Unable to send message during !21. ${error.message}`);
     }
 
     isBlackJack = (hand) => {
@@ -26,22 +24,22 @@ class Blackjack {
 
     handleInitialBlackjack = (isPlayerBlackjack, isDealerBlackjack) => {
         if(isPlayerBlackjack && isDealerBlackjack) {
-            this.sendMessageToChannel(`Both Dealer and ${this.msg.author.username} have Blackjack. It's a tie bro`);
+            Helpers.sendMessageToChannel(this.msg, `Dealer has **${this.stringifyHand(this.dealerHand, this.cardTypes.DISPLAY).join(' ')}** \nBoth Dealer and ${this.msg.author.username} have Blackjack. It's a push bro`);
             this.clearGame();
         }
         else if(isPlayerBlackjack) {
-            this.sendMessageToChannel(`${this.msg.author.username} has Blackjack. Nice one bro`);
+            Helpers.sendMessageToChannel(this.msg, `${this.msg.author.username} has Blackjack. Nice one bro`);
             this.clearGame();
         }
         else if(isDealerBlackjack) {
-            this.sendMessageToChannel(`Dealer's hand is **${this.stringifyHand(this.dealerHand, this.cardTypes.DISPLAY).join(' ')}** \nDealer has Blackjack. Get owned bro`);
+            Helpers.sendMessageToChannel(this.msg, `Dealer has **${this.stringifyHand(this.dealerHand, this.cardTypes.DISPLAY).join(' ')}** \nDealer has Blackjack. Get owned bro`);
             this.clearGame();
         }
     }
 
     timeout = () => {
         if(this.msg) {
-            this.sendMessageToChannel(`${this.msg.author.username} timed out, cmon bro`);
+            Helpers.sendMessageToChannel(this.msg, `${this.msg.author.username} timed out, cmon bro`);
             this.clearGame();
         }
     }
@@ -59,14 +57,13 @@ class Blackjack {
     initGame = (msg) => {
         this.isGameStarted = true;
         this.msg = msg;
-        this.deck = new Deck(require('./cards.json'));
         this.deck.shuffle();
         this.playerHand = this.drawCards(2);
         this.dealerHand = this.drawCards(2);
 
-        let initalMessageToSend = `Dealer has **${this.dealerHand[0].display}**` + `\n` + `${this.msg.author.username}'s hand is **${this.stringifyHand(this.playerHand, this.cardTypes.DISPLAY).join(' ')}**` + `\n` + this.hitOrStand();
+        let initalMessageToSend = `Dealer has **${this.dealerHand[0].display}**` + `\n` + `${this.msg.author.username} has **${this.stringifyHand(this.playerHand, this.cardTypes.DISPLAY).join(' ')}**` + `\n` + this.hitOrStand();
 
-        this.sendMessageToChannel(initalMessageToSend);
+        Helpers.sendMessageToChannel(this.msg, initalMessageToSend);
 
         let isPlayerBlackjack = this.isBlackJack(this.playerHand),
             isDealerBlackjack = this.isBlackJack(this.dealerHand);
@@ -89,11 +86,6 @@ class Blackjack {
         return this.msg.author.username === msg.author.username;
     }
 
-    sendMessageToChannel = (stringToSend) => {
-        this.msg.channel.send(stringToSend)
-            .catch(this.messageError);
-    }
-
     endGame = (dealerHandValue, playerHandValue) => {
         let messageToSend = '';
 
@@ -111,10 +103,10 @@ class Blackjack {
                 messageToSend += `${this.msg.author.username} wins, good job bro`;
             }
             else {
-                messageToSend += `It's a tie bro`;
+                messageToSend += `It's a push bro`;
             }
         }
-        this.sendMessageToChannel(messageToSend);
+        Helpers.sendMessageToChannel(this.msg, messageToSend);
         this.clearGame();
     }
 
@@ -125,7 +117,7 @@ class Blackjack {
         const playerHandValue = this.sumifyHand(this.playerHand);
         let dealerHandValue = this.sumifyHand(this.dealerHand);
         
-        this.sendMessageToChannel(`Dealer has **${this.stringifyHand(this.dealerHand, this.cardTypes.DISPLAY).join(' ')}**` + `\n`);
+        Helpers.sendMessageToChannel(this.msg, `Dealer has **${this.stringifyHand(this.dealerHand, this.cardTypes.DISPLAY).join(' ')}**` + `\n`);
 
         if(dealerHandValue > 16 || dealerHandValue > playerHandValue) {
             this.endGame(dealerHandValue, playerHandValue);
@@ -134,7 +126,7 @@ class Blackjack {
 
         while (dealerHandValue <= 16) {
             this.dealerHand.push(this.drawCards(1));
-            this.sendMessageToChannel(`Dealer has **${this.stringifyHand(this.dealerHand, this.cardTypes.DISPLAY).join(' ')}**` + `\n`);
+            Helpers.sendMessageToChannel(this.msg, `Dealer has **${this.stringifyHand(this.dealerHand, this.cardTypes.DISPLAY).join(' ')}**` + `\n`);
 
             dealerHandValue = this.sumifyHand(this.dealerHand);
         }
@@ -147,10 +139,10 @@ class Blackjack {
         }
         this.clearAndResetTimer();
         this.playerHand.push(this.drawCards(1));
-        this.sendMessageToChannel(`${this.msg.author.username}'s hand is **${this.stringifyHand(this.playerHand, this.cardTypes.DISPLAY).join(' ')}**`);
+        Helpers.sendMessageToChannel(this.msg, `${this.msg.author.username} has **${this.stringifyHand(this.playerHand, this.cardTypes.DISPLAY).join(' ')}**`);
         const playerHandValue = this.sumifyHand(this.playerHand);
         if(playerHandValue > 21) {
-            this.sendMessageToChannel(`${this.msg.author.username}'s busts with **${playerHandValue}**. Dealer wins, sorry bro`);
+            Helpers.sendMessageToChannel(this.msg, `${this.msg.author.username}'s busts with **${playerHandValue}**. Dealer wins, sorry bro`);
             this.clearGame();
         }
     }
@@ -180,9 +172,7 @@ class Blackjack {
                 break;
             }
         }
-
         return handValue;
-        
     }
     
     drawCards = (numberOfCards = 1) => {
