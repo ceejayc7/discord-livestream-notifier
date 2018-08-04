@@ -56,6 +56,21 @@ function saveResults(msg, randomList) {
         if(count === 1) {
             return;
         }
+        else if(count === 5) {
+            const winnerEmoji = _.first(randomList),
+                messageToSend =
+                `_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ ${winnerEmoji} ${msg.author} HAS WON SLOTS!!!!!!!!!!!!!!!!!!! ${winnerEmoji}\n`+
+                `           ${winnerEmoji}     ${msg.author} HAS WON SLOTS!!!!!!!!!!!!!!!!!!!     ${winnerEmoji}\n`+
+                `       ${winnerEmoji}         ${msg.author} HAS WON SLOTS!!!!!!!!!!!!!!!!!!!         ${winnerEmoji}\n`+
+                `   ${winnerEmoji}             ${msg.author} HAS WON SLOTS!!!!!!!!!!!!!!!!!!!             ${winnerEmoji}\n`+
+                `${winnerEmoji}                ${msg.author} HAS WON SLOTS!!!!!!!!!!!!!!!!!!!                 ${winnerEmoji}\n`+
+                `${winnerEmoji}                ${msg.author} HAS WON SLOTS!!!!!!!!!!!!!!!!!!!                 ${winnerEmoji}\n`+
+                `   ${winnerEmoji}             ${msg.author} HAS WON SLOTS!!!!!!!!!!!!!!!!!!!             ${winnerEmoji}\n`+
+                `       ${winnerEmoji}         ${msg.author} HAS WON SLOTS!!!!!!!!!!!!!!!!!!!         ${winnerEmoji}\n`+
+                `           ${winnerEmoji}     ${msg.author} HAS WON SLOTS!!!!!!!!!!!!!!!!!!!     ${winnerEmoji}\n`+
+                `               ${winnerEmoji} ${msg.author} HAS WON SLOTS!!!!!!!!!!!!!!!!!!! ${winnerEmoji}\n`;
+            Helpers.sendMessageToChannel(msg, messageToSend);
+        }
         const currentDBIdentifer = `${key}/x${count}`,
             currentDBCount = getSlotsData(currentDBIdentifer);
         db.push(currentDBIdentifer, currentDBCount+1);
