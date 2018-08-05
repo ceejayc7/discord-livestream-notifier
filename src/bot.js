@@ -73,7 +73,6 @@ class Bot {
 
     sendLiveMessage = (stream) => {
         if(this.isLoggedIn) {
-            // TO DO: Hardcoded to general channel
             switch(stream.platform) {
                 case "twitch":
                     const streamUrl = _.get(stream,'url'),
@@ -110,6 +109,37 @@ class Bot {
                     const messageToSend = `${stream.name} is now live - ${LOCALHOST_VIEWER}`;
 
                     this.client.channels.find('name', CHANNEL_TO_SEND_LIVESTREAM_NOTIFICATIONS).send(messageToSend)
+                        .catch(Helpers.messageError);
+                    break;
+
+                case "mixer":
+                    const beamStreamUrl = _.get(stream,'url'),
+                        beamImage = _.get(stream, 'preview'),
+                        beamName = _.get(stream, 'name'),
+                        beamLogo = _.get(stream, 'logo'),
+                        beamSiteLogo = "https://puu.sh/B8Ude/262ffd918e.png",
+                        beamTitle = _.get(stream, 'title'),
+                        beamGame = _.get(stream, 'game'),
+                        beamUpdatedAt = _.get(stream, 'updated_at'),
+                        beamViewers = _.get(stream, 'viewers').toLocaleString(),
+                        beamStreamMessage = `${beamName} is now live at ${beamStreamUrl}`,
+                        beamColor = 6570404,
+                        beamEmbed = new Discord.RichEmbed()
+                            .setAuthor(beamName, beamSiteLogo, beamStreamUrl)
+                            .setColor(beamColor)
+                            .setImage(beamImage)
+                            .setTitle(beamTitle)
+                            .setURL(beamStreamUrl)
+                            .setThumbnail(beamLogo)
+                            .addField("Viewers", beamViewers, true)
+                            .setTimestamp(`${beamUpdatedAt}`);
+
+                    // game is an optional string and we cant pass in an empty field into an embed
+                    if(beamGame) {
+                        beamEmbed.addField("Game", beamGame, true);
+                    }
+
+                    this.client.channels.find('name', CHANNEL_TO_SEND_LIVESTREAM_NOTIFICATIONS).send(beamStreamMessage, beamEmbed)
                         .catch(Helpers.messageError);
                     break;
             }

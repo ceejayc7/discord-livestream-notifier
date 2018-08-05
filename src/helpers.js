@@ -24,8 +24,14 @@ function sendMessageToChannel(msg, stringToSend) {
         .catch(messageError);
 }
 
+function getListOfStreams(streamSite) {
+    const streamsDatabase = require('./db.json');
+    return _.uniq(_.compact(_.flatten(_.map(streamsDatabase, streamSite))));
+}
+
 export const Helpers = {
     isBlacklistedChannel,
     sendMessageToChannel,
-    messageError
+    messageError,
+    getListOfStreams
 };

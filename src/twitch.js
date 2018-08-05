@@ -1,5 +1,6 @@
 import {TWITCH_API_ENDPOINT, TWITCH_CLIENT_ID} from './constants.js';
 import _ from 'lodash';
+import {Helpers} from './helpers.js';
 import Request from 'request';
 
 class Twitch {
@@ -20,7 +21,7 @@ class Twitch {
     }
 
     updateStreams = () => {
-        let flattenStreamsString = _.uniq(_.flatten(_.map(this.streamsDatabase, 'twitch'))).toString();
+        let flattenStreamsString = Helpers.getListOfStreams('twitch').toString();
         this.twitchAPIOptions.url = TWITCH_API_ENDPOINT+flattenStreamsString;
         Request(this.twitchAPIOptions, (error, response, body) => {
             if(!error && response.statusCode === 200) {

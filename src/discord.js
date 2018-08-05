@@ -1,6 +1,7 @@
 import Bot from './bot.js';
 import Twitch from './twitch.js';
 import Localhost from './localhost.js';
+import Mixer from './mixer.js';
 import {EventEmitter} from 'events';
 import {DISCORD_TOKENS} from './constants.js';
 import _ from 'lodash';
@@ -23,9 +24,11 @@ function initBots() {
     });
 
     const twitch = new Twitch(streamEmitter),
-        localhost = new Localhost(streamEmitter);
+        localhost = new Localhost(streamEmitter),
+        mixer = new Mixer(streamEmitter);
     streamsList.push(twitch);
     streamsList.push(localhost);
+    streamsList.push(mixer);
 }
 
 function setTimers() {
@@ -42,7 +45,7 @@ setTimers();
 
 streamEmitter.on('event:streamlive', (stream) => {
     _.forEach(serverDatabase, (server, serverName) => {
-        let isChannelInServer = _.includes(_.get(server,[stream.platform]), stream.name);
+        let isChannelInServer = _.includes(_.get(server,[stream.platform]), stream.name.toLowerCase());
         if(isChannelInServer) {
             console.log(`${stream.name} went live, notifying channel`);
             discordBots[serverName].sendLiveMessage(stream);
