@@ -43,7 +43,7 @@ export const TWITCH_CLIENT_ID='TWITCH_CLIENT_ID_HERE',
     LOCALHOST_ENDPOINT='localhost',
     LOCALHOST_VIEWER='localhost',
     CHANNEL_TO_SEND_LIVESTREAM_NOTIFICATIONS='general',
-    BLACKLISTED_SERVER={}; // { server : channel } pairs
+    BLACKLISTED_SERVERS={}; // { server : channel } pairs
 ```
 
 Build and run
