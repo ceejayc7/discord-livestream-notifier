@@ -3,7 +3,11 @@ import _ from 'lodash';
 function getBlacklistedServers() {
     return {
         "silkroad" : "general",
-        "pendulums" : "general"
+        "pendulums" : "general",
+        "#id3" : "general",
+        "#id3" : "nsfw",
+        "#id3" : "crypto",
+        "#id3" : "crypto-signals"
     };
 }
 
