@@ -1,5 +1,9 @@
 ﻿# discord-livestream-notifier
-> Broadcast when Twitch.tv streams go live on Discord
+> Broadcasts when a livestream goes live to a discord channel. Also contains random fun casino games.
+
+>Supports the following platforms:
+>* Twitch.tv
+>* Mixer
 
 ## Getting started
 Clone the repository and install npm dependencies
