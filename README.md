@@ -30,13 +30,16 @@ Add `src/constants.js` to include your tokens
 ```js
 export const TWITCH_CLIENT_ID='TWITCH_CLIENT_ID_HERE',
     TWITCH_API_ENDPOINT='https://api.twitch.tv/kraken/streams?channel=',
+    MIXER_API_ENDPOINT='https://mixer.com/api/v1/channels/',
+    MIXER_CLIENT_ID='MIXER_CLIENT_ID_HERE',
     DISCORD_TOKENS={
         SERVER_ONE_NAME: 'TOKEN_ONE',
         SERVER_TWO_NAME: 'TOKEN_TWO'
     },
     LOCALHOST_ENDPOINT='localhost',
     LOCALHOST_VIEWER='localhost',
-    CHANNEL_TO_SEND_LIVESTREAM_NOTIFICATIONS='general';
+    CHANNEL_TO_SEND_LIVESTREAM_NOTIFICATIONS='general',
+    BLACKLISTED_SERVER={}; // { server : channel } pairs
 ```
 
 Build and run
