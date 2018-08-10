@@ -104,7 +104,7 @@ function leaderboard(msg) {
             dataToDisplay += `& ${player.x4.toLocaleString()} quad slots & ${player.x3.toLocaleString()} triple slots`;
         }
         else if(player.x3 > 0) {
-            dataToDisplay += `& ${player.x3.toLocaleString()} triple slots`;
+            dataToDisplay += `& ${player.x3.toLocaleString()} triple slots & ${player.x2.toLocaleString()} double slots`;
         }
         else if(player.x2 > 0) {
             dataToDisplay += `& ${player.x2.toLocaleString()} double slots`;
