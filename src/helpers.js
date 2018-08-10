@@ -1,19 +1,8 @@
 import _ from 'lodash';
-
-function getBlacklistedServers() {
-    return {
-        "silkroad" : "general",
-        "pendulums" : "general",
-        "#id3" : "general",
-        "#id3" : "nsfw",
-        "#id3" : "crypto",
-        "#id3" : "crypto-signals"
-    };
-}
+import {BLACKLISTED_SERVERS} from './constants.js';
 
 function isBlacklistedChannel(msg) {
-    const blacklistedChannels = getBlacklistedServers();
-    if(_.get(blacklistedChannels, msg.channel.guild.name) === msg.channel.name) {
+    if(_.get(BLACKLISTED_SERVERS, msg.channel.guild.name) === msg.channel.name) {
         return true;
     }
     return false;

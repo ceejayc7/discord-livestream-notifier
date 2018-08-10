@@ -123,7 +123,7 @@ class Bot {
                         beamUpdatedAt = _.get(stream, 'updated_at'),
                         beamViewers = _.get(stream, 'viewers').toLocaleString(),
                         beamStreamMessage = `${beamName} is now live at ${beamStreamUrl}`,
-                        beamColor = 6570404,
+                        beamColor = 2079469,
                         beamEmbed = new Discord.RichEmbed()
                             .setAuthor(beamName, beamSiteLogo, beamStreamUrl)
                             .setColor(beamColor)
