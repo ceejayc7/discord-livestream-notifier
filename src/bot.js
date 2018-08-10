@@ -93,13 +93,14 @@ class Bot {
                             .setTitle(title)
                             .setURL(streamUrl)
                             .setThumbnail(logo)
-                            .addField("Viewers", viewers, true)
                             .setTimestamp(`${created_at}`);
 
                     // game is an optional string and we cant pass in an empty field into an embed
                     if(game) {
                         embed.addField("Game", game, true);
                     }
+
+                    embed.addField("Viewers", viewers, true);
 
                     this.client.channels.find('name', CHANNEL_TO_SEND_LIVESTREAM_NOTIFICATIONS).send(streamMessage, embed)
                         .catch(Helpers.messageError);
@@ -131,13 +132,14 @@ class Bot {
                             .setTitle(beamTitle)
                             .setURL(beamStreamUrl)
                             .setThumbnail(beamLogo)
-                            .addField("Viewers", beamViewers, true)
                             .setTimestamp(`${beamUpdatedAt}`);
 
                     // game is an optional string and we cant pass in an empty field into an embed
                     if(beamGame) {
                         beamEmbed.addField("Game", beamGame, true);
                     }
+
+                    beamEmbed.addField("Viewers", beamViewers, true);
 
                     this.client.channels.find('name', CHANNEL_TO_SEND_LIVESTREAM_NOTIFICATIONS).send(beamStreamMessage, beamEmbed)
                         .catch(Helpers.messageError);
