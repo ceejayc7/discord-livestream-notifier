@@ -43,13 +43,14 @@ class Twitch {
     reduceResponse = (response) => {
         let reducedResponse = [];
         _.forOwn(response.streams, function(stream) {
+            let preview = _.get(stream, ['preview', 'large']) + `?t=${Math.round((new Date()).getTime() / 1000)}`;
             reducedResponse.push(
                 {
                     "platform" : "twitch",
                     "name": _.get(stream, ['channel','name']),
                     "displayName": _.get(stream, ['channel','display_name']),
                     "game": _.get(stream, 'game'),
-                    "preview": _.get(stream, ['preview', 'large']),
+                    "preview": preview, 
                     "viewers": _.get(stream, 'viewers'),
                     "title": _.get(stream, ['channel','status']),
                     "logo": _.get(stream, ['channel','logo']),
