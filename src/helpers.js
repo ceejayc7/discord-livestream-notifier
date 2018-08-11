@@ -2,7 +2,8 @@ import _ from 'lodash';
 import {BLACKLISTED_SERVERS} from './constants.js';
 
 function isBlacklistedChannel(msg) {
-    if(_.get(BLACKLISTED_SERVERS, msg.channel.guild.name) === msg.channel.name) {
+    const serverBlacklist = _.get(BLACKLISTED_SERVERS, msg.channel.guild.name);
+    if(_.includes(serverBlacklist, msg.channel.name)) {
         return true;
     }
     return false;
