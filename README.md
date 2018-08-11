@@ -25,6 +25,9 @@ Add `src/db.json` to include the streams to be watching
         "twitch": [
             "streamer1",
             "streamer2"
+        ],
+        "mixer": [
+            "streamer3"
         ]
     }
 }
