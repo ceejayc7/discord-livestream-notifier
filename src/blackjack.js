@@ -192,6 +192,9 @@ class Blackjack {
         if(!this.isValidUser(msg)) {
             return;
         }
+        if(this.playerHand.length > 2) {
+            return;
+        }
         this.clearAndResetTimer();
         this.playerHand.push(this.drawCards(1));
         this.betSize = MoneyManager.getBalanceForBlackjackDouble(msg, this.betSize);
