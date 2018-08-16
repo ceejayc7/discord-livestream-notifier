@@ -4,6 +4,8 @@ import Blackjack from './blackjack.js';
 import {Slots} from './slots.js';
 import {Helpers} from './helpers.js';
 import {LOCALHOST_VIEWER, CHANNEL_TO_SEND_LIVESTREAM_NOTIFICATIONS} from './constants.js';
+import {BOT_COMMANDS} from './constants_internal.js';
+import {MoneyManager} from './moneymanager.js';
 
 class Bot {
     constructor(loginToken) {
@@ -40,31 +42,44 @@ class Bot {
         });
 
         this.client.on('message', (msg) => {
-            const SLOTS = '!slots',
-                SLOTS_LB = '!slotslb',
-                BLACKJACK = '!21',
-                BLACKJACK_HIT = '!hit',
-                BLACKJACK_STAND = '!stand';
-
             if(Helpers.isBlacklistedChannel(msg)) {
                 return;
             }
 
+            //parameter commands
+            if(_.startsWith(msg.content, BOT_COMMANDS.BLACKJACK.command)) {
+                !this.blackjack.isGameStarted ? this.blackjack.initGame(msg) : false;
+                return;
+            }
+
+            // non-parameter commands
             switch(msg.content) {
-                case SLOTS:
+                case BOT_COMMANDS.SLOTS.command:
                     Slots.handleSlots(msg);
                     break;
-                case SLOTS_LB:
+                case BOT_COMMANDS.SLOTS_LB.command:
                     Slots.leaderboard(msg);
                     break;
-                case BLACKJACK:
-                    !this.blackjack.isGameStarted ? this.blackjack.initGame(msg) : false;
-                    break;
-                case BLACKJACK_HIT:
+                case BOT_COMMANDS.BLACKJACK_HIT.command:
                     this.blackjack.isGameStarted ? this.blackjack.hit(msg) : false;
                     break;
-                case BLACKJACK_STAND:
+                case BOT_COMMANDS.BLACKJACK_STAND.command:
                     this.blackjack.isGameStarted ? this.blackjack.stand(msg) : false;
+                    break;
+                case BOT_COMMANDS.BLACKJACK_DOUBLE.command:
+                    this.blackjack.isGameStarted ? this.blackjack.double(msg) : false;
+                    break;
+                case BOT_COMMANDS.BLACKJACK_SPLIT.command:
+                    this.blackjack.isGameStarted ? this.blackjack.split(msg) : false;
+                    break;
+                case BOT_COMMANDS.BITCOIN.command:
+                    MoneyManager.printMoney(msg);
+                    break;
+                case BOT_COMMANDS.HELP.command:
+                    Helpers.printHelp(msg);
+                    break;
+                case BOT_COMMANDS.LEADERBOARD.command:
+                    MoneyManager.printLeaderboard(msg);
                     break;
             }
         });

@@ -1,8 +1,8 @@
 import _ from 'lodash';
 import {Helpers} from './helpers.js';
-import JsonDB from 'node-json-db';
-
-const db = new JsonDB("slots_database", true, true);
+import {Database} from './database.js';
+import {MoneyManager} from './moneymanager.js';
+import {SLOTS_MONEY} from './constants_internal.js';
 
 function getRandomEmoji(emojiList) {
     return emojiList[Math.floor(Math.random()*emojiList.length)];
@@ -18,38 +18,17 @@ function generateRandomEmojiList(emojiList) {
     return randomList;
 }
 
-function getSlotsData(key) {
-    try {
-        return db.getData(key);
-    } catch(error) {
-        return 0;
-    }
-}
-
-function initializeResults(key) {
-    // check to see if data exists before we initalize a new slots user
-    if(getSlotsData(key)) {
-        return;
-    }
-
-    // Init columns to default or 0
-    db.push(`${key}/x2`, getSlotsData(`${key}/x2`));
-    db.push(`${key}/x3`, getSlotsData(`${key}/x3`));
-    db.push(`${key}/x4`, getSlotsData(`${key}/x4`));
-    db.push(`${key}/x5`, getSlotsData(`${key}/x5`));
-}
-
 function saveResults(msg, randomList) {
     const uniqueEmojiIds = _.countBy(randomList, 'id'),
         key = `/${msg.channel.guild.name}/${msg.author.username}`,
         slotsCountKeyTotal = `${key}/total`,
-        slotsCountKeyTotalData = getSlotsData(slotsCountKeyTotal) + 1;
+        slotsCountKeyTotalData = Database.getData(slotsCountKeyTotal) + 1;
 
-    initializeResults(key);
+    Database.initializeUser(key);
 
     // push name and increment total
-    db.push(`${key}/name`, msg.author.username);
-    db.push(`${slotsCountKeyTotal}`, slotsCountKeyTotalData);
+    Database.writeData(`${key}/name`, msg.author.username);
+    Database.writeData(`${slotsCountKeyTotal}`, slotsCountKeyTotalData);
 
     _.forEach(uniqueEmojiIds, (count, emoji_id) => {
         // dont count x1's in slots, no point
@@ -72,12 +51,19 @@ function saveResults(msg, randomList) {
             Helpers.sendMessageToChannel(msg, messageToSend);
         }
         const currentDBIdentifer = `${key}/x${count}`,
-            currentDBCount = getSlotsData(currentDBIdentifer);
-        db.push(currentDBIdentifer, currentDBCount+1);
+            currentDBCount = Database.getData(currentDBIdentifer);
+        Database.writeData(currentDBIdentifer, currentDBCount+1);
+        MoneyManager.updateSlotsMoney(msg, count);
     });
 }
 
 function handleSlots(msg) {
+    if(MoneyManager.isEnoughMoney(msg, SLOTS_MONEY.SLOTS_COST)) {
+        MoneyManager.removeMoney(msg, SLOTS_MONEY.SLOTS_COST);
+    }
+    else {
+        return;
+    }
     const emojiList = msg.guild.emojis.map((emoji) => (emoji)),
         randomList = generateRandomEmojiList(emojiList);
 
@@ -91,7 +77,7 @@ function handleSlots(msg) {
 }
 
 function leaderboard(msg) {
-    const serverData = getSlotsData(`/${msg.channel.guild.name}`),
+    const serverData = Database.getData(`/${msg.channel.guild.name}`),
         sorted = _.orderBy(serverData, ['x5','x4','x3','x2', 'total'], 'asc').reverse();
     let dataToDisplay = '';
 
