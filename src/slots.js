@@ -24,8 +24,6 @@ function saveResults(msg, randomList) {
         slotsCountKeyTotal = `${key}/total`,
         slotsCountKeyTotalData = Database.getData(slotsCountKeyTotal) + 1;
 
-    Database.initializeUser(key);
-
     // push name and increment total
     Database.writeData(`${key}/name`, msg.author.username);
     Database.writeData(`${slotsCountKeyTotal}`, slotsCountKeyTotalData);
@@ -62,7 +60,7 @@ function handleSlots(msg) {
         MoneyManager.removeMoney(msg, SLOTS_MONEY.SLOTS_COST);
     }
     else {
-        return;
+        Database.initializeUser(`/${msg.channel.guild.name}/${msg.author.username}`);
     }
     const emojiList = msg.guild.emojis.map((emoji) => (emoji)),
         randomList = generateRandomEmojiList(emojiList);

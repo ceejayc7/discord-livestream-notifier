@@ -80,6 +80,7 @@ class Blackjack {
             if(MoneyManager.isEnoughMoney(msg, betSize)) {
                 this.betSize = betSize 
             } else {
+                MoneyManager.printNotEnoughMoney(msg);
                 return;
             }
         }

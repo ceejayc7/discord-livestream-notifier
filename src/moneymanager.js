@@ -41,7 +41,6 @@ function isEnoughMoney(msg, cost) {
     if(money >= cost) {
         return true;
     }
-    printNotEnoughMoney(msg);
     return false;
 }
 
@@ -98,5 +97,6 @@ export const MoneyManager = {
     removeMoney,
     printLeaderboard,
     addMoney,
-    getBalanceForBlackjackDouble
+    getBalanceForBlackjackDouble,
+    printNotEnoughMoney
 };
