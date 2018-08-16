@@ -18,7 +18,12 @@ function printLeaderboard(msg) {
 }
 
 function printMoney(msg) {
-    const messageToSend = `${msg.author.username} has **${getUsersMoney(msg).toLocaleString()}** Bitcoins`;
+    const userMoney = getUsersMoney(msg);
+    if(!userMoney) {
+        Helpers.sendMessageToChannel(msg, `You have no bitcoins. Play a game to get some.`);
+        return;
+    }
+    const messageToSend = `${msg.author.username} has **${userMoney.toLocaleString()}** Bitcoins`;
     Helpers.sendMessageToChannel(msg, messageToSend);
 }
 

@@ -3,6 +3,7 @@ import _ from 'lodash';
 import { Helpers } from './helpers.js';
 import { BOT_COMMANDS, BLACKJACK_MONEY } from './constants_internal.js';
 import { MoneyManager } from './moneymanager.js';
+import { Database } from './database.js';
 
 class Blackjack {
     constructor() {
@@ -72,6 +73,8 @@ class Blackjack {
     }
 
     initGame = (msg) => {
+        const key = `/${msg.channel.guild.name}/${msg.author.username}`;
+        Database.initializeUser(key);
         const betSize = Helpers.getBlackjackBetsize(msg);
         if(betSize) {
             if(MoneyManager.isEnoughMoney(msg, betSize)) {
