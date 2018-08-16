@@ -45,7 +45,7 @@ class Blackjack {
         }
         else if(isPlayerBlackjack) {
             Helpers.sendMessageToChannel(this.msg, `${this.msg.author.username} has Blackjack. Nice one bro`);
-            MoneyManager.addMoney(this.msg, this.betSize*BLACKJACK_MONEY.BLACKJACK_PAYOUT);
+            MoneyManager.addMoney(this.msg, Math.ceil(this.betSize*BLACKJACK_MONEY.BLACKJACK_PAYOUT));
             this.clearGame();
         }
         else if(isDealerBlackjack) {
