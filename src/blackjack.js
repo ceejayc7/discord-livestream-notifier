@@ -38,19 +38,22 @@ class Blackjack {
         return false;
     }
 
-    handleInitialBlackjack = (isPlayerBlackjack, isDealerBlackjack) => {
+    handleInitialBlackjack = (initialMessageToSend, isPlayerBlackjack, isDealerBlackjack) => {
         if(isPlayerBlackjack && isDealerBlackjack) {
-            Helpers.sendMessageToChannel(this.msg, `Dealer has **${this.stringifyHand(this.dealerHand, this.cardTypes.DISPLAY).join(' ')}** \nBoth Dealer and ${this.msg.author.username} have Blackjack. It's a push bro`);
+            initialMessageToSend += `\nDealer has **${this.stringifyHand(this.dealerHand, this.cardTypes.DISPLAY).join(' ')}** \nBoth Dealer and ${this.msg.author.username} have Blackjack. It's a push bro`;
+            Helpers.sendMessageToChannel(this.msg, initialMessageToSend);
             this.clearGame();
         }
         else if(isPlayerBlackjack) {
-            Helpers.sendMessageToChannel(this.msg, `${this.msg.author.username} has Blackjack. Nice one bro`);
+            initialMessageToSend += `\n${this.msg.author.username} has Blackjack. Nice one bro`;
             MoneyManager.addMoney(this.msg, Math.ceil(this.betSize*BLACKJACK_MONEY.BLACKJACK_PAYOUT));
+            Helpers.sendMessageToChannel(this.msg, initialMessageToSend);
             this.clearGame();
         }
         else if(isDealerBlackjack) {
-            Helpers.sendMessageToChannel(this.msg, `Dealer has **${this.stringifyHand(this.dealerHand, this.cardTypes.DISPLAY).join(' ')}** \nDealer has Blackjack. Get owned bro`);
+            initialMessageToSend += `\nDealer has **${this.stringifyHand(this.dealerHand, this.cardTypes.DISPLAY).join(' ')}** \nDealer has Blackjack. Get owned bro`;
             MoneyManager.removeMoney(this.msg, this.betSize);
+            Helpers.sendMessageToChannel(this.msg, initialMessageToSend);
             this.clearGame();
         }
     }
@@ -94,15 +97,17 @@ class Blackjack {
         this.playerHand = this.drawCards(2);
         this.dealerHand = this.drawCards(2);
 
-        let initalMessageToSend = `Dealer has **${this.dealerHand[0].display}**` + `\n` + `${this.msg.author.username} has **${this.stringifyHand(this.playerHand, this.cardTypes.DISPLAY).join(' ')}**` + `\n` + this.getActions();
-
-        Helpers.sendMessageToChannel(this.msg, initalMessageToSend);
+        let initialMessageToSend = `Dealer has **${this.dealerHand[0].display}**` + `\n` + `${this.msg.author.username} has **${this.stringifyHand(this.playerHand, this.cardTypes.DISPLAY).join(' ')}**`;
 
         let isPlayerBlackjack = this.isBlackJack(this.playerHand),
             isDealerBlackjack = this.isBlackJack(this.dealerHand);
 
         this.timer = this.setTimer();
-        this.handleInitialBlackjack(isPlayerBlackjack, isDealerBlackjack);
+        this.handleInitialBlackjack(initialMessageToSend, isPlayerBlackjack, isDealerBlackjack);
+        if(this.msg) {
+            initialMessageToSend += `\n${this.getActions()}`;
+            Helpers.sendMessageToChannel(this.msg, initialMessageToSend);
+        }
     }
 
     clearGame = () => {
@@ -155,21 +160,22 @@ class Blackjack {
             return;
         }
         const playerHandValue = this.sumifyHand(this.playerHand);
-        let dealerHandValue = this.sumifyHand(this.dealerHand);
-        
-        Helpers.sendMessageToChannel(this.msg, `Dealer has **${this.stringifyHand(this.dealerHand, this.cardTypes.DISPLAY).join(' ')}**` + `\n`);
+        let dealerHandValue = this.sumifyHand(this.dealerHand),
+            dealerHandMessages = `Dealer has **${this.stringifyHand(this.dealerHand, this.cardTypes.DISPLAY).join(' ')}**`;
 
         if(dealerHandValue > 16) {
+            Helpers.sendMessageToChannel(this.msg, dealerHandMessages);
             this.endGame(dealerHandValue, playerHandValue);
             return;
         }
 
         while (dealerHandValue <= 16) {
             this.dealerHand.push(this.drawCards(1));
-            Helpers.sendMessageToChannel(this.msg, `Dealer has **${this.stringifyHand(this.dealerHand, this.cardTypes.DISPLAY).join(' ')}**` + `\n`);
+            dealerHandMessages += `\nDealer has **${this.stringifyHand(this.dealerHand, this.cardTypes.DISPLAY).join(' ')}**`;
 
             dealerHandValue = this.sumifyHand(this.dealerHand);
         }
+        Helpers.sendMessageToChannel(this.msg, dealerHandMessages);
         this.endGame(dealerHandValue, playerHandValue);
     }
 
