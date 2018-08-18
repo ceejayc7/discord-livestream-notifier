@@ -125,33 +125,31 @@ class Blackjack {
         return this.msg.author.username === msg.author.username;
     }
 
-    endGame = () => {
+    endGame = (dealerHandMessages) => {
         const playerHandValue = this.sumifyHand(this.playerHand),
             dealerHandValue = this.sumifyHand(this.dealerHand);
 
-        let messageToSend = '';
-
         if(dealerHandValue > 21) {
-            messageToSend += `Dealer busts with **${dealerHandValue}**. ${this.msg.author.username} wins with **${playerHandValue}**, good job bro`;
+            dealerHandMessages += `\nDealer busts with **${dealerHandValue}**. ${this.msg.author.username} wins with **${playerHandValue}**, good job bro`;
             MoneyManager.addMoney(this.msg, this.betSize);
         }
         else if(dealerHandValue <= 21) {
-            messageToSend += `${this.msg.author.username} has **${playerHandValue}** and Dealer has **${dealerHandValue}**` + `\n`;
+            dealerHandMessages += `\n${this.msg.author.username} has **${playerHandValue}** and Dealer has **${dealerHandValue}**` + `\n`;
 
             if(dealerHandValue > playerHandValue) {
-                messageToSend += `Dealer wins, sorry bro`
+                dealerHandMessages += `Dealer wins, sorry bro`
                 MoneyManager.removeMoney(this.msg, this.betSize);
             }
 
             else if(dealerHandValue < playerHandValue) {
-                messageToSend += `${this.msg.author.username} wins, good job bro`;
+                dealerHandMessages += `${this.msg.author.username} wins, good job bro`;
                 MoneyManager.addMoney(this.msg, this.betSize);
             }
             else {
-                messageToSend += `It's a push bro`;
+                dealerHandMessages += `It's a push bro`;
             }
         }
-        Helpers.sendMessageToChannel(this.msg, messageToSend);
+        Helpers.sendMessageToChannel(this.msg, dealerHandMessages);
         this.clearGame();
     }
 
@@ -164,8 +162,7 @@ class Blackjack {
             dealerHandMessages = `Dealer has **${this.stringifyHand(this.dealerHand, this.cardTypes.DISPLAY).join(' ')}**`;
 
         if(dealerHandValue > 16) {
-            Helpers.sendMessageToChannel(this.msg, dealerHandMessages);
-            this.endGame(dealerHandValue, playerHandValue);
+            this.endGame(dealerHandMessages);
             return;
         }
 
@@ -175,8 +172,7 @@ class Blackjack {
 
             dealerHandValue = this.sumifyHand(this.dealerHand);
         }
-        Helpers.sendMessageToChannel(this.msg, dealerHandMessages);
-        this.endGame(dealerHandValue, playerHandValue);
+        this.endGame(dealerHandMessages);
     }
 
     hit = (msg) => {
@@ -185,13 +181,15 @@ class Blackjack {
         }
         this.clearAndResetTimer();
         this.playerHand.push(this.drawCards(1));
-        Helpers.sendMessageToChannel(this.msg, `${this.msg.author.username} has **${this.stringifyHand(this.playerHand, this.cardTypes.DISPLAY).join(' ')}**`);
+        let messageToSend = `${this.msg.author.username} has **${this.stringifyHand(this.playerHand, this.cardTypes.DISPLAY).join(' ')}**`;
         const playerHandValue = this.sumifyHand(this.playerHand);
         if(playerHandValue > 21) {
-            Helpers.sendMessageToChannel(this.msg, `${this.msg.author.username}'s busts with **${playerHandValue}**. Dealer wins, sorry bro`);
+            Helpers.sendMessageToChannel(this.msg, `${messageToSend}\n${this.msg.author.username}'s busts with **${playerHandValue}**. Dealer wins, sorry bro`);
             MoneyManager.removeMoney(this.msg, this.betSize);
             this.clearGame();
+            return;
         }
+        Helpers.sendMessageToChannel(this.msg, messageToSend);
     }
 
     double = (msg) => {
