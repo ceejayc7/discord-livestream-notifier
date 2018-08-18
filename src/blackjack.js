@@ -202,14 +202,15 @@ class Blackjack {
         this.clearAndResetTimer();
         this.playerHand.push(this.drawCards(1));
         this.betSize = MoneyManager.getBalanceForBlackjackDouble(msg, this.betSize);
-        Helpers.sendMessageToChannel(this.msg, `${this.msg.author.username} has **${this.stringifyHand(this.playerHand, this.cardTypes.DISPLAY).join(' ')}**`);
+        let messageToSend = `${this.msg.author.username} has **${this.stringifyHand(this.playerHand, this.cardTypes.DISPLAY).join(' ')}**`;
         const playerHandValue = this.sumifyHand(this.playerHand);
         if(playerHandValue > 21) {
-            Helpers.sendMessageToChannel(this.msg, `${this.msg.author.username}'s busts with **${playerHandValue}**. Dealer wins, sorry bro`);
+            Helpers.sendMessageToChannel(this.msg, `${messageToSend}\n${this.msg.author.username}'s busts with **${playerHandValue}**. Dealer wins, sorry bro`);
             MoneyManager.removeMoney(this.msg, this.betSize);
             this.clearGame();
         }
         else {
+            Helpers.sendMessageToChannel(this.msg, messageToSend);
             this.stand(msg);
         }
     }
