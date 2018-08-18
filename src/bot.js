@@ -60,12 +60,15 @@ class Bot {
                 case BOT_COMMANDS.SLOTS_LB.command:
                     Slots.leaderboard(msg);
                     break;
+                case BOT_COMMANDS.BLACKJACK_HIT_SHORTHAND.command:
                 case BOT_COMMANDS.BLACKJACK_HIT.command:
                     this.blackjack.isGameStarted ? this.blackjack.hit(msg) : false;
                     break;
+                case BOT_COMMANDS.BLACKJACK_STAND_SHORTHAND.command:
                 case BOT_COMMANDS.BLACKJACK_STAND.command:
                     this.blackjack.isGameStarted ? this.blackjack.stand(msg) : false;
                     break;
+                case BOT_COMMANDS.BLACKJACK_DOUBLE_SHORTHAND.command:
                 case BOT_COMMANDS.BLACKJACK_DOUBLE.command:
                     this.blackjack.isGameStarted ? this.blackjack.double(msg) : false;
                     break;
@@ -78,6 +81,7 @@ class Bot {
                 case BOT_COMMANDS.HELP.command:
                     Helpers.printHelp(msg);
                     break;
+                case BOT_COMMANDS.LEADERBOARD_SHORTHAND.command:
                 case BOT_COMMANDS.LEADERBOARD.command:
                     MoneyManager.printLeaderboard(msg);
                     break;

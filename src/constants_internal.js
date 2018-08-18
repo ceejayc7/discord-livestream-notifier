@@ -15,12 +15,24 @@ export const BOT_COMMANDS={
             command: '!hit',
             showOnHelp: false
         },
+        BLACKJACK_HIT_SHORTHAND: {
+            command: '!h',
+            showOnHelp: false
+        },
         BLACKJACK_STAND: {
             command: '!stand',
             showOnHelp: false
         },
+        BLACKJACK_STAND_SHORTHAND: {
+            command: '!s',
+            showOnHelp: false
+        },
         BLACKJACK_DOUBLE: {
             command: '!double',
+            showOnHelp: false
+        },
+        BLACKJACK_DOUBLE_SHORTHAND: {
+            command: '!d',
             showOnHelp: false
         },
         BLACKJACK_SPLIT: {
@@ -34,6 +46,10 @@ export const BOT_COMMANDS={
         LEADERBOARD: {
             command: '!leaderboard',
             showOnHelp: true
+        },
+        LEADERBOARD_SHORTHAND: {
+            command: '!lb',
+            showOnHelp: false
         },
         HELP: {
             command: '!help',

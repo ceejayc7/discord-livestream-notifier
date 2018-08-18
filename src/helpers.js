@@ -57,6 +57,7 @@ function printHelp(msg) {
     messageToSend += `!21 <bet size>\n${DIVIDER}\n`;
     messageToSend += ` - No min/max bet size\n`;
     messageToSend += ` + Blackjack pays 3:2\n`;
+    messageToSend += ` + Short-hand commands - ${BOT_COMMANDS.BLACKJACK_HIT_SHORTHAND.command} ${BOT_COMMANDS.BLACKJACK_DOUBLE_SHORTHAND.command} ${BOT_COMMANDS.BLACKJACK_STAND_SHORTHAND.command}\n`
     messageToSend += `${MARKDOWN}`;
 
     messageToSend += `${MARKDOWN}perl\n`;
@@ -64,6 +65,7 @@ function printHelp(msg) {
     messageToSend += ` + Display Bitcoin leaderboards\n`;
     messageToSend += ` + Everyone starts with 1,000 initial Bitcoins\n`;
     messageToSend += ` + You cannot go below ${SLOTS_MONEY.SLOTS_COST.toLocaleString()} Bitcoins\n`;
+    messageToSend += ` + Short-hand commands - ${BOT_COMMANDS.LEADERBOARD_SHORTHAND.command}\n`;
     messageToSend += `${MARKDOWN}`;
     
     sendMessageToChannel(msg, messageToSend);
