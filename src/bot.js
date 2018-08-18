@@ -75,6 +75,7 @@ class Bot {
                 case BOT_COMMANDS.BLACKJACK_SPLIT.command:
                     this.blackjack.isGameStarted ? this.blackjack.split(msg) : false;
                     break;
+                case BOT_COMMANDS.BITCOIN_SHORTHAND.command:
                 case BOT_COMMANDS.BITCOIN.command:
                     MoneyManager.printMoney(msg);
                     break;

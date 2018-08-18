@@ -43,6 +43,10 @@ export const BOT_COMMANDS={
             command: '!bitcoin',
             showOnHelp: true
         },
+        BITCOIN_SHORTHAND: {
+            command: '!btc',
+            showOnHelp: false
+        },
         LEADERBOARD: {
             command: '!leaderboard',
             showOnHelp: true
