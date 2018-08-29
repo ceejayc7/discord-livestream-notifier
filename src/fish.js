@@ -5,6 +5,7 @@ import _ from 'lodash';
 
 function addRewardIfPossible(line, msg) {
     if(line.reward && line.reward > 0) {
+        Database.initializeUser(msg.channel.guild.name, msg.author.username);
         MoneyManager.addMoney(msg, line.reward);
     }
 }
