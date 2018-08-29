@@ -32,6 +32,7 @@ function initializeUser(server, user) {
     writeData(`${key}/money`, 1000);
     writeData(`${key}/total`, 0);
     writeData(`${key}/name`, user);
+    writeData(`${key}/maxWeightFish`, 0);
 }
 
 export const Database = {

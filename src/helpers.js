@@ -49,6 +49,10 @@ function printSpecifyBetSize(msg) {
     Helpers.sendMessageToChannel(msg, `Usage: !21 <bet size>. Use !bitcoin to see how many bitcoins you have.`);
 }
 
+function getRandomNumberInRange(min, max) {
+    return parseInt(Math.random() * (max - min) + min);
+}
+
 function printHelp(msg) {
     const MARKDOWN = "```",
         DIVIDER = `=============================================`,
@@ -92,5 +96,6 @@ export const Helpers = {
     getBlackjackBetsize,
     printSpecifyBetSize,
     getRandomElementFromList,
-    isFishingServer
+    isFishingServer,
+    getRandomNumberInRange
 };

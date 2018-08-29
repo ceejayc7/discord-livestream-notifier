@@ -1,9 +1,33 @@
 [
     {
-        "chatLine": "Whoa bro, you caught a minnow (small weight)"
+        "chatLine": "Whoa bro, you caught a minnow.",
+        "fish": true,
+        "minWeight": 1,
+        "maxWeight": 30
     },
     {
-        "chatLine": "Bro! You caught a lunker (Large weight)"
+        "chatLine": "Whoa bro, you caught a minnow.",
+        "fish": true,
+        "minWeight": 1,
+        "maxWeight": 30
+    },
+    {
+        "chatLine": "Whoa bro, you caught a minnow.",
+        "fish": true,
+        "minWeight": 1,
+        "maxWeight": 30
+    },
+    {
+        "chatLine": "Bro! You caught a lunker.",
+        "fish": true,
+        "minWeight": 30,
+        "maxWeight": 1000
+    },
+    {
+        "chatLine": "Bro! You caught a lunker.",
+        "fish": true,
+        "minWeight": 30,
+        "maxWeight": 1000
     },
     {
         "chatLine": "Whole lotta notta"
