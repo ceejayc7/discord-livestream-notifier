@@ -1,19 +1,15 @@
 import _ from 'lodash';
-import {Helpers} from './helpers.js';
-import {Database} from './database.js';
-import {MoneyManager} from './moneymanager.js';
-import {SLOTS_MONEY} from './constants_internal.js';
-
-function getRandomEmoji(emojiList) {
-    return emojiList[Math.floor(Math.random()*emojiList.length)];
-}
+import { Helpers } from './helpers.js';
+import { Database } from './database.js';
+import { MoneyManager } from './moneymanager.js';
+import { SLOTS_MONEY } from './constants_internal.js';
 
 function generateRandomEmojiList(emojiList) {
     let randomList = [];
     const numberOfSlots = 5;
 
     for(let slot=1; slot <=numberOfSlots; slot++) {
-        randomList.push(getRandomEmoji(emojiList));
+        randomList.push(Helpers.getRandomElementFromList(emojiList));
     }
     return randomList;
 }
@@ -60,7 +56,7 @@ function handleSlots(msg) {
         MoneyManager.removeMoney(msg, SLOTS_MONEY.SLOTS_COST);
     }
     else {
-        Database.initializeUser(`/${msg.channel.guild.name}/${msg.author.username}`);
+        Database.initializeUser(msg.channel.guild.name, msg.author.username);
     }
     const emojiList = msg.guild.emojis.map((emoji) => (emoji)),
         randomList = generateRandomEmojiList(emojiList);

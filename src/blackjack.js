@@ -76,8 +76,7 @@ class Blackjack {
     }
 
     initGame = (msg) => {
-        const key = `/${msg.channel.guild.name}/${msg.author.username}`;
-        Database.initializeUser(key);
+        Database.initializeUser(msg.channel.guild.name, msg.author.username);
         const betSize = Helpers.getBlackjackBetsize(msg);
         if(betSize) {
             if(MoneyManager.isEnoughMoney(msg, betSize)) {

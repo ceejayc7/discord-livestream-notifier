@@ -1,11 +1,12 @@
 import Discord from 'discord.js';
 import _ from 'lodash';
 import Blackjack from './blackjack.js';
-import {Slots} from './slots.js';
-import {Helpers} from './helpers.js';
-import {LOCALHOST_VIEWER, CHANNEL_TO_SEND_LIVESTREAM_NOTIFICATIONS} from './constants.js';
-import {BOT_COMMANDS} from './constants_internal.js';
-import {MoneyManager} from './moneymanager.js';
+import { Slots } from './slots.js';
+import { Helpers } from './helpers.js';
+import { LOCALHOST_VIEWER, CHANNEL_TO_SEND_LIVESTREAM_NOTIFICATIONS } from './constants.js';
+import { BOT_COMMANDS } from './constants_internal.js';
+import { MoneyManager } from './moneymanager.js';
+import { Fish } from './fish.js';
 
 class Bot {
     constructor(loginToken) {
@@ -85,6 +86,11 @@ class Bot {
                 case BOT_COMMANDS.LEADERBOARD_SHORTHAND.command:
                 case BOT_COMMANDS.LEADERBOARD.command:
                     MoneyManager.printLeaderboard(msg);
+                    break;
+                case BOT_COMMANDS.FISH.command:
+                    if(Helpers.isFishingServer(msg)) {
+                        Fish.printFishLine(msg);
+                    }
                     break;
             }
         });

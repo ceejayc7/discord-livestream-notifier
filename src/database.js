@@ -18,17 +18,20 @@ function writeData(key, value) {
     }
 }
 
-function initializeUser(key) {
+function initializeUser(server, user) {
     // check to see if data exists before we initalize a new slots user
+    const key = `/${server}/${user}`;
     if(Database.getData(key)) {
         return;
     }
     // Initialize keys since the user doesn't exist
-    writeData(`${key}/x2`, getData(`${key}/x2`));
-    writeData(`${key}/x3`, getData(`${key}/x3`));
-    writeData(`${key}/x4`, getData(`${key}/x4`));
-    writeData(`${key}/x5`, getData(`${key}/x5`));
+    writeData(`${key}/x2`, 0);
+    writeData(`${key}/x3`, 0);
+    writeData(`${key}/x4`, 0);
+    writeData(`${key}/x5`, 0);
     writeData(`${key}/money`, 1000);
+    writeData(`${key}/total`, 0);
+    writeData(`${key}/name`, user);
 }
 
 export const Database = {

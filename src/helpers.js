@@ -1,10 +1,18 @@
 import _ from 'lodash';
-import { BLACKLISTED_SERVERS } from './constants.js';
+import { BLACKLISTED_SERVERS, SERVER_FOR_FISHING } from './constants.js';
 import { BOT_COMMANDS, SLOTS_MONEY } from './constants_internal.js';
 
 function isBlacklistedChannel(msg) {
     const serverBlacklist = _.get(BLACKLISTED_SERVERS, msg.channel.guild.name);
     if(_.includes(serverBlacklist, msg.channel.name)) {
+        return true;
+    }
+    return false;
+}
+
+function isFishingServer(msg) {
+    const specificServer = SERVER_FOR_FISHING;
+    if(msg.channel.guild.name === specificServer) {
         return true;
     }
     return false;
@@ -31,6 +39,10 @@ function getBlackjackBetsize(msg) {
         return parseInt(betSizeSplit[1]);
     }
     return false;
+}
+
+function getRandomElementFromList(list) {
+    return list[Math.floor(Math.random()*list.length)];
 }
 
 function printSpecifyBetSize(msg) {
@@ -78,5 +90,7 @@ export const Helpers = {
     getListOfStreams,
     printHelp,
     getBlackjackBetsize,
-    printSpecifyBetSize
+    printSpecifyBetSize,
+    getRandomElementFromList,
+    isFishingServer
 };

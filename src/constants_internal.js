@@ -58,6 +58,10 @@ export const BOT_COMMANDS={
         HELP: {
             command: '!help',
             showOnHelp: false
+        },
+        FISH: {
+            command: '!fish',
+            showOnHelp: false
         }
     },
     SLOTS_MONEY={
