@@ -1,6 +1,7 @@
 import _ from 'lodash';
 import { BLACKLISTED_SERVERS, SERVER_FOR_FISHING } from './constants.js';
 import { BOT_COMMANDS, SLOTS_MONEY } from './constants_internal.js';
+const Prob = require('prob.js');
 
 function isBlacklistedChannel(msg) {
     const serverBlacklist = _.get(BLACKLISTED_SERVERS, msg.channel.guild.name);
@@ -53,6 +54,15 @@ function getRandomNumberInRange(min, max) {
     return parseInt(Math.random() * (max - min) + min);
 }
 
+function getRandomNumberInRangeWithExponentialDistribution(min) {
+    const randomFunction = Prob.exponential(1.0);
+    let randomNumber = parseInt(randomFunction()*100);
+    while(randomNumber < min) {
+        randomNumber = parseInt(randomFunction()*100);
+    }
+    return randomNumber;
+}
+
 function printHelp(msg) {
     const MARKDOWN = "```",
         DIVIDER = `=============================================`,
@@ -97,5 +107,6 @@ export const Helpers = {
     printSpecifyBetSize,
     getRandomElementFromList,
     isFishingServer,
-    getRandomNumberInRange
+    getRandomNumberInRange,
+    getRandomNumberInRangeWithExponentialDistribution
 };

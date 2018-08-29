@@ -21,13 +21,13 @@
         "chatLine": "Bro! You caught a lunker.",
         "fish": true,
         "minWeight": 30,
-        "maxWeight": 1000
+        "exponential": true
     },
     {
         "chatLine": "Bro! You caught a lunker.",
         "fish": true,
         "minWeight": 30,
-        "maxWeight": 1000
+        "exponential": true
     },
     {
         "chatLine": "Whole lotta notta"

@@ -39,6 +39,13 @@ function saveFishWeight(msg, weight) {
     }
 }
 
+function getWeight(fishLineObj) {
+    if(fishLineObj.exponential) {
+        return Helpers.getRandomNumberInRangeWithExponentialDistribution(fishLineObj.minWeight);
+    }
+    return Helpers.getRandomNumberInRange(fishLineObj.minWeight, fishLineObj.maxWeight);
+}
+
 function printFishLine(msg) {
     const fishLines = require('./fish.json'),
         fishLineObj = Helpers.getRandomElementFromList(fishLines);
@@ -46,7 +53,7 @@ function printFishLine(msg) {
     let chatLine = fishLineObj.chatLine;
 
     if(isFish(fishLineObj)) {
-        const weight = Helpers.getRandomNumberInRange(fishLineObj.minWeight, fishLineObj.maxWeight);
+        const weight = getWeight(fishLineObj);
         chatLine += ` It weighs **${weight}** lbs`;
         saveFishWeight(msg, weight);
     }
