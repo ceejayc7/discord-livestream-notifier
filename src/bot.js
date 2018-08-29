@@ -92,6 +92,11 @@ class Bot {
                         Fish.printFishLine(msg);
                     }
                     break;
+                case BOT_COMMANDS.FISH_LEADERBOARD.command:
+                    if(Helpers.isFishingServer(msg)) {
+                        Fish.printLeaderboard(msg);
+                    }
+                    break;
             }
         });
 

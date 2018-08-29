@@ -62,7 +62,11 @@ export const BOT_COMMANDS={
         FISH: {
             command: '!fish',
             showOnHelp: false
-        }
+        },
+        FISH_LEADERBOARD: {
+            command: '!fishlb',
+            showOnHelp: false
+        },
     },
     SLOTS_MONEY={
         SLOTS_COST: 10,

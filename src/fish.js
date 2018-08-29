@@ -1,6 +1,7 @@
 import { Helpers } from './helpers.js';
 import { MoneyManager } from './moneymanager';
 import { Database } from './database.js';
+import _ from 'lodash';
 
 function addRewardIfPossible(line, msg) {
     if(line.reward && line.reward > 0) {
@@ -13,6 +14,20 @@ function isFish(line) {
         return true;
     }
     return false;
+}
+
+function printLeaderboard(msg) {
+    const serverData = Database.getData(`/${msg.channel.guild.name}`),
+        sorted = _.orderBy(serverData, ['maxWeightFish'], 'asc').reverse();
+    let leaderboard = "```perl\n";
+
+    _.forEach(sorted, (player, index) => {
+        leaderboard += `${index+1}. ${player.name} has a ${player.maxWeightFish.toLocaleString()} pound fish\n`;
+    });
+
+    leaderboard += "```";
+
+    Helpers.sendMessageToChannel(msg, leaderboard);
 }
 
 function saveFishWeight(msg, weight) {
@@ -39,5 +54,6 @@ function printFishLine(msg) {
 }
 
 export const Fish = {
-    printFishLine
+    printFishLine,
+    printLeaderboard
 };
