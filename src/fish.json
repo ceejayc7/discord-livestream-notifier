@@ -18,6 +18,78 @@
         "maxWeight": 30
     },
     {
+        "chatLine": "Whoa bro, you caught a minnow.",
+        "fish": true,
+        "minWeight": 1,
+        "maxWeight": 30
+    },
+    {
+        "chatLine": "Whoa bro, you caught a minnow.",
+        "fish": true,
+        "minWeight": 1,
+        "maxWeight": 30
+    },
+    {
+        "chatLine": "Whoa bro, you caught a minnow.",
+        "fish": true,
+        "minWeight": 1,
+        "maxWeight": 30
+    },
+    {
+        "chatLine": "Whoa bro, you caught a minnow.",
+        "fish": true,
+        "minWeight": 1,
+        "maxWeight": 30
+    },
+    {
+        "chatLine": "Whoa bro, you caught a minnow.",
+        "fish": true,
+        "minWeight": 1,
+        "maxWeight": 30
+    },
+    {
+        "chatLine": "Whoa bro, you caught a minnow.",
+        "fish": true,
+        "minWeight": 1,
+        "maxWeight": 30
+    },
+    {
+        "chatLine": "Bro! You caught a lunker.",
+        "fish": true,
+        "minWeight": 30,
+        "exponential": true
+    },
+    {
+        "chatLine": "Bro! You caught a lunker.",
+        "fish": true,
+        "minWeight": 30,
+        "exponential": true
+    },
+    {
+        "chatLine": "Bro! You caught a lunker.",
+        "fish": true,
+        "minWeight": 30,
+        "exponential": true
+    },
+    {
+        "chatLine": "Bro! You caught a lunker.",
+        "fish": true,
+        "minWeight": 30,
+        "exponential": true
+    },
+    {
+        "chatLine": "Bro! You caught a lunker.",
+        "fish": true,
+        "minWeight": 30,
+        "exponential": true
+    },
+    {
+        "chatLine": "Bro! You caught a lunker.",
+        "fish": true,
+        "minWeight": 30,
+        "exponential": true
+    },
+    {
         "chatLine": "Bro! You caught a lunker.",
         "fish": true,
         "minWeight": 30,
@@ -68,5 +140,104 @@
     },
     {
         "chatLine": "Bro, you're not catching anything but at least we gettin' high <:VapeCloudL:483892311764500481> <:joe69420:483891300719132673>"
+    },
+    {
+        "chatLine": "Kalamari dude! A squid"
+    },
+    {
+        "chatLine": "Bro, are you even trying?"
+    },
+    {
+        "chatLine": "You hooked a whale! That's pretty unbelievable, honestly"
+    },
+    {
+        "chatLine": "You got hooked on drugs <:rpDOG:476174879901614080>"
+    },
+    {
+        "chatLine": "Bro, that's just a worm. You got owned"
+    },
+    {
+        "chatLine": "I think that's just some seaweed, bro"
+    },
+    {
+        "chatLine": "Bro, you hooked a lobster. Break out the butter"
+    },
+    {
+        "chatLine": "Bro, you hooked a blue lobster. Break out the blue butter"
+    },
+    {
+        "chatLine": "You caught a look at dem tiddies"
+    },
+    {
+        "chatLine": "You ponder the meaning of carpe diem"
+    },
+    {
+        "chatLine": "You caught a Costco hotdog"
+    },
+    {
+        "chatLine": "You hooked a fly. BZZZZZZZZZZZZZZZZZZZZZ!!!!"
+    },
+    {
+        "chatLine": "Looks like rain"
+    },
+    {
+        "chatLine": "Bro, it's Joe's cosplay stash :kissing_heart:"
+    },
+    {
+        "chatLine": "You caught a bucket. FUCK!!!"
+    },
+    {
+        "chatLine": "You spotted a frisbee floating in the water"
+    },
+    {
+        "chatLine": "Hot damn! You found a lottery ticket. You lose though"
+    },
+    {
+        "chatLine": "Honestly man, this is getting sad"
+    },
+    {
+        "chatLine": "You found a big ol' catfish, but it got away"
+    },
+    {
+        "chatLine": "Holy moly, it's a shark"
+    },
+    {
+        "chatLine": "Protect your personal information, you got phished"
+    },
+    {
+        "chatLine": "You got a broken heart from being catfished"
+    },
+    {
+        "chatLine": "Fricken rude! You hooked a seagull"
+    },
+    {
+        "chatLine": "It's a Magikarp bro"
+    },
+    {
+        "chatLine": "Your booty is getting sore"
+    },
+    {
+        "chatLine": "The waves on the boat put you at ease"
+    },
+    {
+        "chatLine": "Gotta buy some more cheese, a fish took your bait"
+    },
+    {
+        "chatLine": "You free a turtle in a six-pack ring"
+    },
+    {
+        "chatLine": "A fish stole your bait, Reset and kill yourself"
+    },
+    {
+        "chatLine": "You fell asleep"
+    },
+    { 
+        "chatLine": "You accidentally hooked your fishing hat"
+    },
+    {
+        "chatLine": "Whoops, that was the last beer"
+    },
+    {
+        "chatLine": "You caught a mudshark, time for a dance lesson"
     }
 ]
