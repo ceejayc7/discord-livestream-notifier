@@ -1,6 +1,7 @@
 import { Helpers } from './helpers.js';
 import { MoneyManager } from './moneymanager';
 import { Database } from './database.js';
+import { PLAYERS } from './constants_internal.js';
 import _ from 'lodash';
 
 const weightedRandom = require('weighted-random'),
@@ -31,7 +32,7 @@ function printLeaderboard(msg) {
 }
 
 function saveFishWeight(msg, weight) {
-    const key = `/${msg.channel.guild.name}/${msg.author.username}/maxWeightFish`,
+    const key = `/${msg.channel.guild.name}/${PLAYERS}/${msg.author.username}/maxWeightFish`,
         savedWeight = Database.getData(key);
     if(weight > savedWeight) {
         Database.writeData(key, weight);

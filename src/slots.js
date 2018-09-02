@@ -2,7 +2,7 @@ import _ from 'lodash';
 import { Helpers } from './helpers.js';
 import { Database } from './database.js';
 import { MoneyManager } from './moneymanager.js';
-import { SLOTS_MONEY } from './constants_internal.js';
+import { SLOTS_MONEY, PLAYERS } from './constants_internal.js';
 
 function generateRandomEmojiList(emojiList) {
     let randomList = [];
@@ -16,7 +16,7 @@ function generateRandomEmojiList(emojiList) {
 
 function saveResults(msg, randomList) {
     const uniqueEmojiIds = _.countBy(randomList, 'id'),
-        key = `/${msg.channel.guild.name}/${msg.author.username}`,
+        key = `/${msg.channel.guild.name}/${PLAYERS}/${msg.author.username}`,
         slotsCountKeyTotal = `${key}/total`,
         slotsCountKeyTotalData = Database.getData(slotsCountKeyTotal) + 1;
 
@@ -71,7 +71,7 @@ function handleSlots(msg) {
 }
 
 function leaderboard(msg) {
-    const serverData = Database.getData(`/${msg.channel.guild.name}`),
+    const serverData = Database.getData(`/${msg.channel.guild.name}/${PLAYERS}`),
         sorted = _.orderBy(serverData, ['x5','x4','x3','x2', 'total'], 'asc').reverse();
     let dataToDisplay = '';
 

@@ -1,4 +1,5 @@
 import JsonDB from 'node-json-db';
+import { PLAYERS } from './constants_internal.js';
 
 const db = new JsonDB("slots_database", true, true);
 
@@ -20,7 +21,7 @@ function writeData(key, value) {
 
 function initializeUser(server, user) {
     // check to see if data exists before we initalize a new slots user
-    const key = `/${server}/${user}`;
+    const key = `/${server}/${PLAYERS}/${user}`;
     if(Database.getData(key)) {
         return;
     }

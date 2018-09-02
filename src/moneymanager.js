@@ -1,7 +1,7 @@
 import { Helpers } from './helpers.js';
 import { Database } from './database.js';
 import _ from 'lodash';
-import { SLOTS_MONEY, MINIMUM_BITCOINS } from './constants_internal.js';
+import { SLOTS_MONEY, MINIMUM_BITCOINS, PLAYERS } from './constants_internal.js';
 
 function printLeaderboard(msg) {
     const template = `%INDEX%. %PLAYERNAME% has %NUMBER% Bitcoins\n`,
@@ -24,7 +24,7 @@ function printMoney(msg) {
 }
 
 function getUserKey(msg) {
-    return `/${msg.channel.guild.name}/${msg.author.username}/money`;
+    return `/${msg.channel.guild.name}/${PLAYERS}/${msg.author.username}/money`;
 }
 
 function getUsersMoney(msg) {

@@ -78,4 +78,5 @@ export const BOT_COMMANDS={
     BLACKJACK_MONEY={
         BLACKJACK_PAYOUT: 1.5
     },
-    MINIMUM_BITCOINS=10;
+    MINIMUM_BITCOINS=10,
+    PLAYERS="players";

@@ -1,6 +1,6 @@
 import _ from 'lodash';
 import { BLACKLISTED_SERVERS, SERVER_FOR_FISHING } from './constants.js';
-import { BOT_COMMANDS, SLOTS_MONEY } from './constants_internal.js';
+import { BOT_COMMANDS, SLOTS_MONEY, PLAYERS } from './constants_internal.js';
 import { Database } from './database.js';
 import { Prob } from 'prob.js';
 
@@ -65,7 +65,7 @@ function getRandomNumberInRangeWithExponentialDistribution(min) {
 }
 
 function printLeaderboard(msg, sortAttributes, printMessage, mapping, hideValue = undefined) {
-    const serverData = Database.getData(`/${msg.channel.guild.name}`),
+    const serverData = Database.getData(`/${msg.channel.guild.name}/${PLAYERS}`),
         sorted = _.orderBy(serverData, sortAttributes, 'asc').reverse();
     let leaderboard = "```perl\n";
 
