@@ -1,7 +1,8 @@
 import _ from 'lodash';
 import { BLACKLISTED_SERVERS, SERVER_FOR_FISHING } from './constants.js';
 import { BOT_COMMANDS, SLOTS_MONEY } from './constants_internal.js';
-const Prob = require('prob.js');
+import { Database } from './database.js';
+import { Prob } from 'prob.js';
 
 function isBlacklistedChannel(msg) {
     const serverBlacklist = _.get(BLACKLISTED_SERVERS, msg.channel.guild.name);
@@ -55,12 +56,33 @@ function getRandomNumberInRange(min, max) {
 }
 
 function getRandomNumberInRangeWithExponentialDistribution(min) {
-    const randomFunction = Prob.exponential(1.0);
-    let randomNumber = parseInt(randomFunction()*100);
+    const exponentialDistribution = Prob.exponential(1.0);
+    let randomNumber = parseInt(exponentialDistribution()*100);
     while(randomNumber < min) {
-        randomNumber = parseInt(randomFunction()*100);
+        randomNumber = parseInt(exponentialDistribution()*100);
     }
     return randomNumber;
+}
+
+function printLeaderboard(msg, sortAttributes, printMessage, mapping, hideValue = undefined) {
+    const serverData = Database.getData(`/${msg.channel.guild.name}`),
+        sorted = _.orderBy(serverData, sortAttributes, 'asc').reverse();
+    let leaderboard = "```perl\n";
+
+    _.forEach(sorted, (player, index) => {
+        if(hideValue && _.has(player, hideValue) && player[hideValue] === 0) {
+            return;
+        }
+        let template = printMessage;
+        _.forEach(mapping, (value, key) => {
+            template = _.replace(template, key, eval(value));
+        });
+        leaderboard += template;
+    });
+
+    leaderboard += "```";
+
+    Helpers.sendMessageToChannel(msg, leaderboard);
 }
 
 function printHelp(msg) {
@@ -108,5 +130,6 @@ export const Helpers = {
     getRandomElementFromList,
     isFishingServer,
     getRandomNumberInRange,
-    getRandomNumberInRangeWithExponentialDistribution
+    getRandomNumberInRangeWithExponentialDistribution,
+    printLeaderboard
 };

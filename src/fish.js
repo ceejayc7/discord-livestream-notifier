@@ -18,17 +18,13 @@ function isFish(line) {
 }
 
 function printLeaderboard(msg) {
-    const serverData = Database.getData(`/${msg.channel.guild.name}`),
-        sorted = _.orderBy(serverData, ['maxWeightFish'], 'asc').reverse();
-    let leaderboard = "```perl\n";
-
-    _.forEach(sorted, (player, index) => {
-        leaderboard += `${index+1}. ${player.name} has a ${player.maxWeightFish.toLocaleString()} pound fish\n`;
-    });
-
-    leaderboard += "```";
-
-    Helpers.sendMessageToChannel(msg, leaderboard);
+    const template = `%INDEX%. %PLAYERNAME% has a %NUMBER% pound fish\n`,
+        mapping = {
+            "%INDEX%": "index+1",
+            "%PLAYERNAME%": "player.name",
+            "%NUMBER%": "player.maxWeightFish.toLocaleString()"
+        }
+    Helpers.printLeaderboard(msg, ['maxWeightFish'], template, mapping, 'maxWeightFish');
 }
 
 function saveFishWeight(msg, weight) {

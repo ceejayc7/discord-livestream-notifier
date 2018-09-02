@@ -76,6 +76,9 @@ function leaderboard(msg) {
     let dataToDisplay = '';
 
     _.forEach(sorted, (player, index) => {
+        if(player.total === 0) {
+            return;
+        }
         dataToDisplay += `${index+1}. ${player.name} with a total of ${player.total.toLocaleString()} rolls `;
         if(player.x5 > 0) {
             dataToDisplay += `& ${player.x5.toLocaleString()} wins & ${player.x4.toLocaleString()} quad slots`;
@@ -91,7 +94,7 @@ function leaderboard(msg) {
         }
         dataToDisplay += `\n`;
     });
-    Helpers.sendMessageToChannel(msg, "```perl\n"+dataToDisplay+"```")
+    Helpers.sendMessageToChannel(msg, "```perl\n"+dataToDisplay+"```");
 }
 
 export const Slots = {

@@ -4,17 +4,13 @@ import _ from 'lodash';
 import { SLOTS_MONEY, MINIMUM_BITCOINS } from './constants_internal.js';
 
 function printLeaderboard(msg) {
-    const serverData = Database.getData(`/${msg.channel.guild.name}`),
-        sorted = _.orderBy(serverData, ['money'], 'asc').reverse();
-    let leaderboard = "```perl\n";
-
-    _.forEach(sorted, (player, index) => {
-        leaderboard += `${index+1}. ${player.name} has ${player.money.toLocaleString()} Bitcoins\n`;
-    });
-
-    leaderboard += "```";
-
-    Helpers.sendMessageToChannel(msg, leaderboard);
+    const template = `%INDEX%. %PLAYERNAME% has %NUMBER% Bitcoins\n`,
+        mapping = {
+            "%INDEX%": "index+1",
+            "%PLAYERNAME%": "player.name",
+            "%NUMBER%": "player.money.toLocaleString()"
+        }
+    Helpers.printLeaderboard(msg, ['money'], template, mapping);
 }
 
 function printMoney(msg) {
