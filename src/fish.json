@@ -3,241 +3,199 @@
         "chatLine": "Whoa bro, you caught a minnow.",
         "fish": true,
         "minWeight": 1,
-        "maxWeight": 30
-    },
-    {
-        "chatLine": "Whoa bro, you caught a minnow.",
-        "fish": true,
-        "minWeight": 1,
-        "maxWeight": 30
-    },
-    {
-        "chatLine": "Whoa bro, you caught a minnow.",
-        "fish": true,
-        "minWeight": 1,
-        "maxWeight": 30
-    },
-    {
-        "chatLine": "Whoa bro, you caught a minnow.",
-        "fish": true,
-        "minWeight": 1,
-        "maxWeight": 30
-    },
-    {
-        "chatLine": "Whoa bro, you caught a minnow.",
-        "fish": true,
-        "minWeight": 1,
-        "maxWeight": 30
-    },
-    {
-        "chatLine": "Whoa bro, you caught a minnow.",
-        "fish": true,
-        "minWeight": 1,
-        "maxWeight": 30
-    },
-    {
-        "chatLine": "Whoa bro, you caught a minnow.",
-        "fish": true,
-        "minWeight": 1,
-        "maxWeight": 30
-    },
-    {
-        "chatLine": "Whoa bro, you caught a minnow.",
-        "fish": true,
-        "minWeight": 1,
-        "maxWeight": 30
-    },
-    {
-        "chatLine": "Whoa bro, you caught a minnow.",
-        "fish": true,
-        "minWeight": 1,
-        "maxWeight": 30
+        "maxWeight": 30,
+        "weightedProbability": 12
     },
     {
         "chatLine": "Bro! You caught a lunker.",
         "fish": true,
         "minWeight": 30,
-        "exponential": true
+        "exponential": true,
+        "weightedProbability": 12
     },
     {
-        "chatLine": "Bro! You caught a lunker.",
-        "fish": true,
-        "minWeight": 30,
-        "exponential": true
+        "chatLine": "Whole lotta notta",
+        "weightedProbability": 1
     },
     {
-        "chatLine": "Bro! You caught a lunker.",
-        "fish": true,
-        "minWeight": 30,
-        "exponential": true
+        "chatLine": "A crab? You're living dangerous, son",
+        "weightedProbability": 1
     },
     {
-        "chatLine": "Bro! You caught a lunker.",
-        "fish": true,
-        "minWeight": 30,
-        "exponential": true
+        "chatLine": "You caught a Prinny, throw it back",
+        "weightedProbability": 1
     },
     {
-        "chatLine": "Bro! You caught a lunker.",
-        "fish": true,
-        "minWeight": 30,
-        "exponential": true
+        "chatLine": "Oh sweet, a rubber boot! Company for rpc's shoes",
+        "weightedProbability": 1
     },
     {
-        "chatLine": "Bro! You caught a lunker.",
-        "fish": true,
-        "minWeight": 30,
-        "exponential": true
+        "chatLine": "You caught a cold, achoo!!!",
+        "weightedProbability": 1
     },
     {
-        "chatLine": "Bro! You caught a lunker.",
-        "fish": true,
-        "minWeight": 30,
-        "exponential": true
-    },
-    {
-        "chatLine": "Bro! You caught a lunker.",
-        "fish": true,
-        "minWeight": 30,
-        "exponential": true
-    },
-    {
-        "chatLine": "Whole lotta notta"
-    },
-    {
-        "chatLine": "A crab? You're living dangerous, son"
-    },
-    {
-        "chatLine": "You caught a Prinny, throw it back"
-    },
-    {
-        "chatLine": "Oh sweet, a rubber boot! Company for rpc's shoes"
-    },
-    {
-        "chatLine": "You caught a cold, achoo!!!"
-    },
-    {
-        "chatLine": "Bummer, your line broke bro"
+        "chatLine": "Bummer, your line broke bro",
+        "weightedProbability": 1
     },
     {
         "chatLine": "Yo sick, you caught a bitcoin",
-        "reward": 100
+        "reward": 100,
+        "weightedProbability": 1
     },
     {
-        "chatLine": "You bask in the sheer beauty of your environment"
+        "chatLine": "You bask in the sheer beauty of your environment",
+        "weightedProbability": 1
     },
     {
-        "chatLine": "You caught a sea bass. Not you again!"
+        "chatLine": "You caught a sea bass. Not you again!",
+        "weightedProbability": 1
     },
     {
-        "chatLine": "You caught ligma"
+        "chatLine": "You caught ligma",
+        "weightedProbability": 1
     },
     {
-        "chatLine": "Not even a nibble, at least these beats are fresh"
+        "chatLine": "Not even a nibble, at least these beats are fresh",
+        "weightedProbability": 1
     },
     {
-        "chatLine": "You caught this <・)))><<"
+        "chatLine": "You caught this <・)))><<",
+        "weightedProbability": 1
     },
     {
-        "chatLine": "Bro, you're not catching anything but at least we gettin' high <:VapeCloudL:483892311764500481> <:joe69420:483891300719132673>"
+        "chatLine": "Bro, you're not catching anything but at least we gettin' high <:VapeCloudL:483892311764500481> <:joe69420:483891300719132673>",
+        "weightedProbability": 1
     },
     {
-        "chatLine": "Kalamari dude! A squid"
+        "chatLine": "Kalamari dude! A squid",
+        "weightedProbability": 1
     },
     {
-        "chatLine": "Bro, are you even trying?"
+        "chatLine": "Bro, are you even trying?",
+        "weightedProbability": 1
     },
     {
-        "chatLine": "You hooked a whale! That's pretty unbelievable, honestly"
+        "chatLine": "You hooked a whale! That's pretty unbelievable, honestly",
+        "weightedProbability": 1
     },
     {
-        "chatLine": "You got hooked on drugs <:rpDOG:476174879901614080>"
+        "chatLine": "You got hooked on drugs <:rpDOG:476174879901614080>",
+        "weightedProbability": 1
     },
     {
-        "chatLine": "Bro, that's just a worm. You got owned"
+        "chatLine": "Bro, that's just a worm. You got owned",
+        "weightedProbability": 1
     },
     {
-        "chatLine": "I think that's just some seaweed, bro"
+        "chatLine": "I think that's just some seaweed, bro",
+        "weightedProbability": 1
     },
     {
-        "chatLine": "Bro, you hooked a lobster. Break out the butter"
+        "chatLine": "Bro, you hooked a lobster. Break out the butter",
+        "weightedProbability": 1
     },
     {
-        "chatLine": "Bro, you hooked a blue lobster. Break out the blue butter"
+        "chatLine": "Bro, you hooked a blue lobster. Break out the blue butter",
+        "weightedProbability": 1
     },
     {
-        "chatLine": "You caught a look at dem tiddies"
+        "chatLine": "You caught a look at dem tiddies",
+        "weightedProbability": 1
     },
     {
-        "chatLine": "You ponder the meaning of carpe diem"
+        "chatLine": "You ponder the meaning of carpe diem",
+        "weightedProbability": 1
     },
     {
-        "chatLine": "You caught a Costco hotdog"
+        "chatLine": "You caught a Costco hotdog",
+        "weightedProbability": 1
     },
     {
-        "chatLine": "You hooked a fly. BZZZZZZZZZZZZZZZZZZZZZ!!!!"
+        "chatLine": "You hooked a fly. BZZZZZZZZZZZZZZZZZZZZZ!!!!",
+        "weightedProbability": 1
     },
     {
-        "chatLine": "Looks like rain"
+        "chatLine": "Looks like rain",
+        "weightedProbability": 1
     },
     {
-        "chatLine": "Bro, it's Joe's cosplay stash :kissing_heart:"
+        "chatLine": "Bro, it's Joe's cosplay stash :kissing_heart:",
+        "weightedProbability": 1
     },
     {
-        "chatLine": "You caught a bucket. FUCK!!!"
+        "chatLine": "You caught a bucket. FUCK!!!",
+        "weightedProbability": 1
     },
     {
-        "chatLine": "You spotted a frisbee floating in the water"
+        "chatLine": "You spotted a frisbee floating in the water",
+        "weightedProbability": 1
     },
     {
-        "chatLine": "Hot damn! You found a lottery ticket. You lose though"
+        "chatLine": "Hot damn! You found a lottery ticket. You lose though",
+        "weightedProbability": 1
     },
     {
-        "chatLine": "Honestly man, this is getting sad"
+        "chatLine": "Honestly man, this is getting sad",
+        "weightedProbability": 1
     },
     {
-        "chatLine": "You found a big ol' catfish, but it got away"
+        "chatLine": "You found a big ol' catfish, but it got away",
+        "weightedProbability": 1
     },
     {
-        "chatLine": "Holy moly, it's a shark"
+        "chatLine": "Holy moly, it's a shark",
+        "weightedProbability": 1
     },
     {
-        "chatLine": "Protect your personal information, you got phished"
+        "chatLine": "Protect your personal information, you got phished",
+        "weightedProbability": 1
     },
     {
-        "chatLine": "You got a broken heart from being catfished"
+        "chatLine": "You got a broken heart from being catfished",
+        "weightedProbability": 1
     },
     {
-        "chatLine": "Fricken rude! You hooked a seagull"
+        "chatLine": "Fricken rude! You hooked a seagull",
+        "weightedProbability": 1
     },
     {
-        "chatLine": "It's a Magikarp bro"
+        "chatLine": "It's a Magikarp bro",
+        "weightedProbability": 1
     },
     {
-        "chatLine": "Your booty is getting sore"
+        "chatLine": "Your booty is getting sore",
+        "weightedProbability": 1
     },
     {
-        "chatLine": "The waves on the boat put you at ease"
+        "chatLine": "The waves on the boat put you at ease",
+        "weightedProbability": 1
     },
     {
-        "chatLine": "Gotta buy some more cheese, a fish took your bait"
+        "chatLine": "Gotta buy some more cheese, a fish took your bait",
+        "weightedProbability": 1
     },
     {
-        "chatLine": "You free a turtle in a six-pack ring"
+        "chatLine": "You free a turtle in a six-pack ring",
+        "weightedProbability": 1
     },
     {
-        "chatLine": "A fish stole your bait, Reset and kill yourself"
+        "chatLine": "A fish stole your bait, Reset and kill yourself",
+        "weightedProbability": 1
     },
     {
-        "chatLine": "You fell asleep"
+        "chatLine": "You fell asleep",
+        "weightedProbability": 1
     },
     { 
-        "chatLine": "You accidentally hooked your fishing hat"
+        "chatLine": "You accidentally hooked your fishing hat",
+        "weightedProbability": 1
     },
     {
-        "chatLine": "Whoops, that was the last beer"
+        "chatLine": "Whoops, that was the last beer",
+        "weightedProbability": 1
     },
     {
-        "chatLine": "You caught a mudshark, time for a dance lesson"
+        "chatLine": "You caught a mudshark, time for a dance lesson",
+        "weightedProbability": 1
     }
 ]

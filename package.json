@@ -21,7 +21,8 @@
     "node-json-db": "^0.7.5",
     "prob.js": "^1.0.6",
     "request": "^2.87.0",
-    "uws": "^10.148.1"
+    "uws": "^10.148.1",
+    "weighted-random": "^0.1.0"
   },
   "devDependencies": {
     "babel": "^6.5.2",

@@ -3,6 +3,9 @@ import { MoneyManager } from './moneymanager';
 import { Database } from './database.js';
 import _ from 'lodash';
 
+const weightedRandom = require('weighted-random'),
+    fishLines = require('./fish.json');
+
 function addRewardIfPossible(line, msg) {
     if(line.reward && line.reward > 0) {
         Database.initializeUser(msg.channel.guild.name, msg.author.username);
@@ -43,8 +46,9 @@ function getWeight(fishLineObj) {
 }
 
 function printFishLine(msg) {
-    const fishLines = require('./fish.json'),
-        fishLineObj = Helpers.getRandomElementFromList(fishLines);
+    const weightedProbability = _.map(fishLines, 'weightedProbability'),
+        selection = weightedRandom(weightedProbability),
+        fishLineObj = fishLines[selection];
 
     let chatLine = fishLineObj.chatLine;
 
