@@ -7,6 +7,7 @@ import { LOCALHOST_VIEWER, CHANNEL_TO_SEND_LIVESTREAM_NOTIFICATIONS } from './co
 import { BOT_COMMANDS } from './constants_internal.js';
 import { MoneyManager } from './moneymanager.js';
 import { Fish } from './fish.js';
+import { Lotto } from './lotto.js';
 
 class Bot {
     constructor(loginToken) {
@@ -96,6 +97,12 @@ class Bot {
                     if(Helpers.isFishingServer(msg)) {
                         Fish.printLeaderboard(msg);
                     }
+                    break;
+                case BOT_COMMANDS.LOTTO.command:
+                    Lotto.startLotto(msg);
+                    break;
+                case BOT_COMMANDS.LOTTO_CLAIM.command:
+                    Lotto.claimLotto(msg);
                     break;
             }
         });

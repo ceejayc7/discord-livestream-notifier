@@ -67,6 +67,14 @@ export const BOT_COMMANDS={
             command: '!fishlb',
             showOnHelp: false
         },
+        LOTTO: {
+            command: '!lotto',
+            showOnHelp: true
+        },
+        LOTTO_CLAIM: {
+            command: '!claim',
+            showOnHelp: false
+        }
     },
     SLOTS_MONEY={
         SLOTS_COST: 10,
@@ -79,4 +87,5 @@ export const BOT_COMMANDS={
         BLACKJACK_PAYOUT: 1.5
     },
     MINIMUM_BITCOINS=10,
-    PLAYERS="players";
+    PLAYERS="players",
+    LOTTO="lotto";

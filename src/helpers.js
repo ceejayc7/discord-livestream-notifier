@@ -116,6 +116,14 @@ function printHelp(msg) {
     messageToSend += ` + Short-hand commands - ${BOT_COMMANDS.LEADERBOARD_SHORTHAND.command}\n`;
     messageToSend += `${MARKDOWN}`;
     
+    messageToSend += `${MARKDOWN}perl\n`;
+    messageToSend += `!lotto\n${DIVIDER}\n`;
+    messageToSend += ` + A random user is awarded between 1 & the max number of Bitcoins that a user has (aka first on !lb)\n`;
+    messageToSend += ` + To become a lotto ticket holder, you must be online & on the leaderboard\n`;
+    messageToSend += ` + Lotto cooldown is 24 hours\n`;
+    messageToSend += ` + You have one minute to !claim after you have been selected as a winner`;
+    messageToSend += `${MARKDOWN}`;
+
     sendMessageToChannel(msg, messageToSend);
 }
 
