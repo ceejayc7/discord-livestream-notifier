@@ -44,7 +44,7 @@ class Bot {
         });
 
         this.client.on('message', (msg) => {
-            if(Helpers.isBlacklistedChannel(msg)) {
+            if(!Helpers.isWhitelistedChannel(msg)) {
                 return;
             }
 

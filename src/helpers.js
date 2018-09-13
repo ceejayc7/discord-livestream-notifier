@@ -1,12 +1,12 @@
 import _ from 'lodash';
-import { BLACKLISTED_SERVERS, SERVER_FOR_FISHING } from './constants.js';
+import { WHITELISTED_SERVERS, SERVER_FOR_FISHING } from './constants.js';
 import { BOT_COMMANDS, SLOTS_MONEY, PLAYERS } from './constants_internal.js';
 import { Database } from './database.js';
 import { Prob } from 'prob.js';
 
-function isBlacklistedChannel(msg) {
-    const serverBlacklist = _.get(BLACKLISTED_SERVERS, msg.channel.guild.name);
-    if(_.includes(serverBlacklist, msg.channel.name)) {
+function isWhitelistedChannel(msg) {
+    const serverWhitelist = _.get(WHITELISTED_SERVERS, msg.channel.guild.name);
+    if(_.includes(serverWhitelist, msg.channel.name)) {
         return true;
     }
     return false;
@@ -128,7 +128,7 @@ function printHelp(msg) {
 }
 
 export const Helpers = {
-    isBlacklistedChannel,
+    isWhitelistedChannel,
     sendMessageToChannel,
     messageError,
     getListOfStreams,
