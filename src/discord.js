@@ -1,5 +1,6 @@
 import Bot from './bot.js';
 import Twitch from './twitch.js';
+import Youtube from './youtube.js';
 import Localhost from './localhost.js';
 import Mixer from './mixer.js';
 import {EventEmitter} from 'events';
@@ -25,10 +26,12 @@ function initBots() {
 
     const twitch = new Twitch(streamEmitter),
         localhost = new Localhost(streamEmitter),
-        mixer = new Mixer(streamEmitter);
+        mixer = new Mixer(streamEmitter),
+        youtube = new Youtube(streamEmitter);
     streamsList.push(twitch);
     streamsList.push(localhost);
     streamsList.push(mixer);
+    streamsList.push(youtube);
 }
 
 function setTimers() {
@@ -43,9 +46,19 @@ function setTimers() {
 initBots();
 setTimers();
 
+function getStreamName(stream) {
+    // YouTube channel IDs are case-sensitive
+    if(stream.platform === "youtube") {
+        return stream.name;
+    }
+    else {
+        return stream.name.toLowerCase();
+    }
+}
+
 streamEmitter.on('event:streamlive', (stream) => {
     _.forEach(serverDatabase, (server, serverName) => {
-        let isChannelInServer = _.includes(_.get(server,[stream.platform]), stream.name.toLowerCase());
+        let isChannelInServer = _.includes(_.get(server,[stream.platform]), getStreamName(stream));
         if(isChannelInServer) {
             console.log(`${stream.name} went live, notifying channel`);
             discordBots[serverName].sendLiveMessage(stream);

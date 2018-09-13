@@ -182,6 +182,27 @@ class Bot {
                     this.client.channels.find('name', CHANNEL_TO_SEND_LIVESTREAM_NOTIFICATIONS).send(beamStreamMessage, beamEmbed)
                         .catch(Helpers.messageError);
                     break;
+
+                    case "youtube":
+                        const youtubeStreamUrl = _.get(stream,'url'),
+                            youtubeImage = _.get(stream, 'preview'),
+                            youtubeName = _.get(stream, 'channelTitle'),
+                            youtubeSiteLogo = "https://puu.sh/Bucut/9645bccf23.png",
+                            youtubeTitle = _.get(stream, 'title'),
+                            youtubeUpdatedAt = _.get(stream, 'updated_at'),
+                            youtubeStreamMessage = `${youtubeName} is now live at ${youtubeStreamUrl}`,
+                            youtubeColor = 16711680,
+                            youtubeEmbed = new Discord.RichEmbed()
+                                .setAuthor(youtubeName, youtubeSiteLogo, youtubeStreamUrl)
+                                .setColor(youtubeColor)
+                                .setImage(youtubeImage)
+                                .setTitle(youtubeTitle)
+                                .setURL(youtubeStreamUrl)
+                                .setTimestamp(`${youtubeUpdatedAt}`);
+
+                            this.client.channels.find('name', CHANNEL_TO_SEND_LIVESTREAM_NOTIFICATIONS).send(youtubeStreamMessage, youtubeEmbed)
+                                .catch(Helpers.messageError);
+                            break;
             }
         }
     }
