@@ -186,9 +186,14 @@ class Blackjack {
             Helpers.sendMessageToChannel(this.msg, `${messageToSend}\n${this.msg.author.username}'s busts with **${playerHandValue}**. Dealer wins, sorry bro`);
             MoneyManager.removeMoney(this.msg, this.betSize);
             this.clearGame();
-            return;
         }
-        Helpers.sendMessageToChannel(this.msg, messageToSend);
+        else if(playerHandValue === 21) {
+            Helpers.sendMessageToChannel(this.msg, messageToSend);
+            this.stand(msg);
+        }
+        else {
+            Helpers.sendMessageToChannel(this.msg, messageToSend);
+        }
     }
 
     double = (msg) => {
