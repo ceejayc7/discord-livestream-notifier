@@ -40,7 +40,7 @@ function initBots() {
 }
 
 function setTimers() {
-    const TIME_TO_PING_API = 60000, //300000,
+    const TIME_TO_PING_API = 300000,
         FIRST_API_PING = 30000;
     _.forEach(streamsList, (stream) => {
         setInterval(stream.updateStreams, TIME_TO_PING_API); // continously call API refresh every 5 minutes
