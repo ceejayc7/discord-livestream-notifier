@@ -1,8 +1,10 @@
 import _ from 'lodash';
 import request from 'request-promise';
 import { Helpers } from './helpers.js';
+import { YOUTUBE_KEY } from './constants.js';
 
-const YOUTUBE_API_ENDPOINT='https://www.googleapis.com/youtube/v3/search?part=snippet&type=video&eventType=live&key=AIzaSyC760DQ5d-ULu_8s-lhDK8sN_uyfkLaUjI&channelId=';
+const YOUTUBE_API_ENDPOINT=`https://www.googleapis.com/youtube/v3/search?part=snippet&type=video&eventType=live&key=${YOUTUBE_KEY}&channelId=`;
+console.log(YOUTUBE_API_ENDPOINT);
 
 class Youtube {
     constructor(streamEmitter) {
