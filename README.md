@@ -34,6 +34,10 @@ Add `src/db.json` to include the streams to be watching
         "youtube": [
             "channelID1",
             "channelID2"
+        ],
+        "okru": [
+            "profile1",
+            "profile2"
         ]
     }
 }
