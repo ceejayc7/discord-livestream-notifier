@@ -5,6 +5,7 @@
 >* Twitch.tv
 >* Mixer
 >* Youtube
+>* Ok.RU (via web scraping)
 
 ## Getting started
 Clone the repository and install npm dependencies
@@ -41,18 +42,14 @@ Add `src/db.json` to include the streams to be watching
 Add `src/constants.js` to include your tokens
 ```js
 export const TWITCH_CLIENT_ID='{YOUR_TWITCH_CLIENT_ID_HERE}',
-    TWITCH_API_ENDPOINT='https://api.twitch.tv/kraken/streams?limit=100&channel=',
-    MIXER_API_ENDPOINT='https://mixer.com/api/v1/channels/',
     MIXER_CLIENT_ID='{YOUR_MIXER_CLIENT_ID_HERE}',
-    YOUTUBE_API_ENDPOINT='https://www.googleapis.com/youtube/v3/search?part=snippet&type=video&eventType=live&key={YOUR_CLIENT_KEY_HERE}&channelId=',
+    YOUTUBE_KEY='{YOUR_YOUTUBE_API_KEY_HERE}',
     DISCORD_TOKENS={
         servername1: '{YOUR_DISCORD_TOKEN_HERE}',
         servername2: '{YOUR_DISCORD_TOKEN_HERE}',
         servername3: '{YOUR_DISCORD_TOKEN_HERE}',
         servername4: '{YOUR_DISCORD_TOKEN_HERE}',
     },
-    LOCALHOST_ENDPOINT='',
-    LOCALHOST_VIEWER='',
     CHANNEL_TO_SEND_LIVESTREAM_NOTIFICATIONS='general',
     WHITELISTED_SERVERS={
         servername1 : {channelName},
