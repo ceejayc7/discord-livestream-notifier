@@ -1,10 +1,11 @@
-import {TWITCH_API_ENDPOINT, TWITCH_CLIENT_ID} from './constants.js';
+import { TWITCH_CLIENT_ID } from './constants.js';
 import _ from 'lodash';
-import {Helpers} from './helpers.js';
-import Request from 'request';
+import { Helpers } from './helpers.js';
+import request from 'request-promise';
+
+const TWITCH_API_ENDPOINT='https://api.twitch.tv/kraken/streams?limit=100&channel=';
 
 class Twitch {
-
     constructor(streamEmitter) {
         this.twitchAPIOptions = {
             url: TWITCH_API_ENDPOINT,
@@ -20,24 +21,21 @@ class Twitch {
         this.streamsDatabase = require('./db.json');
     }
 
+    resolvedChannelPromises = (response) => {
+        if (!_.isEmpty(response)) {
+            _.forEach(response, (stream) => this.announceIfStreamIsNew(stream));
+            this.currentLiveStreams = response;
+        }
+    }
+
     updateStreams = () => {
         let flattenStreamsString = Helpers.getListOfStreams('twitch').toString();
         this.twitchAPIOptions.url = TWITCH_API_ENDPOINT+flattenStreamsString;
-        Request(this.twitchAPIOptions, (error, response, body) => {
-            if(!error && response.statusCode === 200) {
-                let newStreams = this.reduceResponse(body);
-    
-                if (newStreams) {
-                    _.forEach(newStreams, (stream) => {
-                        this.announceIfStreamIsNew(stream);
-                    });
-                    this.currentLiveStreams = newStreams;
-                }
-    
-            } else {
-                this.logError(error);
-            }
-        });
+
+        request(this.twitchAPIOptions)
+            .then(this.reduceResponse)
+            .then(this.resolvedChannelPromises)
+            .catch(this.logError);
     }
 
     reduceResponse = (response) => {

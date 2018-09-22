@@ -3,7 +3,7 @@ import _ from 'lodash';
 import Blackjack from './blackjack.js';
 import { Slots } from './slots.js';
 import { Helpers } from './helpers.js';
-import { LOCALHOST_VIEWER, CHANNEL_TO_SEND_LIVESTREAM_NOTIFICATIONS } from './constants.js';
+import { CHANNEL_TO_SEND_LIVESTREAM_NOTIFICATIONS } from './constants.js';
 import { BOT_COMMANDS } from './constants_internal.js';
 import { MoneyManager } from './moneymanager.js';
 import { Fish } from './fish.js';
@@ -113,7 +113,7 @@ class Bot {
         if(this.isLoggedIn) {
             switch(stream.platform) {
                 case "twitch":
-                    const streamUrl = _.get(stream,'url'),
+                    const streamUrl = _.get(stream, 'url'),
                         image = _.get(stream, 'preview'),
                         streamDisplayName = _.get(stream, 'displayName'),
                         logo = _.get(stream, 'logo'),
@@ -145,14 +145,15 @@ class Bot {
                     break;
 
                 case "localhost":
-                    const messageToSend = `${stream.name} is now live - ${LOCALHOST_VIEWER}`;
+                    const LOCALHOST_VIEWER = 'http://71.202.41.190:8080/viewer/',
+                        messageToSend = `${stream.name} is now live - ${LOCALHOST_VIEWER}`;
 
                     this.client.channels.find('name', CHANNEL_TO_SEND_LIVESTREAM_NOTIFICATIONS).send(messageToSend)
                         .catch(Helpers.messageError);
                     break;
 
                 case "mixer":
-                    const beamStreamUrl = _.get(stream,'url'),
+                    const beamStreamUrl = _.get(stream, 'url'),
                         beamImage = _.get(stream, 'preview'),
                         beamName = _.get(stream, 'name'),
                         beamLogo = _.get(stream, 'logo'),
@@ -184,7 +185,7 @@ class Bot {
                     break;
 
                     case "youtube":
-                        const youtubeStreamUrl = _.get(stream,'url'),
+                        const youtubeStreamUrl = _.get(stream, 'url'),
                             youtubeImage = _.get(stream, 'preview'),
                             youtubeName = _.get(stream, 'channelTitle'),
                             youtubeSiteLogo = "https://puu.sh/Bucut/9645bccf23.png",
@@ -200,9 +201,30 @@ class Bot {
                                 .setURL(youtubeStreamUrl)
                                 .setTimestamp(`${youtubeUpdatedAt}`);
 
-                            this.client.channels.find('name', CHANNEL_TO_SEND_LIVESTREAM_NOTIFICATIONS).send(youtubeStreamMessage, youtubeEmbed)
-                                .catch(Helpers.messageError);
-                            break;
+                        this.client.channels.find('name', CHANNEL_TO_SEND_LIVESTREAM_NOTIFICATIONS).send(youtubeStreamMessage, youtubeEmbed)
+                            .catch(Helpers.messageError);
+                        break;
+
+                    case "okru":
+                        const okruStreamUrl = _.get(stream, 'url'),
+                            okruImage = _.get(stream, 'preview'),
+                            okruName = _.get(stream, 'displayName'),
+                            okruSiteLogo = "http://puu.sh/Bz2nm/aacfb2c3d6.png",
+                            okruTitle = _.get(stream, 'title'),
+                            okruLogo = _.get(stream, 'logo'),
+                            okruStreamMessage = `${okruName} is now live at ${okruStreamUrl}`,
+                            okruColor = 16089632,
+                            okruEmbed = new Discord.RichEmbed()
+                                .setAuthor(okruName, okruSiteLogo, okruStreamUrl)
+                                .setColor(okruColor)
+                                .setImage(okruImage)
+                                .setTitle(okruTitle)
+                                .setThumbnail(okruLogo)
+                                .setURL(okruStreamUrl);
+
+                        this.client.channels.find('name', CHANNEL_TO_SEND_LIVESTREAM_NOTIFICATIONS).send(okruStreamMessage, okruEmbed)
+                            .catch(Helpers.messageError);
+                        break;
             }
         }
     }

@@ -14,13 +14,14 @@
     "node": "8.11.3"
   },
   "dependencies": {
-    "async": "^2.6.1",
     "card-deck": "^1.0.0",
+    "cheerio": "^1.0.0-rc.2",
     "discord.js": "^11.3.2",
     "lodash": "^4.17.10",
     "node-json-db": "^0.7.5",
     "prob.js": "^1.0.6",
     "request": "^2.87.0",
+    "request-promise": "^4.2.2",
     "uws": "^10.148.1",
     "weighted-random": "^0.1.0"
   },

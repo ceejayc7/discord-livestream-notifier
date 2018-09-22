@@ -1,9 +1,9 @@
 import _ from 'lodash';
-import Request from 'request';
-import {LOCALHOST_ENDPOINT} from './constants.js';
+import request from 'request-promise';
+
+const LOCALHOST_ENDPOINT = 'http://71.202.41.190:8080/live';
 
 class Localhost {
-
     constructor(streamEmitter) {
         this.endpoint = LOCALHOST_ENDPOINT;
         this.endpointOptions = {
@@ -18,19 +18,17 @@ class Localhost {
         this.streamEmitter = streamEmitter;
     }
 
+    resolvedChannelPromises = (response) => {
+        if (!_.isEmpty(response)) {
+            _.forEach(response, (key, stream) => this.announceIfStreamIsNew(stream));
+            this.currentLiveStreams = response;
+        }
+    }
+
     updateStreams = () => {
-        Request(this.endpointOptions, (error, response, body) => {
-            if(!error && response.statusCode === 200) {
-                if (body) {
-                    _.forEach(body, (key, stream) => {
-                        this.announceIfStreamIsNew(stream);
-                    });
-                    this.currentLiveStreams = body;
-                }
-            } else {
-                this.logError(error);
-            }
-        });
+        request(this.endpointOptions)
+            .then(this.resolvedChannelPromises)
+            .catch(this.logError);
     }
 
     logError = (error) => {
@@ -45,7 +43,6 @@ class Localhost {
             this.streamEmitter.emit('event:streamlive', streamObj);
         }
     }
-
 }
 
 export default Localhost;

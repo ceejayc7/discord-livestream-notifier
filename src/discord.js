@@ -3,15 +3,17 @@ import Twitch from './twitch.js';
 import Youtube from './youtube.js';
 import Localhost from './localhost.js';
 import Mixer from './mixer.js';
-import {EventEmitter} from 'events';
-import {DISCORD_TOKENS} from './constants.js';
+import OkRu from './okru.js';
+import { EventEmitter } from 'events';
+import { DISCORD_TOKENS } from './constants.js';
 import _ from 'lodash';
 
 const streamEmitter = new EventEmitter(),
     serverDatabase = require('./db.json'),
     serverList = Object.keys(serverDatabase),
     discordBots = {},
-    streamsList = [];
+    streamsList = [],
+    ignoreLowercasePlatforms = ["youtube", "okru"];
 
 function initBots() {
     // create new bot per each defined discord server
@@ -27,15 +29,18 @@ function initBots() {
     const twitch = new Twitch(streamEmitter),
         localhost = new Localhost(streamEmitter),
         mixer = new Mixer(streamEmitter),
-        youtube = new Youtube(streamEmitter);
+        youtube = new Youtube(streamEmitter),
+        okru = new OkRu(streamEmitter);
+
     streamsList.push(twitch);
     streamsList.push(localhost);
     streamsList.push(mixer);
     streamsList.push(youtube);
+    streamsList.push(okru);
 }
 
 function setTimers() {
-    const TIME_TO_PING_API = 300000,
+    const TIME_TO_PING_API = 60000, //300000,
         FIRST_API_PING = 30000;
     _.forEach(streamsList, (stream) => {
         setInterval(stream.updateStreams, TIME_TO_PING_API); // continously call API refresh every 5 minutes
@@ -47,13 +52,7 @@ initBots();
 setTimers();
 
 function getStreamName(stream) {
-    // YouTube channel IDs are case-sensitive
-    if(stream.platform === "youtube") {
-        return stream.name;
-    }
-    else {
-        return stream.name.toLowerCase();
-    }
+    return _.includes(ignoreLowercasePlatforms, stream.platform) ? stream.name : stream.name.toLowerCase();
 }
 
 streamEmitter.on('event:streamlive', (stream) => {

@@ -1,63 +1,42 @@
-import { YOUTUBE_API_ENDPOINT } from './constants.js';
 import _ from 'lodash';
-import Request from 'request';
+import request from 'request-promise';
 import { Helpers } from './helpers.js';
 
-class Youtube {
+const YOUTUBE_API_ENDPOINT='https://www.googleapis.com/youtube/v3/search?part=snippet&type=video&eventType=live&key=AIzaSyC760DQ5d-ULu_8s-lhDK8sN_uyfkLaUjI&channelId=';
 
+class Youtube {
     constructor(streamEmitter) {
-        this.mixerAPIOptions = {
-            url: YOUTUBE_API_ENDPOINT,
-            headers: {
-                'content-type' : 'application/json'
-            },
-            json: true,
-            method: "GET"
-        };
         this.currentLiveStreams = [];
         this.streamEmitter = streamEmitter;
         this.streamsDatabase = require('./db.json');
     }
 
-    getAsyncMixerChannelInfo = (url, callback) => {
+    getChannelPromises = (stream) => {
         const httpOptions = {
-          url :  url,
-          json : true
+            url :  YOUTUBE_API_ENDPOINT+stream,
+            json : true
         };
+        return request(httpOptions)
+            .catch(this.logError);
+    }
 
-        Request(httpOptions, (error, response, body) => {
-            if(!error && response.statusCode === 200) {
-                callback(error, body);
-            } else {
-                this.logError(error);
-            }
-        });
+    resolvedChannelPromises = (channelData) => {
+        if (!_.isEmpty(channelData)) {
+            _.forEach(channelData, (stream) => this.announceIfStreamIsNew(stream));
+            this.currentLiveStreams = channelData;
+        }
     }
 
     updateStreams = () => {
-        const flattenStreamsString = Helpers.getListOfStreams('youtube'),
-            async = require('async');
-        let endpoint = YOUTUBE_API_ENDPOINT,
-            currentList = [];
+        const flattenStreamsString = Helpers.getListOfStreams('youtube');
+        let currentList = [];
 
-        _.forEach(flattenStreamsString, (stream) => {
-            currentList.push(endpoint+stream);
-        });
+        _.forEach(flattenStreamsString, (stream) => currentList.push(this.getChannelPromises(stream)));
 
-        async.map(currentList, this.getAsyncMixerChannelInfo, (error, reponse) => {
-            if (error) {
-                this.logError(error);
-            }
-
-            let newStreams = this.reduceResponse(reponse);
-    
-            if (newStreams) {
-                _.forEach(newStreams, (stream) => {
-                    this.announceIfStreamIsNew(stream);
-                });
-                this.currentLiveStreams = newStreams;
-            }
-        });
+        Promise.all(currentList)
+            .then(this.reduceResponse)
+            .then(this.resolvedChannelPromises)
+            .catch(this.logError);
     }
 
     reduceResponse = (response) => {
