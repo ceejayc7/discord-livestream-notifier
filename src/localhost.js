@@ -21,8 +21,8 @@ class Localhost {
     resolvedChannelPromises = (response) => {
         if (!_.isEmpty(response)) {
             _.forEach(response, (key, stream) => this.announceIfStreamIsNew(stream));
-            this.currentLiveStreams = response;
         }
+        this.currentLiveStreams = response;
     }
 
     updateStreams = () => {

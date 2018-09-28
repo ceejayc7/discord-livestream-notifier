@@ -24,8 +24,8 @@ class Youtube {
     resolvedChannelPromises = (channelData) => {
         if (!_.isEmpty(channelData)) {
             _.forEach(channelData, (stream) => this.announceIfStreamIsNew(stream));
-            this.currentLiveStreams = channelData;
         }
+        this.currentLiveStreams = channelData;
     }
 
     updateStreams = () => {

@@ -24,8 +24,8 @@ class Twitch {
     resolvedChannelPromises = (response) => {
         if (!_.isEmpty(response)) {
             _.forEach(response, (stream) => this.announceIfStreamIsNew(stream));
-            this.currentLiveStreams = response;
         }
+        this.currentLiveStreams = response;
     }
 
     updateStreams = () => {
