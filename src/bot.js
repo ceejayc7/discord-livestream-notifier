@@ -214,13 +214,15 @@ class Bot {
                             okruLogo = _.get(stream, 'logo'),
                             okruStreamMessage = `${okruName} is now live at ${okruStreamUrl}`,
                             okruColor = 16089632,
+                            okruTimestamp = _.get(stream, 'updated_at'),
                             okruEmbed = new Discord.RichEmbed()
                                 .setAuthor(okruName, okruSiteLogo, okruStreamUrl)
                                 .setColor(okruColor)
                                 .setImage(okruImage)
                                 .setTitle(okruTitle)
                                 .setThumbnail(okruLogo)
-                                .setURL(okruStreamUrl);
+                                .setURL(okruStreamUrl)
+                                .setTimestamp(okruTimestamp);
 
                         this.client.channels.find('name', CHANNEL_TO_SEND_LIVESTREAM_NOTIFICATIONS).send(okruStreamMessage, okruEmbed)
                             .catch(Helpers.messageError);

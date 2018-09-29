@@ -21,7 +21,8 @@ class OkRu {
                 title = $('.video-card_img-w a').attr('title'),
                 channelLogo = PROTOCOL + $('.channel-panel_img-w img').attr('src'),
                 preview = PROTOCOL + $('.video-card_img-w a img').attr('src'),
-                displayName = $('.compact-profile_a.ellip-i').text();
+                displayName = $('.compact-profile_a.ellip-i').text(),
+                timestamp = new Date().toISOString();
                 
             return {
                 "platform" : "okru",
@@ -30,7 +31,8 @@ class OkRu {
                 "title" : title,
                 "logo" : channelLogo,
                 "url" : streamUrl,
-                "preview" : preview
+                "preview" : preview,
+                "updated_at": timestamp
             };
         }
     }
