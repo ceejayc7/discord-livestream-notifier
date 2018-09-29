@@ -3,13 +3,13 @@ import request from 'request-promise';
 import { Helpers } from './helpers.js';
 import { YOUTUBE_KEY } from './constants.js';
 
-const YOUTUBE_API_ENDPOINT=`https://www.googleapis.com/youtube/v3/search?part=snippet&type=video&eventType=live&key=${YOUTUBE_KEY}&channelId=`;
+const PLATFORM = "youtube",
+    YOUTUBE_API_ENDPOINT=`https://www.googleapis.com/youtube/v3/search?part=snippet&type=video&eventType=live&key=${YOUTUBE_KEY}&channelId=`;
 
 class Youtube {
     constructor(streamEmitter) {
         this.currentLiveStreams = [];
         this.streamEmitter = streamEmitter;
-        this.streamsDatabase = require('./db.json');
     }
 
     getChannelPromises = (stream) => {
@@ -18,7 +18,7 @@ class Youtube {
             json : true
         };
         return request(httpOptions)
-            .catch(this.logError);
+            .catch((error) => Helpers.apiError(PLATFORM, error));
     }
 
     resolvedChannelPromises = (channelData) => {
@@ -37,7 +37,7 @@ class Youtube {
         Promise.all(currentList)
             .then(this.reduceResponse)
             .then(this.resolvedChannelPromises)
-            .catch(this.logError);
+            .catch((error) => Helpers.apiError(PLATFORM, error));
     }
 
     reduceResponse = (response) => {
@@ -49,7 +49,7 @@ class Youtube {
                     preview = _.get(stream, ['snippet', 'thumbnails', 'high', 'url']) + `?t=${Math.round((new Date()).getTime() / 1000)}`;
                 reducedResponse.push(
                     {
-                        "platform" : "youtube",
+                        "platform" : PLATFORM,
                         "name": _.get(stream, ['snippet', 'channelId']),
                         "channelTitle": _.get(stream, ['snippet', 'channelTitle']),
                         "preview": preview,
@@ -60,10 +60,6 @@ class Youtube {
             }
         });
         return reducedResponse;
-    }
-
-    logError = (error) => {
-        console.log('Youtube API error: ' + error);
     }
 
     announceIfStreamIsNew = (stream) => {

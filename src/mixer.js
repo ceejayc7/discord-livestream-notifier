@@ -3,13 +3,13 @@ import _ from 'lodash';
 import request from 'request-promise';
 import { Helpers } from './helpers.js';
 
-const MIXER_API_ENDPOINT='https://mixer.com/api/v1/channels/';
+const PLATFORM = "mixer",
+    MIXER_API_ENDPOINT='https://mixer.com/api/v1/channels/';
 
 class Mixer {
     constructor(streamEmitter) {
         this.currentLiveStreams = [];
         this.streamEmitter = streamEmitter;
-        this.streamsDatabase = require('./db.json');
     }
 
     getChannelPromises = (url) => {
@@ -22,7 +22,7 @@ class Mixer {
             }
         };
         return request(httpOptions)
-            .catch(this.logError);
+            .catch((error) => Helpers.apiError(PLATFORM, error));
     }
 
     resolvedChannelPromises = (channelData) => {
@@ -41,7 +41,7 @@ class Mixer {
         Promise.all(currentList)
             .then(this.reduceResponse)
             .then(this.resolvedChannelPromises)
-            .catch(this.logError);
+            .catch((error) => Helpers.apiError(PLATFORM, error));
     }
 
     reduceResponse = (response) => {
@@ -51,7 +51,7 @@ class Mixer {
                 let url = `https://mixer.com/${_.get(stream, 'token')}`;
                 reducedResponse.push(
                     {
-                        "platform" : "mixer",
+                        "platform" : PLATFORM,
                         "name": _.get(stream, 'token'),
                         "game": _.get(stream, ['type', 'name']),
                         "preview": _.get(stream, ['thumbnail', 'url']),
@@ -64,10 +64,6 @@ class Mixer {
             }
         });
         return reducedResponse;
-    }
-
-    logError = (error) => {
-        console.log('Mixer API error: ' + error);
     }
 
     announceIfStreamIsNew = (stream) => {

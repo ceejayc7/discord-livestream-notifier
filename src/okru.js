@@ -3,7 +3,8 @@ import request from 'request-promise';
 import cheerio from 'cheerio';
 import { Helpers } from './helpers.js';
 
-const OKRU_BASE_URL = 'https://ok.ru',
+const PLATFORM = "okru", 
+    OKRU_BASE_URL = 'https://ok.ru',
     OKRU_ENDPOINT = 'https://ok.ru/live/profile/',
     PROTOCOL = 'https:';
 
@@ -11,7 +12,6 @@ class OkRu {
     constructor(streamEmitter) {
         this.currentLiveStreams = [];
         this.streamEmitter = streamEmitter;
-        this.streamsDatabase = require('./db.json');
     }
 
     scrapePage = ($) => {
@@ -25,7 +25,7 @@ class OkRu {
                 timestamp = new Date().toISOString();
                 
             return {
-                "platform" : "okru",
+                "platform" : PLATFORM,
                 "name" : channelName,
                 "displayName" : displayName,
                 "title" : title,
@@ -47,7 +47,7 @@ class OkRu {
 
         return request(httpOptions)
             .then(this.scrapePage)
-            .catch(this.logError);
+            .catch((error) => Helpers.apiError(PLATFORM, error));
     }
 
     resolvedChannelPromises = (channelData) => {
@@ -66,11 +66,7 @@ class OkRu {
         Promise.all(currentList)
             .then(_.compact)
             .then(this.resolvedChannelPromises)
-            .catch(this.logError);
-    }
-
-    logError = (error) => {
-        console.log('OkRu API error: ' + error);
+            .catch((error) => Helpers.apiError(PLATFORM, error));
     }
 
     announceIfStreamIsNew = (stream) => {

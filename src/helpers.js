@@ -21,7 +21,11 @@ function isFishingServer(msg) {
 }
 
 function messageError(error) {
-    console.log(`Unable to send message. ${error.message}`);
+    console.log(`Unable to send message. \t Error name: ${error.name} \t Error message: ${error.message}`);
+}
+
+function apiError(platform, error) {
+    console.log(`${platform} API error. \t Error name: ${error.name} \t Error message: ${error.message}`);
 }
 
 function sendMessageToChannel(msg, stringToSend) {
@@ -139,5 +143,6 @@ export const Helpers = {
     isFishingServer,
     getRandomNumberInRange,
     getRandomNumberInRangeWithExponentialDistribution,
-    printLeaderboard
+    printLeaderboard,
+    apiError
 };

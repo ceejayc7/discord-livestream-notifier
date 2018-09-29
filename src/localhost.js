@@ -1,13 +1,14 @@
 import _ from 'lodash';
 import request from 'request-promise';
+import { Helpers } from './helpers.js';
 
-const LOCALHOST_ENDPOINT = 'http://71.202.41.190:8080/live';
+const PLATFORM = "localhost",
+    LOCALHOST_ENDPOINT = 'http://71.202.41.190:8080/live';
 
 class Localhost {
     constructor(streamEmitter) {
-        this.endpoint = LOCALHOST_ENDPOINT;
         this.endpointOptions = {
-            url: this.endpoint,
+            url: LOCALHOST_ENDPOINT,
             headers: {
                 'content-type' : 'application/json'
             },
@@ -28,18 +29,14 @@ class Localhost {
     updateStreams = () => {
         request(this.endpointOptions)
             .then(this.resolvedChannelPromises)
-            .catch(this.logError);
-    }
-
-    logError = (error) => {
-        console.log('Localhost API error: ' + error);
+            .catch((error) => Helpers.apiError(PLATFORM, error));
     }
 
     announceIfStreamIsNew = (stream) => {
         if(!_.includes(Object.keys(this.currentLiveStreams), stream)) {
             let streamObj = {};
             streamObj.name = stream;
-            streamObj.platform = "localhost";
+            streamObj.platform = PLATFORM;
             this.streamEmitter.emit('event:streamlive', streamObj);
         }
     }

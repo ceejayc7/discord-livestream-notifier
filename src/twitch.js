@@ -3,7 +3,8 @@ import _ from 'lodash';
 import { Helpers } from './helpers.js';
 import request from 'request-promise';
 
-const TWITCH_API_ENDPOINT='https://api.twitch.tv/kraken/streams?limit=100&channel=';
+const PLATFORM = "twitch",
+    TWITCH_API_ENDPOINT='https://api.twitch.tv/kraken/streams?limit=100&channel=';
 
 class Twitch {
     constructor(streamEmitter) {
@@ -18,7 +19,6 @@ class Twitch {
         };
         this.currentLiveStreams = [];
         this.streamEmitter = streamEmitter;
-        this.streamsDatabase = require('./db.json');
     }
 
     resolvedChannelPromises = (response) => {
@@ -35,7 +35,7 @@ class Twitch {
         request(this.twitchAPIOptions)
             .then(this.reduceResponse)
             .then(this.resolvedChannelPromises)
-            .catch(this.logError);
+            .catch((error) => Helpers.apiError(PLATFORM, error));
     }
 
     reduceResponse = (response) => {
@@ -44,7 +44,7 @@ class Twitch {
             let preview = _.get(stream, ['preview', 'large']) + `?t=${Math.round((new Date()).getTime() / 1000)}`;
             reducedResponse.push(
                 {
-                    "platform" : "twitch",
+                    "platform" : PLATFORM,
                     "name": _.get(stream, ['channel','name']),
                     "displayName": _.get(stream, ['channel','display_name']),
                     "game": _.get(stream, 'game'),
@@ -58,10 +58,6 @@ class Twitch {
             );
         });
         return reducedResponse;
-    }
-
-    logError = (error) => {
-        console.log('Twitch API error: ' + error);
     }
 
     announceIfStreamIsNew = (stream) => {
