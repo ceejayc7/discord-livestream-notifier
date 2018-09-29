@@ -109,6 +109,11 @@ class Bot {
 
     }
 
+    sendEmbed = (streamMessage, embed) => {
+        this.client.channels.find(channel => channel.name === CHANNEL_TO_SEND_LIVESTREAM_NOTIFICATIONS).send(streamMessage, embed)
+            .catch(Helpers.messageError);
+    }
+
     sendLiveMessage = (stream) => {
         if(this.isLoggedIn) {
             switch(stream.platform) {
@@ -139,16 +144,14 @@ class Bot {
                     }
 
                     embed.addField("Viewers", viewers, true);
-
-                    this.client.channels.find('name', CHANNEL_TO_SEND_LIVESTREAM_NOTIFICATIONS).send(streamMessage, embed)
-                        .catch(Helpers.messageError);
+                    this.sendEmbed(streamMessage, embed);
                     break;
 
                 case "localhost":
                     const LOCALHOST_VIEWER = 'http://71.202.41.190:8080/viewer/',
                         messageToSend = `${stream.name} is now live - ${LOCALHOST_VIEWER}`;
 
-                    this.client.channels.find('name', CHANNEL_TO_SEND_LIVESTREAM_NOTIFICATIONS).send(messageToSend)
+                    this.client.channels.find(channel => channel.name === CHANNEL_TO_SEND_LIVESTREAM_NOTIFICATIONS).send(messageToSend)
                         .catch(Helpers.messageError);
                     break;
 
@@ -179,9 +182,7 @@ class Bot {
                     }
 
                     beamEmbed.addField("Viewers", beamViewers, true);
-
-                    this.client.channels.find('name', CHANNEL_TO_SEND_LIVESTREAM_NOTIFICATIONS).send(beamStreamMessage, beamEmbed)
-                        .catch(Helpers.messageError);
+                    this.sendEmbed(beamStreamMessage, beamEmbed);
                     break;
 
                     case "youtube":
@@ -201,8 +202,7 @@ class Bot {
                                 .setURL(youtubeStreamUrl)
                                 .setTimestamp(`${youtubeUpdatedAt}`);
 
-                        this.client.channels.find('name', CHANNEL_TO_SEND_LIVESTREAM_NOTIFICATIONS).send(youtubeStreamMessage, youtubeEmbed)
-                            .catch(Helpers.messageError);
+                        this.sendEmbed(youtubeStreamMessage, youtubeEmbed);
                         break;
 
                     case "okru":
@@ -224,8 +224,7 @@ class Bot {
                                 .setURL(okruStreamUrl)
                                 .setTimestamp(okruTimestamp);
 
-                        this.client.channels.find('name', CHANNEL_TO_SEND_LIVESTREAM_NOTIFICATIONS).send(okruStreamMessage, okruEmbed)
-                            .catch(Helpers.messageError);
+                        this.sendEmbed(okruStreamMessage, okruEmbed);
                         break;
             }
         }
