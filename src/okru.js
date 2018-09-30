@@ -50,13 +50,6 @@ class OkRu {
             .catch((error) => Helpers.apiError(PLATFORM, error));
     }
 
-    resolvedChannelPromises = (channelData) => {
-        if (!_.isEmpty(channelData)) {
-            _.forEach(channelData, (stream) => this.announceIfStreamIsNew(stream));
-        }
-        this.currentLiveStreams = channelData;
-    }
-
     updateStreams = () => {
         const flattenStreamsString = Helpers.getListOfStreams('okru');
         let currentList = [];
@@ -65,7 +58,7 @@ class OkRu {
 
         Promise.all(currentList)
             .then(_.compact)
-            .then(this.resolvedChannelPromises)
+            .then((channelData) => Helpers.retrieveLiveChannels(this, channelData))
             .catch((error) => Helpers.apiError(PLATFORM, error));
     }
 

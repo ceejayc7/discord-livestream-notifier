@@ -25,13 +25,6 @@ class Mixer {
             .catch((error) => Helpers.apiError(PLATFORM, error));
     }
 
-    resolvedChannelPromises = (channelData) => {
-        if (!_.isEmpty(channelData)) {
-            _.forEach(channelData, (stream) => this.announceIfStreamIsNew(stream));
-        }
-        this.currentLiveStreams = channelData;
-    }
-
     updateStreams = () => {
         const flattenStreamsString = Helpers.getListOfStreams('mixer');
         let currentList = [];
@@ -40,7 +33,7 @@ class Mixer {
 
         Promise.all(currentList)
             .then(this.reduceResponse)
-            .then(this.resolvedChannelPromises)
+            .then((channelData) => Helpers.retrieveLiveChannels(this, channelData))
             .catch((error) => Helpers.apiError(PLATFORM, error));
     }
 

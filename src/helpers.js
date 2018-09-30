@@ -38,6 +38,20 @@ function getListOfStreams(streamSite) {
     return _.uniq(_.compact(_.flatten(_.map(streamsDatabase, streamSite))));
 }
 
+function retrieveLiveChannels(className, channelData) {
+    if (!_.isEmpty(channelData)) {
+        _.forEach(channelData, (stream) => className.announceIfStreamIsNew(stream));
+    }
+    className.currentLiveStreams = channelData;
+}
+
+function announceIfStreamIsNew(stream) {
+    let currentLiveChannels = _.map(this.currentLiveStreams, 'name');
+    if(!_.includes(currentLiveChannels, stream.name)) {
+        this.streamEmitter.emit('event:streamlive', stream);
+    }
+}
+
 function getBlackjackBetsize(msg) {
     const betSizeSplit = msg.content.split(' ');
 
@@ -144,5 +158,7 @@ export const Helpers = {
     getRandomNumberInRange,
     getRandomNumberInRangeWithExponentialDistribution,
     printLeaderboard,
-    apiError
+    apiError,
+    retrieveLiveChannels,
+    announceIfStreamIsNew
 };

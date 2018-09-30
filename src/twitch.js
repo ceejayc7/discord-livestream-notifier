@@ -21,20 +21,13 @@ class Twitch {
         this.streamEmitter = streamEmitter;
     }
 
-    resolvedChannelPromises = (response) => {
-        if (!_.isEmpty(response)) {
-            _.forEach(response, (stream) => this.announceIfStreamIsNew(stream));
-        }
-        this.currentLiveStreams = response;
-    }
-
     updateStreams = () => {
         let flattenStreamsString = Helpers.getListOfStreams('twitch').toString();
         this.twitchAPIOptions.url = TWITCH_API_ENDPOINT+flattenStreamsString;
 
         request(this.twitchAPIOptions)
             .then(this.reduceResponse)
-            .then(this.resolvedChannelPromises)
+            .then((channelData) => Helpers.retrieveLiveChannels(this, channelData))
             .catch((error) => Helpers.apiError(PLATFORM, error));
     }
 
