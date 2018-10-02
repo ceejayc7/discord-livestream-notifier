@@ -40,7 +40,7 @@ class Bot {
         });
 
         this.client.on('error', (error) => {
-            console.log(`An error occured with the discord client. ${error.message}!`);
+            console.log(`An error occured with the discord client. \t Error name: ${error.name} \t Error message: ${error.message}`);
         });
 
         this.client.on('message', (msg) => {
