@@ -1,5 +1,5 @@
 import { Database } from './database.js';
-import { PLAYERS, LOTTO } from './constants_internal.js';
+import { PLAYERS, LOTTO, LOTTO_MAX } from './constants_internal.js';
 import { Helpers } from './helpers.js';
 import { MoneyManager } from './moneymanager.js';
 import _ from 'lodash';
@@ -66,7 +66,7 @@ function startLotto(msg) {
         winner = Helpers.getRandomElementFromList(eligibleLottoUsers);
 
     winnerObject = _.head(msg.guild.members.array().filter(user => { return user.user.username === winner }));
-    jackpot = Helpers.getRandomNumberInRange(1, maxBitcoinCount);
+    jackpot = Helpers.getRandomNumberInRange(1, LOTTO_MAX);
     isWinner = true;
 
     sendStartingMessage(msg, eligibleLottoUsers);
