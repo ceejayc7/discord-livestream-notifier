@@ -1,6 +1,6 @@
 import _ from 'lodash';
 import { WHITELISTED_SERVERS, SERVER_FOR_FISHING } from './constants.js';
-import { BOT_COMMANDS, SLOTS_MONEY, PLAYERS } from './constants_internal.js';
+import { BOT_COMMANDS, SLOTS_MONEY, PLAYERS, LOTTO_MAX } from './constants_internal.js';
 import { Database } from './database.js';
 import { Prob } from 'prob.js';
 
@@ -136,7 +136,7 @@ function printHelp(msg) {
     
     messageToSend += `${MARKDOWN}perl\n`;
     messageToSend += `!lotto\n${DIVIDER}\n`;
-    messageToSend += ` + A random user is awarded between 1 & the max number of Bitcoins that a user has (aka first on !lb)\n`;
+    messageToSend += ` + A random user is awarded between 1 & ${LOTTO_MAX.toLocaleString()} BTC\n`;
     messageToSend += ` + To become a lotto ticket holder, you must be online & on the leaderboard\n`;
     messageToSend += ` + Lotto cooldown is 24 hours\n`;
     messageToSend += ` + You have one minute to !claim after you have been selected as a winner`;
