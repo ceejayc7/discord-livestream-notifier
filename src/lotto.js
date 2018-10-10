@@ -34,32 +34,46 @@ function printWinner(msg) {
     winnerTimeout = setTimeout(() => missedClaim(msg), ONE_MINUTE);
 }
 
-function setEpochTimesInDatabase(msg) {
+function isNewLottoPlayer(msg, userLottoLottoKey) {
+    const userID = Database.getData(userLottoLottoKey);
+    if(userID === msg.author.id) {
+        return false;
+    }
+    return true;
+}
+
+function isEligibleLottoEvent(msg) {
     const timeToNextLottoKey = `/${msg.channel.guild.name}/${LOTTO}/timeToNextLotto`,
+        userLottoLottoKey = `/${msg.channel.guild.name}/${LOTTO}/userID`,
         timeToNextLotto = Database.getData(timeToNextLottoKey),
         currentTime = parseInt(new Date().getTime()/1000),
-        ONE_DAY = 86400;
+        ONE_DAY = 86400,
+        isNewPlayer = isNewLottoPlayer(msg, userLottoLottoKey);
 
     if(currentTime > timeToNextLotto) {
-        Database.writeData(timeToNextLottoKey, currentTime+ONE_DAY);
-        return true;
+        if(isNewPlayer) {
+            Database.writeData(timeToNextLottoKey, currentTime+ONE_DAY);
+            Database.writeData(userLottoLottoKey, msg.author.id);
+            return true;
+        }
+        else {
+            Helpers.sendMessageToChannel(msg, `Hey bro, give someone else a chance!`);
+        }
+    }
+    else {
+        Helpers.sendMessageToChannel(msg, `Sorry bro, !lotto is on cooldown. Try again later`);
     }
     return false;
 }
 
-function printCooldownMessage(msg) {
-    Helpers.sendMessageToChannel(msg, `Sorry bro, !lotto is on cooldown. Try again later`);
-}
-
 function startLotto(msg) {
-    if(!setEpochTimesInDatabase(msg)) {
-        printCooldownMessage(msg);
+    if(!isEligibleLottoEvent(msg)) {
         return;
     }
 
     const FIVE_SECONDS = 5000,
         serverData = Database.getData(`/${msg.channel.guild.name}/${PLAYERS}`),
-        maxBitcoinCount = _.first(_.orderBy(serverData, 'money', 'asc').reverse()).money,
+        //maxBitcoinCount = _.first(_.orderBy(serverData, 'money', 'asc').reverse()).money,
         onlineUsers = getOnlineUsersList(msg),
         serverUsers = _.map(serverData, 'name'),
         eligibleLottoUsers = _.intersection(onlineUsers, serverUsers),
