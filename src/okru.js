@@ -18,7 +18,7 @@ class OkRu {
         if($('.video-card_live.__active').length) {
             const streamUrl = OKRU_BASE_URL + $('.video-card_img-w a').attr('href'),
                 channelName = $('.compact-profile_img a').attr('href').match(/\d+/g).map(Number).toString(),
-                title = $('.video-card_img-w a').attr('title'),
+                title = $('.video-card_n-w a').attr('title'),
                 channelLogo = PROTOCOL + $('.channel-panel_img-w img').attr('src'),
                 preview = PROTOCOL + $('.video-card_img-w a img').attr('src'),
                 displayName = $('.compact-profile_a.ellip-i').text(),
