@@ -147,14 +147,6 @@ class Bot {
                     this.sendEmbed(streamMessage, embed);
                     break;
 
-                case "localhost":
-                    const LOCALHOST_VIEWER = 'http://71.202.41.190:8080/viewer/',
-                        messageToSend = `${stream.name} is now live - ${LOCALHOST_VIEWER}`;
-
-                    this.client.channels.find(channel => channel.name === CHANNEL_TO_SEND_LIVESTREAM_NOTIFICATIONS).send(messageToSend)
-                        .catch(Helpers.messageError);
-                    break;
-
                 case "mixer":
                     const beamStreamUrl = _.get(stream, 'url'),
                         beamImage = _.get(stream, 'preview'),

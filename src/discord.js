@@ -1,7 +1,6 @@
 import Bot from './bot.js';
 import Twitch from './twitch.js';
 import Youtube from './youtube.js';
-import Localhost from './localhost.js';
 import Mixer from './mixer.js';
 import OkRu from './okru.js';
 import { EventEmitter } from 'events';
@@ -27,13 +26,11 @@ function initBots() {
     });
 
     const twitch = new Twitch(streamEmitter),
-        localhost = new Localhost(streamEmitter),
         mixer = new Mixer(streamEmitter),
         youtube = new Youtube(streamEmitter),
         okru = new OkRu(streamEmitter);
 
     streamsList.push(twitch);
-    streamsList.push(localhost);
     streamsList.push(mixer);
     streamsList.push(youtube);
     streamsList.push(okru);
