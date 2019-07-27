@@ -10,7 +10,7 @@
     "watch": "babel --watch src/ -d dist/ --copy-files"
   },
   "engines": {
-    "node": "10.15.0"
+    "node": "10.16.0"
   },
   "dependencies": {
     "card-deck": "^1.0.0",
