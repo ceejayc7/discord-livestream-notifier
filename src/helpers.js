@@ -38,6 +38,12 @@ function getListOfStreams(streamSite) {
     return _.uniq(_.compact(_.flatten(_.map(streamsDatabase, streamSite))));
 }
 
+function addQueryParamToList(queryParam, listOfStreams) {
+    let newList = [];
+    listOfStreams.forEach((stream) => newList.push(`&${queryParam}=${stream}`));
+    return newList;
+}
+
 function retrieveLiveChannels(className, channelData) {
     if (!_.isEmpty(channelData)) {
         _.forEach(channelData, (stream) => className.announceIfStreamIsNew(stream));
@@ -150,6 +156,7 @@ export const Helpers = {
     sendMessageToChannel,
     messageError,
     getListOfStreams,
+    addQueryParamToList,
     printHelp,
     getBlackjackBetsize,
     printSpecifyBetSize,
