@@ -7,7 +7,8 @@
   "scripts": {
     "start": "node dist/discord.js",
     "build": "babel src/ -d dist/ --copy-files",
-    "watch": "babel --watch src/ -d dist/ --copy-files"
+    "watch": "babel --watch src/ -d dist/ --copy-files",
+    "debug": "babel-node --inspect-brk src/discord.js"
   },
   "engines": {
     "node": "10.16.0"
@@ -27,6 +28,7 @@
   "devDependencies": {
     "@babel/cli": "^7.5.5",
     "@babel/core": "^7.5.5",
+    "@babel/node": "^7.5.5",
     "@babel/plugin-proposal-class-properties": "^7.5.5",
     "@babel/preset-env": "^7.5.5"
   }
