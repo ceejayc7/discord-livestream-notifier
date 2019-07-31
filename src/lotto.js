@@ -7,7 +7,8 @@ import _ from 'lodash';
 let isWinner,
     winnerObject,
     winnerTimeout,
-    jackpot;
+    jackpot,
+    inLottoWaiting = false;
 
 function getOnlineUsersList(msg) {
     const onlineUsers = msg.guild.members.array().filter(user => { return user.presence.status !== "offline" && user.user.bot === false }),
@@ -30,6 +31,7 @@ function missedClaim(msg) {
 
 function printWinner(msg) {
     const ONE_MINUTE = 60000;
+    inLottoWaiting = false;
     Helpers.sendMessageToChannel(msg, `${winnerObject} has won!!! Type !claim to claim your jackpot`);
     winnerTimeout = setTimeout(() => missedClaim(msg), ONE_MINUTE);
 }
@@ -79,6 +81,7 @@ function startLotto(msg) {
         eligibleLottoUsers = _.intersection(onlineUsers, serverUsers),
         winner = Helpers.getRandomElementFromList(eligibleLottoUsers);
 
+    inLottoWaiting = true;
     winnerObject = _.head(msg.guild.members.array().filter(user => { return user.user.username === winner }));
     jackpot = Helpers.getRandomNumberInRange(1, LOTTO_MAX);
     isWinner = true;
@@ -93,10 +96,11 @@ function clearGlobals() {
     isWinner = false;
     winnerObject = null;
     jackpot = null;
+    inLottoWaiting = false;
 }
 
 function claimLotto(msg) {
-    if(isWinner && winnerObject.user.id === msg.author.id) {
+    if(isWinner && winnerObject.user.id === msg.author.id && !inLottoWaiting) {
         Helpers.sendMessageToChannel(msg, `Congrats to ${msg.author.username}. You have been awarded **${jackpot.toLocaleString()}** Bitcoins. See you next time bros`);
         MoneyManager.addMoney(msg, jackpot);
         clearGlobals();
