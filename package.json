@@ -18,10 +18,13 @@
     "cheerio": "^1.0.0-rc.2",
     "discord.js": "^11.3.2",
     "lodash": "^4.17.15",
+    "moment": "^2.24.0",
+    "moment-timezone": "^0.5.26",
     "node-json-db": "^0.7.5",
     "prob.js": "^1.0.6",
     "request": "^2.87.0",
     "request-promise": "^4.2.2",
+    "twitter": "^1.7.1",
     "uws": "^10.148.1",
     "weighted-random": "^0.1.0"
   },
