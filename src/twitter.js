@@ -24,6 +24,7 @@ const SHOWNAME_REGEX = /(\[LIVE\])\s(.+?)$/m;
 let client;
 
 if (
+  TWITTER_CONSTANTS &&
   TWITTER_CONSTANTS.consumer_key &&
   TWITTER_CONSTANTS.consumer_secret &&
   TWITTER_CONSTANTS.access_token_key &&

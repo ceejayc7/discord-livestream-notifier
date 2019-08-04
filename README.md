@@ -1,20 +1,25 @@
 ﻿# discord-livestream-notifier
+
 > Broadcasts when a livestream goes live to a discord channel. Also contains random fun casino games.
 
->Supports the following platforms:
->* Twitch.tv
->* Mixer
->* Youtube
->* Ok.RU (via web scraping)
+> Supports the following platforms:
+>
+> - Twitch.tv
+> - Mixer
+> - Youtube
+> - Ok.RU (via web scraping)
 
 ## Getting started
+
 Clone the repository and install npm dependencies
+
 ```bash
 $ git clone https://github.com/ceejayc7/discord-livestream-notifier.git
 $ npm install
 ```
 
 Add `src/db.json` to include the streams to be watching
+
 ```js
 {
     "SERVER_ONE_NAME":{
@@ -44,25 +49,36 @@ Add `src/db.json` to include the streams to be watching
 ```
 
 Add `src/constants.js` to include your tokens
+
 ```js
-export const TWITCH_CLIENT_ID='{YOUR_TWITCH_CLIENT_ID_HERE}',
-    MIXER_CLIENT_ID='{YOUR_MIXER_CLIENT_ID_HERE}',
-    YOUTUBE_KEY='{YOUR_YOUTUBE_API_KEY_HERE}',
-    DISCORD_TOKENS={
-        servername1: '{YOUR_DISCORD_TOKEN_HERE}',
-        servername2: '{YOUR_DISCORD_TOKEN_HERE}',
-        servername3: '{YOUR_DISCORD_TOKEN_HERE}',
-        servername4: '{YOUR_DISCORD_TOKEN_HERE}',
-    },
-    CHANNEL_TO_SEND_LIVESTREAM_NOTIFICATIONS='general',
-    WHITELISTED_SERVERS={
-        servername1 : {channelName},
-        servername2 : {channelName}
-    },
-    SERVER_FOR_FISHING={servername};
+export const TWITCH_CLIENT_ID = '{YOUR_TWITCH_CLIENT_ID_HERE}';
+export const MIXER_CLIENT_ID = '{YOUR_MIXER_CLIENT_ID_HERE}';
+export const YOUTUBE_KEY = '{YOUR_YOUTUBE_API_KEY_HERE}';
+export const DISCORD_TOKENS = {
+  servername1: '{YOUR_DISCORD_TOKEN_HERE}',
+  servername2: '{YOUR_DISCORD_TOKEN_HERE}',
+  servername3: '{YOUR_DISCORD_TOKEN_HERE}',
+  servername4: '{YOUR_DISCORD_TOKEN_HERE}'
+};
+export const CHANNEL_TO_SEND_LIVESTREAM_NOTIFICATIONS = 'general';
+export const WHITELISTED_SERVERS = {
+  servername1: { channelName },
+  servername2: { channelName }
+};
+export const SERVER_FOR_FISHING = { servername };
+// Used to scrape kpop data
+export const TWITTER = {
+  consumer_key: '{YOUR_CONSUMER_KEY}',
+  consumer_secret: '{YOUR_CONSUMER_SECRET}',
+  access_token_key: '{YOUR_ACCESS_TOKEN_KEY}',
+  access_token_secret: '{ACCESS_TOKEN_SECRET}'
+};
+// Boolean to send kpop data on okru streams
+export const SEND_KPOP_IPTV = true;
 ```
 
 Build and run
+
 ```bash
 $ npm run build
 $ npm run start
