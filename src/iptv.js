@@ -63,7 +63,9 @@ async function findValidStreams(pages, channelName) {
     const match = PLAYLIST_REGEX.exec(playlist);
     if (match && match.length) {
       const potentialValidStream = match[2];
-      const isValidStream = await isValidIPTVStream(potentialValidStream).catch(console.log);
+      const isValidStream = await isValidIPTVStream(potentialValidStream).catch(error =>
+        console.log(`[IPTV]: error finding valid streams. ${error}`)
+      );
       if (isValidStream) {
         validStreams.push({
           channel: match[1],
@@ -101,7 +103,7 @@ function scrapePageForLinks($) {
       );
     });
   } else {
-    console.log(`Unable to scrape page for ${KOREAN_IPTV_LINK}`);
+    console.log(`[IPTV]: Unable to scrape page`);
   }
   return pages;
 }
@@ -118,7 +120,7 @@ function getValidIPTVStreamsFromPage(linkToPage, channelName) {
     .then(scrapePageForLinks)
     .then(getAllPageData)
     .then(data => findValidStreams(data, channelName))
-    .catch(error => console.log(`Error when retrieving IPTV streams. ${error}`));
+    .catch(error => console.log(`[IPTV]: Error when retrieving IPTV streams. ${error}`));
 }
 
 export function getValidIPTVStreamsFromList(channelName) {

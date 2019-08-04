@@ -71,7 +71,7 @@ function parseDateTimeFromTweetText(text) {
 
     return datetimes;
   }
-  console.log(`Unable to parse tweet for time. Text: ${text}`);
+  console.log(`[Twitter]: Unable to parse tweet for time. Text: ${text}`);
   return null;
 }
 
@@ -90,7 +90,9 @@ export function getLatestTweets() {
   return new Promise((resolve, reject) => {
     client.get('statuses/user_timeline', params, (error, tweets) => {
       if (error) {
-        console.log(`Twitter API Error - message: ${error[0].message} - code: ${error[0].code}`);
+        console.log(
+          `[Twitter]: Twitter API Error - message: ${error[0].message} - code: ${error[0].code}`
+        );
         return reject(Error());
       }
       let filteredTweets = [];
