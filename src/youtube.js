@@ -48,7 +48,7 @@ class Youtube {
           preview: preview,
           title: _.get(stream, ['snippet', 'title']),
           url: url,
-          updated_at: _.get(stream, ['snippet', 'publishedAt'])
+          updated_at: new Date().toISOString()
         });
       }
     });
