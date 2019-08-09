@@ -128,7 +128,9 @@ export function getValidIPTVStreamsFromList(channelName) {
   for (const page of KOREAN_BLOG_LINKS_TO_QUERY_FOR) {
     promises.push(getValidIPTVStreamsFromPage(page, channelName));
   }
-  return Promise.all(promises).then(_.flatten);
+  return Promise.all(promises)
+    .then(_.flatten)
+    .then(data => _.uniqBy(data, 'stream'));
 }
 
 export function generateEventFromDayOfWeek() {
@@ -138,7 +140,9 @@ export function generateEventFromDayOfWeek() {
 
 export function createMessageToSend(event, listOfStreams) {
   if (listOfStreams && listOfStreams.length) {
-    let messageToSend = `>>> Generated streams for **${event.show}** on **${event.channel}**\n`;
+    let messageToSend = `>>> Generated IPTV streams for **${event.show}** on **${
+      event.channel
+    }**\n`;
     messageToSend += '```diff\n';
     for (const stream of listOfStreams) {
       messageToSend += `+  ${stream.stream}\n`;
