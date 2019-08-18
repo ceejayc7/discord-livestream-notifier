@@ -36,7 +36,13 @@ const kpopSchedule = [
 const KOREAN_BLOG_LINKS_TO_QUERY_FOR = [
   'https://www.extinf.com/category/korean/page/1/',
   'https://www.extinf.com/category/korean/page/2/',
-  'https://www.extinf.com/category/korean/page/3/'
+  'https://www.extinf.com/category/korean/page/3/',
+  'https://www.extinf.com/category/korean/page/4/',
+  'https://www.extinf.com/category/korean/page/5/',
+  'https://www.extinf.com/category/korean/page/6/',
+  'https://www.extinf.com/category/korean/page/7/',
+  'https://www.extinf.com/category/korean/page/8/',
+  'https://www.extinf.com/category/korean/page/9/'
 ];
 const IPTV_TIMEOUT_MS = 10000;
 
