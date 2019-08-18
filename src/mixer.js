@@ -1,7 +1,7 @@
-import { MIXER_CLIENT_ID } from './constants.js';
+import { MIXER_CLIENT_ID } from './constants';
 import _ from 'lodash';
 import request from 'request-promise';
-import { Helpers } from './helpers.js';
+import { Helpers } from './helpers';
 
 const PLATFORM = 'mixer',
   MIXER_API_ENDPOINT = 'https://mixer.com/api/v1/channels/';

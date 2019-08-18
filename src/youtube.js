@@ -1,7 +1,7 @@
 import _ from 'lodash';
 import request from 'request-promise';
-import { Helpers } from './helpers.js';
-import { YOUTUBE_KEY } from './constants.js';
+import { Helpers } from './helpers';
+import { YOUTUBE_KEY } from './constants';
 
 const PLATFORM = 'youtube',
   YOUTUBE_API_ENDPOINT = `https://www.googleapis.com/youtube/v3/search?part=snippet&type=video&eventType=live&key=${YOUTUBE_KEY}&channelId=`;

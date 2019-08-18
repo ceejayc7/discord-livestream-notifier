@@ -1,7 +1,7 @@
-import { Helpers } from './helpers.js';
+import { Helpers } from './helpers';
 import { MoneyManager } from './moneymanager';
-import { Database } from './database.js';
-import { PLAYERS } from './constants_internal.js';
+import { Database } from './database';
+import { PLAYERS } from './constants_internal';
 import _ from 'lodash';
 
 const weightedRandom = require('weighted-random'),

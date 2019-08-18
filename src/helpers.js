@@ -1,7 +1,7 @@
 import _ from 'lodash';
-import { WHITELISTED_SERVERS, SERVER_FOR_FISHING } from './constants.js';
-import { BOT_COMMANDS, SLOTS_MONEY, PLAYERS, LOTTO_MAX } from './constants_internal.js';
-import { Database } from './database.js';
+import { WHITELISTED_SERVERS, SERVER_FOR_FISHING } from './constants';
+import { BOT_COMMANDS, SLOTS_MONEY, PLAYERS, LOTTO_MAX } from './constants_internal';
+import { Database } from './database';
 import { Prob } from 'prob.js';
 
 function isWhitelistedChannel(msg) {

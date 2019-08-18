@@ -1,14 +1,14 @@
 import Discord from 'discord.js';
 import _ from 'lodash';
-import Blackjack from './blackjack.js';
-import { Slots } from './slots.js';
-import { Helpers } from './helpers.js';
-import { CHANNEL_TO_SEND_LIVESTREAM_NOTIFICATIONS, SEND_KPOP_IPTV } from './constants.js';
-import { BOT_COMMANDS } from './constants_internal.js';
-import { MoneyManager } from './moneymanager.js';
-import { Fish } from './fish.js';
-import { Lotto } from './lotto.js';
-import { onKpopCommand } from './kpop.js';
+import Blackjack from './blackjack';
+import { Slots } from './slots';
+import { Helpers } from './helpers';
+import { CHANNEL_TO_SEND_LIVESTREAM_NOTIFICATIONS, SEND_KPOP_IPTV } from './constants';
+import { BOT_COMMANDS } from './constants_internal';
+import { MoneyManager } from './moneymanager';
+import { Fish } from './fish';
+import { Lotto } from './lotto';
+import { onKpopCommand, parseGenerate } from './kpop';
 import {
   generateEventFromDayOfWeek,
   getValidIPTVStreamsFromList,
@@ -62,6 +62,8 @@ class Bot {
       if (_.startsWith(msg.content, BOT_COMMANDS.BLACKJACK.command)) {
         !this.blackjack.isGameStarted ? this.blackjack.initGame(msg) : false;
         return;
+      } else if (_.startsWith(msg.content, BOT_COMMANDS.GENERATE.command)) {
+        parseGenerate(msg);
       }
 
       // non-parameter commands
@@ -236,7 +238,7 @@ class Bot {
             const event = generateEventFromDayOfWeek();
             if (!_.isEmpty(event)) {
               getValidIPTVStreamsFromList(event.channel)
-                .then(streams => createMessageToSend(event, streams))
+                .then(streams => createMessageToSend(streams, event))
                 .then(this.sendEmbed)
                 .catch(error => console.log(`Error retriving IPTV streams. ${error}`));
             }

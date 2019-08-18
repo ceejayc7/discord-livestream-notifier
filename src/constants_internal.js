@@ -78,6 +78,10 @@ export const BOT_COMMANDS = {
     KPOP: {
       command: '!kpop',
       showOnHelp: false
+    },
+    GENERATE: {
+      command: '!generate',
+      showOnHelp: false
     }
   },
   SLOTS_MONEY = {

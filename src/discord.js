@@ -1,10 +1,10 @@
-import Bot from './bot.js';
-import Twitch from './twitch.js';
-import Youtube from './youtube.js';
-import Mixer from './mixer.js';
-import OkRu from './okru.js';
+import Bot from './bot';
+import Twitch from './twitch';
+import Youtube from './youtube';
+import Mixer from './mixer';
+import OkRu from './okru';
 import { EventEmitter } from 'events';
-import { DISCORD_TOKENS } from './constants.js';
+import { DISCORD_TOKENS } from './constants';
 import _ from 'lodash';
 
 const streamEmitter = new EventEmitter(),

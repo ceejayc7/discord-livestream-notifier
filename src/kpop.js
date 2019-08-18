@@ -1,6 +1,7 @@
 import { getLatestTweets, isEventInFuture } from './twitter';
 import _ from 'lodash';
-import { Helpers } from './helpers.js';
+import { Helpers } from './helpers';
+import { getValidIPTVStreamsFromList, createMessageToSend } from './iptv';
 
 const printKpopMessage = msg => firstTweet => {
   if (isEventInFuture(firstTweet)) {
@@ -15,7 +16,21 @@ const printKpopMessage = msg => firstTweet => {
   }
 };
 
-export function onKpopCommand(msg) {
+export const parseGenerate = msg => {
+  const message = msg.content;
+  const index = message.indexOf(' ');
+  if (index > 0) {
+    const channel = message.substring(index + 1);
+    Helpers.sendMessageToChannel(msg, `Generating streams for ${channel}...`);
+    getValidIPTVStreamsFromList(channel)
+      .then(createMessageToSend)
+      .then(streams => Helpers.sendMessageToChannel(msg, streams));
+  } else {
+    Helpers.sendMessageToChannel(msg, `!generate (channel name)`);
+  }
+};
+
+export const onKpopCommand = msg => {
   getLatestTweets()
     .then(_.first)
     .then(printKpopMessage(msg))
@@ -23,4 +38,4 @@ export function onKpopCommand(msg) {
       Helpers.sendMessageToChannel(msg, `Sorry bro, something went wrong`);
       console.log(`An error occured on !kpop. ${error}`);
     });
-}
+};

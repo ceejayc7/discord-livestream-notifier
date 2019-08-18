@@ -1,9 +1,9 @@
 import Deck from 'card-deck';
 import _ from 'lodash';
-import { Helpers } from './helpers.js';
-import { BOT_COMMANDS, BLACKJACK_MONEY } from './constants_internal.js';
-import { MoneyManager } from './moneymanager.js';
-import { Database } from './database.js';
+import { Helpers } from './helpers';
+import { BOT_COMMANDS, BLACKJACK_MONEY } from './constants_internal';
+import { MoneyManager } from './moneymanager';
+import { Database } from './database';
 
 class Blackjack {
   constructor() {

@@ -39,10 +39,7 @@ const KOREAN_BLOG_LINKS_TO_QUERY_FOR = [
   'https://www.extinf.com/category/korean/page/3/',
   'https://www.extinf.com/category/korean/page/4/',
   'https://www.extinf.com/category/korean/page/5/',
-  'https://www.extinf.com/category/korean/page/6/',
-  'https://www.extinf.com/category/korean/page/7/',
-  'https://www.extinf.com/category/korean/page/8/',
-  'https://www.extinf.com/category/korean/page/9/'
+  'https://www.extinf.com/category/korean/page/6/'
 ];
 const IPTV_TIMEOUT_MS = 10000;
 
@@ -63,7 +60,7 @@ function isValidIPTVStream(link) {
 async function findValidStreams(pages, channelName) {
   let validStreams = [];
   const PLAYLIST_REGEX_STRING = `(#EXTINF:-1,${channelName})\\s(http:\\/\\/\\S+)`;
-  const PLAYLIST_REGEX = new RegExp(PLAYLIST_REGEX_STRING, 'g');
+  const PLAYLIST_REGEX = new RegExp(PLAYLIST_REGEX_STRING, 'gi');
   for (const $ of pages) {
     const playlist = $('.entry-content p').text();
     const match = PLAYLIST_REGEX.exec(playlist);
@@ -144,11 +141,13 @@ export function generateEventFromDayOfWeek() {
   return _.first(_.filter(kpopSchedule, event => event.day === dayOfWeek));
 }
 
-export function createMessageToSend(event, listOfStreams) {
+export function createMessageToSend(listOfStreams, event) {
   if (listOfStreams && listOfStreams.length) {
-    let messageToSend = `>>> Generated IPTV streams for **${event.show}** on **${
-      event.channel
-    }**\n`;
+    let messageToSend = `>>> Generated IPTV streams`;
+    if (event) {
+      messageToSend += ` for **${event.show}** on **${event.channel}**`;
+    }
+    messageToSend += `\n`;
     messageToSend += '```diff\n';
     for (const stream of listOfStreams) {
       messageToSend += `+  ${stream.stream}\n`;
@@ -156,6 +155,9 @@ export function createMessageToSend(event, listOfStreams) {
     messageToSend += '```';
     return messageToSend;
   } else {
-    return `No streams found for **${event.show}** on **${event.channel}**`;
+    if (event) {
+      return `No streams found for **${event.show}** on **${event.channel}**`;
+    }
+    return `No streams found`;
   }
 }

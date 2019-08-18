@@ -1,5 +1,5 @@
 import JsonDB from 'node-json-db';
-import { PLAYERS } from './constants_internal.js';
+import { PLAYERS } from './constants_internal';
 
 const db = new JsonDB('slots_database', true, true);
 

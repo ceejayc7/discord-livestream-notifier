@@ -1,6 +1,6 @@
-import { TWITCH_CLIENT_ID } from './constants.js';
+import { TWITCH_CLIENT_ID } from './constants';
 import _ from 'lodash';
-import { Helpers } from './helpers.js';
+import { Helpers } from './helpers';
 import request from 'request-promise';
 
 const PLATFORM = 'twitch',

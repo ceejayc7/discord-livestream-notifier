@@ -1,7 +1,7 @@
-import { Helpers } from './helpers.js';
-import { Database } from './database.js';
+import { Helpers } from './helpers';
+import { Database } from './database';
 import _ from 'lodash';
-import { SLOTS_MONEY, MINIMUM_BITCOINS, PLAYERS } from './constants_internal.js';
+import { SLOTS_MONEY, MINIMUM_BITCOINS, PLAYERS } from './constants_internal';
 
 function printLeaderboard(msg) {
   const template = `%INDEX%. %PLAYERNAME% has %NUMBER% Bitcoins\n`,

@@ -1,7 +1,7 @@
-import { Database } from './database.js';
-import { PLAYERS, LOTTO, LOTTO_MAX } from './constants_internal.js';
-import { Helpers } from './helpers.js';
-import { MoneyManager } from './moneymanager.js';
+import { Database } from './database';
+import { PLAYERS, LOTTO, LOTTO_MAX } from './constants_internal';
+import { Helpers } from './helpers';
+import { MoneyManager } from './moneymanager';
 import _ from 'lodash';
 
 let isWinner,

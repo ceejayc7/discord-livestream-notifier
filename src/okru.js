@@ -1,7 +1,7 @@
 import _ from 'lodash';
 import request from 'request-promise';
 import cheerio from 'cheerio';
-import { Helpers } from './helpers.js';
+import { Helpers } from './helpers';
 
 const PLATFORM = 'okru',
   OKRU_BASE_URL = 'https://ok.ru',
