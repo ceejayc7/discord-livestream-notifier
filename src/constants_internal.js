@@ -84,17 +84,17 @@ export const BOT_COMMANDS = {
     showOnHelp: false
   }
 };
-const SLOTS_MONEY = {
+export const SLOTS_MONEY = {
   SLOTS_COST: 10,
   SLOTS_DOUBLE_REWARD: 100,
   SLOTS_TRIPLE_REWARD: 10000,
   SLOTS_QUADS_REWARD: 100000,
   SLOTS_WIN_REWARD: 100000000
 };
-const BLACKJACK_MONEY = {
+export const BLACKJACK_MONEY = {
   BLACKJACK_PAYOUT: 1.5
 };
-const LOTTO_MAX = 100000;
-const MINIMUM_BITCOINS = 10;
-const PLAYERS = 'players';
-const LOTTO = 'lotto';
+export const LOTTO_MAX = 100000;
+export const MINIMUM_BITCOINS = 10;
+export const PLAYERS = 'players';
+export const LOTTO = 'lotto';
