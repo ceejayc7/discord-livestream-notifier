@@ -20,14 +20,14 @@ class Blackjack {
 
   getActions = () => {
     let actions = `${BOT_COMMANDS.BLACKJACK_HIT.command} ${BOT_COMMANDS.BLACKJACK_DOUBLE.command} `;
-    //if(this.isSplitable()) {
+    // if(this.isSplitable()) {
     //    actions += `${BOT_COMMANDS.BLACKJACK_HIT.split} `;
-    //}
+    // }
     actions += `or ${BOT_COMMANDS.BLACKJACK_STAND.command}`;
     return actions;
   };
 
-  isBlackJack = hand => {
+  isBlackJack = (hand) => {
     return this.sumifyHand(hand) === 21;
   };
 
@@ -79,7 +79,7 @@ class Blackjack {
     this.timer = this.setTimer();
   };
 
-  initGame = msg => {
+  initGame = (msg) => {
     Database.initializeUser(msg.channel.guild.name, msg.author.username);
     const betSize = Helpers.getBlackjackBetsize(msg);
     if (betSize) {
@@ -107,8 +107,8 @@ class Blackjack {
         this.cardTypes.DISPLAY
       ).join(' ')}**`;
 
-    let isPlayerBlackjack = this.isBlackJack(this.playerHand),
-      isDealerBlackjack = this.isBlackJack(this.dealerHand);
+    const isPlayerBlackjack = this.isBlackJack(this.playerHand);
+    const isDealerBlackjack = this.isBlackJack(this.dealerHand);
 
     this.timer = this.setTimer();
     this.handleInitialBlackjack(initialMessageToSend, isPlayerBlackjack, isDealerBlackjack);
@@ -129,13 +129,13 @@ class Blackjack {
     clearTimeout(this.timer);
   };
 
-  isValidUser = msg => {
+  isValidUser = (msg) => {
     return this.msg.author.username === msg.author.username;
   };
 
-  endGame = dealerHandMessages => {
-    const playerHandValue = this.sumifyHand(this.playerHand),
-      dealerHandValue = this.sumifyHand(this.dealerHand);
+  endGame = (dealerHandMessages) => {
+    const playerHandValue = this.sumifyHand(this.playerHand);
+    const dealerHandValue = this.sumifyHand(this.dealerHand);
 
     if (dealerHandValue > 21) {
       dealerHandMessages += `\nDealer busts with **${dealerHandValue}**. ${
@@ -162,16 +162,16 @@ class Blackjack {
     this.clearGame();
   };
 
-  stand = msg => {
+  stand = (msg) => {
     if (!this.isValidUser(msg)) {
       return;
     }
     const playerHandValue = this.sumifyHand(this.playerHand);
-    let dealerHandValue = this.sumifyHand(this.dealerHand),
-      dealerHandMessages = `Dealer has **${this.stringifyHand(
-        this.dealerHand,
-        this.cardTypes.DISPLAY
-      ).join(' ')}**`;
+    let dealerHandValue = this.sumifyHand(this.dealerHand);
+    let dealerHandMessages = `Dealer has **${this.stringifyHand(
+      this.dealerHand,
+      this.cardTypes.DISPLAY
+    ).join(' ')}**`;
 
     if (dealerHandValue > 16) {
       this.endGame(dealerHandMessages);
@@ -190,13 +190,13 @@ class Blackjack {
     this.endGame(dealerHandMessages);
   };
 
-  hit = msg => {
+  hit = (msg) => {
     if (!this.isValidUser(msg)) {
       return;
     }
     this.clearAndResetTimer();
     this.playerHand.push(this.drawCards(1));
-    let messageToSend = `${this.msg.author.username} has **${this.stringifyHand(
+    const messageToSend = `${this.msg.author.username} has **${this.stringifyHand(
       this.playerHand,
       this.cardTypes.DISPLAY
     ).join(' ')}**`;
@@ -218,7 +218,7 @@ class Blackjack {
     }
   };
 
-  double = msg => {
+  double = (msg) => {
     if (!this.isValidUser(msg)) {
       return;
     }
@@ -228,7 +228,7 @@ class Blackjack {
     this.clearAndResetTimer();
     this.playerHand.push(this.drawCards(1));
     this.betSize = MoneyManager.getBalanceForBlackjackDouble(msg, this.betSize);
-    let messageToSend = `${this.msg.author.username} has **${this.stringifyHand(
+    const messageToSend = `${this.msg.author.username} has **${this.stringifyHand(
       this.playerHand,
       this.cardTypes.DISPLAY
     ).join(' ')}**`;
@@ -248,28 +248,28 @@ class Blackjack {
     }
   };
 
-  split = msg => {
+  split = (msg) => {
     // TODO (one day)
     if (!this.isValidUser(msg)) {
       return;
     }
-    //this.clearAndResetTimer();
+    // this.clearAndResetTimer();
   };
 
   stringifyHand = (hand, property) => {
-    return hand.map(card => card[property]);
+    return hand.map((card) => card[property]);
   };
 
-  numberOfAcesInHand = hand => {
-    let aces = _.countBy(hand, function(card) {
+  numberOfAcesInHand = (hand) => {
+    const aces = _.countBy(hand, function(card) {
       return card.display == 'A';
     });
     return _.get(aces, 'true', 0);
   };
 
-  sumifyHand = hand => {
-    let handValue = _.sum(this.stringifyHand(hand, this.cardTypes.VALUE)),
-      numberOfAces = this.numberOfAcesInHand(hand);
+  sumifyHand = (hand) => {
+    let handValue = _.sum(this.stringifyHand(hand, this.cardTypes.VALUE));
+    let numberOfAces = this.numberOfAcesInHand(hand);
 
     // aces logic
     while (numberOfAces > 0) {

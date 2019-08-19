@@ -3,8 +3,8 @@ import _ from 'lodash';
 import request from 'request-promise';
 import { Helpers } from './helpers';
 
-const PLATFORM = 'mixer',
-  MIXER_API_ENDPOINT = 'https://mixer.com/api/v1/channels/';
+const PLATFORM = 'mixer';
+const MIXER_API_ENDPOINT = 'https://mixer.com/api/v1/channels/';
 
 class Mixer {
   constructor(streamEmitter) {
@@ -12,7 +12,7 @@ class Mixer {
     this.streamEmitter = streamEmitter;
   }
 
-  getChannelPromises = url => {
+  getChannelPromises = (url) => {
     const httpOptions = {
       url: MIXER_API_ENDPOINT + url,
       json: true,
@@ -21,26 +21,26 @@ class Mixer {
         'content-type': 'application/json'
       }
     };
-    return request(httpOptions).catch(error => Helpers.apiError(PLATFORM, error));
+    return request(httpOptions).catch((error) => Helpers.apiError(PLATFORM, error));
   };
 
   updateStreams = () => {
     const flattenStreamsString = Helpers.getListOfStreams('mixer');
-    let currentList = [];
+    const currentList = [];
 
-    _.forEach(flattenStreamsString, stream => currentList.push(this.getChannelPromises(stream)));
+    _.forEach(flattenStreamsString, (stream) => currentList.push(this.getChannelPromises(stream)));
 
     Promise.all(currentList)
       .then(this.reduceResponse)
-      .then(channelData => Helpers.retrieveLiveChannels(this, channelData))
-      .catch(error => Helpers.apiError(PLATFORM, error));
+      .then((channelData) => Helpers.retrieveLiveChannels(this, channelData))
+      .catch((error) => Helpers.apiError(PLATFORM, error));
   };
 
-  reduceResponse = response => {
-    let reducedResponse = [];
+  reduceResponse = (response) => {
+    const reducedResponse = [];
     _.forOwn(response, function(stream) {
       if (stream && stream.online) {
-        let url = `https://mixer.com/${_.get(stream, 'token')}`;
+        const url = `https://mixer.com/${_.get(stream, 'token')}`;
         reducedResponse.push({
           platform: PLATFORM,
           name: _.get(stream, 'token'),
@@ -57,8 +57,8 @@ class Mixer {
     return reducedResponse;
   };
 
-  announceIfStreamIsNew = stream => {
-    let currentLiveChannels = _.map(this.currentLiveStreams, 'name');
+  announceIfStreamIsNew = (stream) => {
+    const currentLiveChannels = _.map(this.currentLiveStreams, 'name');
     if (!_.includes(currentLiveChannels, stream.name)) {
       this.streamEmitter.emit('event:streamlive', stream);
     }

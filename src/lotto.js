@@ -4,19 +4,19 @@ import { Helpers } from './helpers';
 import { MoneyManager } from './moneymanager';
 import _ from 'lodash';
 
-let isWinner,
-  winnerObject,
-  winnerTimeout,
-  jackpot,
-  inLottoWaiting = false;
+let isWinner;
+let winnerObject;
+let winnerTimeout;
+let jackpot;
+let inLottoWaiting = false;
 
 function getOnlineUsersList(msg) {
-  const onlineUsers = msg.guild.members.array().filter(user => {
-      return user.presence.status !== 'offline' && user.user.bot === false;
-    }),
-    onlineUsernameList = onlineUsers.map(user => {
-      return user.user.username;
-    });
+  const onlineUsers = msg.guild.members.array().filter((user) => {
+    return user.presence.status !== 'offline' && user.user.bot === false;
+  });
+  const onlineUsernameList = onlineUsers.map((user) => {
+    return user.user.username;
+  });
   return onlineUsernameList;
 }
 
@@ -49,12 +49,12 @@ function isNewLottoPlayer(msg, userLottoLottoKey) {
 }
 
 function isEligibleLottoEvent(msg) {
-  const timeToNextLottoKey = `/${msg.channel.guild.name}/${LOTTO}/timeToNextLotto`,
-    userLottoLottoKey = `/${msg.channel.guild.name}/${LOTTO}/userID`,
-    timeToNextLotto = Database.getData(timeToNextLottoKey),
-    currentTime = parseInt(new Date().getTime() / 1000),
-    ONE_DAY = 86400,
-    isNewPlayer = isNewLottoPlayer(msg, userLottoLottoKey);
+  const timeToNextLottoKey = `/${msg.channel.guild.name}/${LOTTO}/timeToNextLotto`;
+  const userLottoLottoKey = `/${msg.channel.guild.name}/${LOTTO}/userID`;
+  const timeToNextLotto = Database.getData(timeToNextLottoKey);
+  const currentTime = parseInt(new Date().getTime() / 1000);
+  const ONE_DAY = 86400;
+  const isNewPlayer = isNewLottoPlayer(msg, userLottoLottoKey);
 
   if (currentTime > timeToNextLotto) {
     if (isNewPlayer) {
@@ -75,17 +75,17 @@ function startLotto(msg) {
     return;
   }
 
-  const FIVE_SECONDS = 5000,
-    serverData = Database.getData(`/${msg.channel.guild.name}/${PLAYERS}`),
-    //maxBitcoinCount = _.first(_.orderBy(serverData, 'money', 'asc').reverse()).money,
-    onlineUsers = getOnlineUsersList(msg),
-    serverUsers = _.map(serverData, 'name'),
-    eligibleLottoUsers = _.intersection(onlineUsers, serverUsers),
-    winner = Helpers.getRandomElementFromList(eligibleLottoUsers);
+  const FIVE_SECONDS = 5000;
+  const serverData = Database.getData(`/${msg.channel.guild.name}/${PLAYERS}`);
+  // maxBitcoinCount = _.first(_.orderBy(serverData, 'money', 'asc').reverse()).money,
+  const onlineUsers = getOnlineUsersList(msg);
+  const serverUsers = _.map(serverData, 'name');
+  const eligibleLottoUsers = _.intersection(onlineUsers, serverUsers);
+  const winner = Helpers.getRandomElementFromList(eligibleLottoUsers);
 
   inLottoWaiting = true;
   winnerObject = _.head(
-    msg.guild.members.array().filter(user => {
+    msg.guild.members.array().filter((user) => {
       return user.user.username === winner;
     })
   );

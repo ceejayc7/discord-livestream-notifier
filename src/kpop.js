@@ -3,7 +3,7 @@ import _ from 'lodash';
 import { Helpers } from './helpers';
 import { getValidIPTVStreamsFromList, createMessageToSend } from './iptv';
 
-const printKpopMessage = msg => firstTweet => {
+const printKpopMessage = (msg) => (firstTweet) => {
   if (isEventInFuture(firstTweet)) {
     Helpers.sendMessageToChannel(
       msg,
@@ -16,7 +16,7 @@ const printKpopMessage = msg => firstTweet => {
   }
 };
 
-export const parseGenerate = msg => {
+export const parseGenerate = (msg) => {
   const message = msg.content;
   const index = message.indexOf(' ');
   if (index > 0) {
@@ -24,17 +24,17 @@ export const parseGenerate = msg => {
     Helpers.sendMessageToChannel(msg, `Generating streams for ${channel}...`);
     getValidIPTVStreamsFromList(channel)
       .then(createMessageToSend)
-      .then(streams => Helpers.sendMessageToChannel(msg, streams));
+      .then((streams) => Helpers.sendMessageToChannel(msg, streams));
   } else {
     Helpers.sendMessageToChannel(msg, `!generate (channel name)`);
   }
 };
 
-export const onKpopCommand = msg => {
+export const onKpopCommand = (msg) => {
   getLatestTweets()
     .then(_.first)
     .then(printKpopMessage(msg))
-    .catch(error => {
+    .catch((error) => {
       Helpers.sendMessageToChannel(msg, `Sorry bro, something went wrong`);
       console.log(`An error occured on !kpop. ${error}`);
     });

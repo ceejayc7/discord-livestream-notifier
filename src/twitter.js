@@ -95,21 +95,21 @@ export function getLatestTweets() {
         );
         return reject(Error());
       }
-      let filteredTweets = [];
+      const filteredTweets = [];
 
-      _.forEach(tweets, tweet => {
+      _.forEach(tweets, (tweet) => {
         const text = _.get(tweet, 'full_text', '');
         if (_.includes(text, TWEET_TEXT_TO_CHECK_FOR)) {
           const time = parseDateTimeFromTweetText(text);
-          const id_str = _.get(tweet, 'id_str', '');
+          const idStr = _.get(tweet, 'id_str', '');
           const showName = getShowname(text);
 
           filteredTweets.push({
             text,
             time,
-            id: id_str,
+            id: idStr,
             showName,
-            link: `${LINK_TO_TWEET}${id_str}`
+            link: `${LINK_TO_TWEET}${idStr}`
           });
         }
       });

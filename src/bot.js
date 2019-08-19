@@ -45,7 +45,7 @@ class Bot {
       this.isLoggedIn = true;
     });
 
-    this.client.on('error', error => {
+    this.client.on('error', (error) => {
       console.log(
         `An error occured with the discord client. \t Error name: ${error.name} \t Error message: ${
           error.message
@@ -53,12 +53,12 @@ class Bot {
       );
     });
 
-    this.client.on('message', msg => {
+    this.client.on('message', (msg) => {
       if (!Helpers.isWhitelistedChannel(msg)) {
         return;
       }
 
-      //parameter commands
+      // parameter commands
       if (_.startsWith(msg.content, BOT_COMMANDS.BLACKJACK.command)) {
         !this.blackjack.isGameStarted ? this.blackjack.initGame(msg) : false;
         return;
@@ -125,34 +125,34 @@ class Bot {
 
   sendEmbed = (streamMessage, embed = '') => {
     this.client.channels
-      .find(channel => channel.name === CHANNEL_TO_SEND_LIVESTREAM_NOTIFICATIONS)
+      .find((channel) => channel.name === CHANNEL_TO_SEND_LIVESTREAM_NOTIFICATIONS)
       .send(streamMessage, embed)
       .catch(Helpers.messageError);
   };
 
-  sendLiveMessage = stream => {
+  sendLiveMessage = (stream) => {
     if (this.isLoggedIn) {
       switch (stream.platform) {
         case 'twitch':
-          const streamUrl = _.get(stream, 'url'),
-            image = _.get(stream, 'preview'),
-            streamDisplayName = _.get(stream, 'displayName'),
-            logo = _.get(stream, 'logo'),
-            twitchLogo = 'https://cdn.discordapp.com/emojis/287637883022737418',
-            title = _.get(stream, 'title'),
-            game = _.get(stream, 'game'),
-            created_at = _.get(stream, 'created_at'),
-            viewers = _.get(stream, 'viewers').toLocaleString(),
-            streamMessage = `${streamDisplayName} is now live at ${streamUrl}`,
-            color = 6570404,
-            embed = new Discord.RichEmbed()
-              .setAuthor(streamDisplayName, twitchLogo, streamUrl)
-              .setColor(color)
-              .setImage(image)
-              .setTitle(title)
-              .setURL(streamUrl)
-              .setThumbnail(logo)
-              .setTimestamp(`${created_at}`);
+          const streamUrl = _.get(stream, 'url');
+          const image = _.get(stream, 'preview');
+          const streamDisplayName = _.get(stream, 'displayName');
+          const logo = _.get(stream, 'logo');
+          const twitchLogo = 'https://cdn.discordapp.com/emojis/287637883022737418';
+          const title = _.get(stream, 'title');
+          const game = _.get(stream, 'game');
+          const createdAt = _.get(stream, 'created_at');
+          const viewers = _.get(stream, 'viewers').toLocaleString();
+          const streamMessage = `${streamDisplayName} is now live at ${streamUrl}`;
+          const color = 6570404;
+          const embed = new Discord.RichEmbed()
+            .setAuthor(streamDisplayName, twitchLogo, streamUrl)
+            .setColor(color)
+            .setImage(image)
+            .setTitle(title)
+            .setURL(streamUrl)
+            .setThumbnail(logo)
+            .setTimestamp(`${createdAt}`);
 
           // game is an optional string and we cant pass in an empty field into an embed
           if (game) {
@@ -164,25 +164,25 @@ class Bot {
           break;
 
         case 'mixer':
-          const beamStreamUrl = _.get(stream, 'url'),
-            beamImage = _.get(stream, 'preview'),
-            beamName = _.get(stream, 'name'),
-            beamLogo = _.get(stream, 'logo'),
-            beamSiteLogo = 'https://puu.sh/B8Ude/262ffd918e.png',
-            beamTitle = _.get(stream, 'title'),
-            beamGame = _.get(stream, 'game'),
-            beamUpdatedAt = _.get(stream, 'updated_at'),
-            beamViewers = _.get(stream, 'viewers').toLocaleString(),
-            beamStreamMessage = `${beamName} is now live at ${beamStreamUrl}`,
-            beamColor = 2079469,
-            beamEmbed = new Discord.RichEmbed()
-              .setAuthor(beamName, beamSiteLogo, beamStreamUrl)
-              .setColor(beamColor)
-              .setImage(beamImage)
-              .setTitle(beamTitle)
-              .setURL(beamStreamUrl)
-              .setThumbnail(beamLogo)
-              .setTimestamp(`${beamUpdatedAt}`);
+          const beamStreamUrl = _.get(stream, 'url');
+          const beamImage = _.get(stream, 'preview');
+          const beamName = _.get(stream, 'name');
+          const beamLogo = _.get(stream, 'logo');
+          const beamSiteLogo = 'https://puu.sh/B8Ude/262ffd918e.png';
+          const beamTitle = _.get(stream, 'title');
+          const beamGame = _.get(stream, 'game');
+          const beamUpdatedAt = _.get(stream, 'updated_at');
+          const beamViewers = _.get(stream, 'viewers').toLocaleString();
+          const beamStreamMessage = `${beamName} is now live at ${beamStreamUrl}`;
+          const beamColor = 2079469;
+          const beamEmbed = new Discord.RichEmbed()
+            .setAuthor(beamName, beamSiteLogo, beamStreamUrl)
+            .setColor(beamColor)
+            .setImage(beamImage)
+            .setTitle(beamTitle)
+            .setURL(beamStreamUrl)
+            .setThumbnail(beamLogo)
+            .setTimestamp(`${beamUpdatedAt}`);
 
           // game is an optional string and we cant pass in an empty field into an embed
           if (beamGame) {
@@ -194,43 +194,43 @@ class Bot {
           break;
 
         case 'youtube':
-          const youtubeStreamUrl = _.get(stream, 'url'),
-            youtubeImage = _.get(stream, 'preview'),
-            youtubeName = _.get(stream, 'channelTitle'),
-            youtubeSiteLogo = 'https://puu.sh/Bucut/9645bccf23.png',
-            youtubeTitle = _.get(stream, 'title'),
-            youtubeUpdatedAt = _.get(stream, 'updated_at'),
-            youtubeStreamMessage = `${youtubeName} is now live at ${youtubeStreamUrl}`,
-            youtubeColor = 16711680,
-            youtubeEmbed = new Discord.RichEmbed()
-              .setAuthor(youtubeName, youtubeSiteLogo, youtubeStreamUrl)
-              .setColor(youtubeColor)
-              .setImage(youtubeImage)
-              .setTitle(youtubeTitle)
-              .setURL(youtubeStreamUrl)
-              .setTimestamp(`${youtubeUpdatedAt}`);
+          const youtubeStreamUrl = _.get(stream, 'url');
+          const youtubeImage = _.get(stream, 'preview');
+          const youtubeName = _.get(stream, 'channelTitle');
+          const youtubeSiteLogo = 'https://puu.sh/Bucut/9645bccf23.png';
+          const youtubeTitle = _.get(stream, 'title');
+          const youtubeUpdatedAt = _.get(stream, 'updated_at');
+          const youtubeStreamMessage = `${youtubeName} is now live at ${youtubeStreamUrl}`;
+          const youtubeColor = 16711680;
+          const youtubeEmbed = new Discord.RichEmbed()
+            .setAuthor(youtubeName, youtubeSiteLogo, youtubeStreamUrl)
+            .setColor(youtubeColor)
+            .setImage(youtubeImage)
+            .setTitle(youtubeTitle)
+            .setURL(youtubeStreamUrl)
+            .setTimestamp(`${youtubeUpdatedAt}`);
 
           this.sendEmbed(youtubeStreamMessage, youtubeEmbed);
           break;
 
         case 'okru':
-          const okruStreamUrl = _.get(stream, 'url'),
-            okruImage = _.get(stream, 'preview'),
-            okruName = _.get(stream, 'displayName'),
-            okruSiteLogo = 'http://puu.sh/Bz2nm/aacfb2c3d6.png',
-            okruTitle = _.get(stream, 'title'),
-            okruLogo = _.get(stream, 'logo'),
-            okruStreamMessage = `${okruName} is now live at ${okruStreamUrl}`,
-            okruColor = 16089632,
-            okruTimestamp = _.get(stream, 'updated_at'),
-            okruEmbed = new Discord.RichEmbed()
-              .setAuthor(okruName, okruSiteLogo, okruStreamUrl)
-              .setColor(okruColor)
-              .setImage(okruImage)
-              .setTitle(okruTitle)
-              .setThumbnail(okruLogo)
-              .setURL(okruStreamUrl)
-              .setTimestamp(okruTimestamp);
+          const okruStreamUrl = _.get(stream, 'url');
+          const okruImage = _.get(stream, 'preview');
+          const okruName = _.get(stream, 'displayName');
+          const okruSiteLogo = 'http://puu.sh/Bz2nm/aacfb2c3d6.png';
+          const okruTitle = _.get(stream, 'title');
+          const okruLogo = _.get(stream, 'logo');
+          const okruStreamMessage = `${okruName} is now live at ${okruStreamUrl}`;
+          const okruColor = 16089632;
+          const okruTimestamp = _.get(stream, 'updated_at');
+          const okruEmbed = new Discord.RichEmbed()
+            .setAuthor(okruName, okruSiteLogo, okruStreamUrl)
+            .setColor(okruColor)
+            .setImage(okruImage)
+            .setTitle(okruTitle)
+            .setThumbnail(okruLogo)
+            .setURL(okruStreamUrl)
+            .setTimestamp(okruTimestamp);
 
           this.sendEmbed(okruStreamMessage, okruEmbed);
 
@@ -238,9 +238,9 @@ class Bot {
             const event = generateEventFromDayOfWeek();
             if (!_.isEmpty(event)) {
               getValidIPTVStreamsFromList(event.channel)
-                .then(streams => createMessageToSend(streams, event))
+                .then((streams) => createMessageToSend(streams, event))
                 .then(this.sendEmbed)
-                .catch(error => console.log(`Error retriving IPTV streams. ${error}`));
+                .catch((error) => console.log(`Error retriving IPTV streams. ${error}`));
             }
           }
           break;

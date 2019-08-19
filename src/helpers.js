@@ -42,20 +42,20 @@ function getListOfStreams(streamSite) {
 }
 
 function addQueryParamToList(queryParam, listOfStreams) {
-  let newList = [];
-  listOfStreams.forEach(stream => newList.push(`&${queryParam}=${stream}`));
+  const newList = [];
+  listOfStreams.forEach((stream) => newList.push(`&${queryParam}=${stream}`));
   return newList;
 }
 
 function retrieveLiveChannels(className, channelData) {
   if (!_.isEmpty(channelData)) {
-    _.forEach(channelData, stream => className.announceIfStreamIsNew(stream));
+    _.forEach(channelData, (stream) => className.announceIfStreamIsNew(stream));
   }
   className.currentLiveStreams = channelData;
 }
 
 function announceIfStreamIsNew(stream) {
-  let currentLiveChannels = _.map(this.currentLiveStreams, 'name');
+  const currentLiveChannels = _.map(this.currentLiveStreams, 'name');
   if (!_.includes(currentLiveChannels, stream.name)) {
     this.streamEmitter.emit('event:streamlive', stream);
   }
@@ -95,8 +95,8 @@ function getRandomNumberInRangeWithExponentialDistribution(min) {
 }
 
 function printLeaderboard(msg, sortAttributes, printMessage, mapping, hideValue = undefined) {
-  const serverData = Database.getData(`/${msg.channel.guild.name}/${PLAYERS}`),
-    sorted = _.orderBy(serverData, sortAttributes, 'asc').reverse();
+  const serverData = Database.getData(`/${msg.channel.guild.name}/${PLAYERS}`);
+  const sorted = _.orderBy(serverData, sortAttributes, 'asc').reverse();
   let leaderboard = '```perl\n';
 
   _.forEach(sorted, (player, index) => {
@@ -116,14 +116,14 @@ function printLeaderboard(msg, sortAttributes, printMessage, mapping, hideValue 
 }
 
 function printHelp(msg) {
-  const MARKDOWN = '```',
-    DIVIDER = `=============================================`,
-    filteredBotCommands = _.map(
-      _.filter(BOT_COMMANDS, command => {
-        return command.showOnHelp;
-      }),
-      'command'
-    ).join(' ');
+  const MARKDOWN = '```';
+  const DIVIDER = `=============================================`;
+  const filteredBotCommands = _.map(
+    _.filter(BOT_COMMANDS, (command) => {
+      return command.showOnHelp;
+    }),
+    'command'
+  ).join(' ');
   let messageToSend = '';
 
   messageToSend += `Current commands: **${filteredBotCommands}**\n`;
@@ -141,7 +141,7 @@ function printHelp(msg) {
   messageToSend += ` - No min/max bet size\n`;
   messageToSend += ` + Blackjack pays 3:2\n`;
   // prettier-ignore
-  messageToSend += ` + Short-hand commands - ${BOT_COMMANDS.BLACKJACK_HIT_SHORTHAND.command} ${BOT_COMMANDS.BLACKJACK_DOUBLE_SHORTHAND.command} ${BOT_COMMANDS.BLACKJACK_STAND_SHORTHAND.command}\n`
+  messageToSend += ` + Short-hand commands - ${BOT_COMMANDS.BLACKJACK_HIT_SHORTHAND.command} ${BOT_COMMANDS.BLACKJACK_DOUBLE_SHORTHAND.command} ${BOT_COMMANDS.BLACKJACK_STAND_SHORTHAND.command}\n`;
   messageToSend += `${MARKDOWN}`;
 
   messageToSend += `${MARKDOWN}perl\n`;

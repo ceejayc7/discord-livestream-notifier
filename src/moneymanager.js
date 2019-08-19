@@ -1,15 +1,14 @@
 import { Helpers } from './helpers';
 import { Database } from './database';
-import _ from 'lodash';
 import { SLOTS_MONEY, MINIMUM_BITCOINS, PLAYERS } from './constants_internal';
 
 function printLeaderboard(msg) {
-  const template = `%INDEX%. %PLAYERNAME% has %NUMBER% Bitcoins\n`,
-    mapping = {
-      '%INDEX%': 'index+1',
-      '%PLAYERNAME%': 'player.name',
-      '%NUMBER%': 'player.money.toLocaleString()'
-    };
+  const template = `%INDEX%. %PLAYERNAME% has %NUMBER% Bitcoins\n`;
+  const mapping = {
+    '%INDEX%': 'index+1',
+    '%PLAYERNAME%': 'player.name',
+    '%NUMBER%': 'player.money.toLocaleString()'
+  };
   Helpers.printLeaderboard(msg, ['money'], template, mapping);
 }
 
@@ -33,7 +32,7 @@ function getUsersMoney(msg) {
 }
 
 function isEnoughMoney(msg, cost) {
-  let money = getUsersMoney(msg);
+  const money = getUsersMoney(msg);
   if (money >= cost) {
     return true;
   }
@@ -42,7 +41,7 @@ function isEnoughMoney(msg, cost) {
 
 function getBalanceForBlackjackDouble(msg, currentBetSize) {
   const DOUBLE = 2;
-  let usersMoney = getUsersMoney(msg);
+  const usersMoney = getUsersMoney(msg);
   if (currentBetSize * DOUBLE > usersMoney) {
     Helpers.sendMessageToChannel(
       msg,
@@ -58,8 +57,8 @@ function printNotEnoughMoney(msg) {
 }
 
 function removeMoney(msg, cost) {
-  let currentMoney = getUsersMoney(msg),
-    newMoney = currentMoney - cost;
+  const currentMoney = getUsersMoney(msg);
+  let newMoney = currentMoney - cost;
   if (newMoney < MINIMUM_BITCOINS) {
     newMoney = MINIMUM_BITCOINS;
   }
@@ -67,12 +66,12 @@ function removeMoney(msg, cost) {
 }
 
 function addMoney(msg, cost) {
-  let currentMoney = getUsersMoney(msg);
+  const currentMoney = getUsersMoney(msg);
   Database.writeData(getUserKey(msg), currentMoney + cost);
 }
 
 function updateSlotsMoney(msg, count) {
-  let currentMoney = getUsersMoney(msg);
+  const currentMoney = getUsersMoney(msg);
   switch (count) {
     case 2:
       Database.writeData(getUserKey(msg), currentMoney + SLOTS_MONEY.SLOTS_DOUBLE_REWARD);
