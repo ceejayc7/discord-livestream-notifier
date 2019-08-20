@@ -80,7 +80,7 @@ export const BOT_COMMANDS = {
     showOnHelp: false
   },
   GENERATE: {
-    command: '!generate',
+    command: '!iptv',
     showOnHelp: false
   }
 };

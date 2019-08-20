@@ -118,6 +118,10 @@ export function getLatestTweets() {
   });
 }
 
+export function filterForValidEvents(tweets) {
+  return _.filter(tweets, isEventInFuture);
+}
+
 export function isEventInFuture(tweet) {
   if (_.get(tweet, 'time.unix', 0) + VALID_TIME_OFFSET > moment().unix()) {
     return true;

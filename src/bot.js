@@ -8,7 +8,7 @@ import { BOT_COMMANDS } from './constants_internal';
 import { MoneyManager } from './moneymanager';
 import { Fish } from './fish';
 import { Lotto } from './lotto';
-import { onKpopCommand, parseGenerate } from './kpop';
+import { onKpopCommand, parseIPTVCommand } from './kpop';
 import {
   generateEventFromDayOfWeek,
   getValidIPTVStreamsFromList,
@@ -63,7 +63,7 @@ class Bot {
         !this.blackjack.isGameStarted ? this.blackjack.initGame(msg) : false;
         return;
       } else if (_.startsWith(msg.content, BOT_COMMANDS.GENERATE.command)) {
-        parseGenerate(msg);
+        parseIPTVCommand(msg);
       }
 
       // non-parameter commands

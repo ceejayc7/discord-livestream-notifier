@@ -1,38 +1,39 @@
-import { getLatestTweets, isEventInFuture } from './twitter';
+import { getLatestTweets, filterForValidEvents } from './twitter';
 import _ from 'lodash';
 import { Helpers } from './helpers';
 import { getValidIPTVStreamsFromList, createMessageToSend } from './iptv';
 
-const printKpopMessage = (msg) => (firstTweet) => {
-  if (isEventInFuture(firstTweet)) {
+const printKpopMessage = (msg) => (tweets) => {
+  if (_.isEmpty(tweets)) {
+    Helpers.sendMessageToChannel(msg, `kpop is dead`);
+  }
+  for (const tweet of tweets) {
     Helpers.sendMessageToChannel(
       msg,
-      `${firstTweet.showName}\n> PST: **${firstTweet.time.pst.time}** on ${
-        firstTweet.time.pst.date
-      }\n> EST: **${firstTweet.time.est.time}** on ${firstTweet.time.est.date}\n${firstTweet.link}`
+      `${tweet.showName}\n> PST: **${tweet.time.pst.time}** on ${tweet.time.pst.date}\n> EST: **${
+        tweet.time.est.time
+      }** on ${tweet.time.est.date}\n${tweet.link}`
     );
-  } else {
-    Helpers.sendMessageToChannel(msg, `kpop is dead`);
   }
 };
 
-export const parseGenerate = (msg) => {
-  const message = msg.content;
-  const index = message.indexOf(' ');
+export const parseIPTVCommand = (msg) => {
+  const { content } = msg;
+  const index = content.indexOf(' ');
   if (index > 0) {
-    const channel = message.substring(index + 1);
+    const channel = content.substring(index + 1);
     Helpers.sendMessageToChannel(msg, `Generating streams for ${channel}...`);
     getValidIPTVStreamsFromList(channel)
       .then(createMessageToSend)
       .then((streams) => Helpers.sendMessageToChannel(msg, streams));
   } else {
-    Helpers.sendMessageToChannel(msg, `!generate (channel name)`);
+    Helpers.sendMessageToChannel(msg, `Usage: !iptv (channel name)`);
   }
 };
 
 export const onKpopCommand = (msg) => {
   getLatestTweets()
-    .then(_.first)
+    .then(filterForValidEvents)
     .then(printKpopMessage(msg))
     .catch((error) => {
       Helpers.sendMessageToChannel(msg, `Sorry bro, something went wrong`);
