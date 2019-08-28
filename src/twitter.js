@@ -90,9 +90,7 @@ export function getLatestTweets() {
   return new Promise((resolve, reject) => {
     client.get('statuses/user_timeline', params, (error, tweets) => {
       if (error) {
-        console.log(
-          `[Twitter]: Twitter API Error - message: ${error[0].message} - code: ${error[0].code}`
-        );
+        console.log(`[Twitter]: Twitter API Error - error: ${error}`);
         return reject(Error());
       }
       const filteredTweets = [];
