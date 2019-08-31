@@ -147,7 +147,6 @@ export function createMessageToSend(listOfStreams, event) {
     if (event) {
       messageToSend += ` for **${event.show}** on **${event.channel}**`;
     }
-    messageToSend += `\n`;
     messageToSend += '```diff\n';
     for (const stream of listOfStreams) {
       messageToSend += `+  ${stream.stream}\n`;
