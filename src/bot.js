@@ -47,9 +47,7 @@ class Bot {
 
     this.client.on('error', (error) => {
       console.log(
-        `An error occured with the discord client. \t Error name: ${error.name} \t Error message: ${
-          error.message
-        }`
+        `An error occured with the discord client. \t Error name: ${error.name} \t Error message: ${error.message}`
       );
     });
 
@@ -128,6 +126,23 @@ class Bot {
       .find((channel) => channel.name === CHANNEL_TO_SEND_LIVESTREAM_NOTIFICATIONS)
       .send(streamMessage, embed)
       .catch(Helpers.messageError);
+  };
+
+  sendIPTVStreams = async () => {
+    if (SEND_KPOP_IPTV) {
+      const event = generateEventFromDayOfWeek();
+      if (!_.isEmpty(event)) {
+        for (const channel of event.channel) {
+          try {
+            const streams = await getValidIPTVStreamsFromList(channel);
+            const messageToSend = createMessageToSend(streams, event.show, channel);
+            this.sendEmbed(messageToSend);
+          } catch (error) {
+            console.log(`Error retriving IPTV streams. ${error}`);
+          }
+        }
+      }
+    }
   };
 
   sendLiveMessage = (stream) => {
@@ -233,16 +248,7 @@ class Bot {
             .setTimestamp(okruTimestamp);
 
           this.sendEmbed(okruStreamMessage, okruEmbed);
-
-          if (SEND_KPOP_IPTV) {
-            const event = generateEventFromDayOfWeek();
-            if (!_.isEmpty(event)) {
-              getValidIPTVStreamsFromList(event.channel)
-                .then((streams) => createMessageToSend(streams, event))
-                .then(this.sendEmbed)
-                .catch((error) => console.log(`Error retriving IPTV streams. ${error}`));
-            }
-          }
+          this.sendIPTVStreams();
           break;
       }
     }

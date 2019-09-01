@@ -8,28 +8,32 @@ const kpopSchedule = [
   {
     day: 'Tuesday',
     show: 'The Show',
-    channel: 'SBS MTV'
+    channel: ['SBS MTV', 'SBS Fun E']
   },
-  { day: 'Wednesday', show: 'Show Champion', channel: 'MBC Music' },
+  {
+    day: 'Wednesday',
+    show: 'Show Champion',
+    channel: ['MBC Music', 'MBC Every1']
+  },
   {
     day: 'Thursday',
     show: 'M Countdown',
-    channel: 'Mnet'
+    channel: ['Mnet']
   },
   {
     day: 'Friday',
     show: 'Music Bank',
-    channel: 'KBS2'
+    channel: ['KBS2']
   },
   {
     day: 'Saturday',
     show: 'Music Core',
-    channel: 'MBC'
+    channel: ['MBC']
   },
   {
     day: 'Sunday',
     show: 'Inkigayo',
-    channel: 'SBS'
+    channel: ['SBS']
   }
 ];
 
@@ -141,11 +145,11 @@ export function generateEventFromDayOfWeek() {
   return _.first(_.filter(kpopSchedule, (event) => event.day === dayOfWeek));
 }
 
-export function createMessageToSend(listOfStreams, event) {
+export function createMessageToSend(listOfStreams, showName, channelName) {
   if (listOfStreams && listOfStreams.length) {
     let messageToSend = `>>> Generated IPTV streams`;
-    if (event) {
-      messageToSend += ` for **${event.show}** on **${event.channel}**`;
+    if (showName && channelName) {
+      messageToSend += ` for **${showName}** on **${channelName}**`;
     }
     messageToSend += '```diff\n';
     for (const stream of listOfStreams) {
@@ -154,8 +158,8 @@ export function createMessageToSend(listOfStreams, event) {
     messageToSend += '```';
     return messageToSend;
   } else {
-    if (event) {
-      return `No streams found for **${event.show}** on **${event.channel}**`;
+    if (showName && channelName) {
+      return `No streams found for **${showName}** on **${channelName}**`;
     }
     return `No streams found`;
   }
