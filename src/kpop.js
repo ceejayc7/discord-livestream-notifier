@@ -13,11 +13,8 @@ const printKpopMessage = (msg) => async (tweets) => {
       msg,
       `${tweet.showName}\n> PST: **${tweet.time.pst.time}** on ${tweet.time.pst.date}\n> EST: **${
         tweet.time.est.time
-      }** on ${tweet.time.est.date}\n${isProtected ? '' : tweet.link}`
+      }** on ${tweet.time.est.date}\n${isProtected ? '```' + tweet.text + '```' : tweet.link}`
     );
-    if (isProtected) {
-      Helpers.sendMessageToChannel(msg, '```' + tweet.text + '```');
-    }
   }
 };
 
