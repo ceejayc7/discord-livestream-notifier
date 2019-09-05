@@ -126,3 +126,19 @@ export function isEventInFuture(tweet) {
   }
   return false;
 }
+
+export function isTwitterProtected() {
+  if (!client) {
+    return Promise.resolve();
+  }
+  const parameters = { screen_name: TWITTER_HANDLE };
+  return new Promise((resolve, reject) => {
+    client.get('users/show', parameters, (error, userInfo) => {
+      if (error) {
+        console.log(`[Twitter]: Twitter API Error - error: ${error}`);
+        return reject(Error());
+      }
+      return resolve(_.get(userInfo, 'protected'));
+    });
+  });
+}

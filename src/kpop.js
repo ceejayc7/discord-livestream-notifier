@@ -1,19 +1,23 @@
-import { getLatestTweets, filterForValidEvents } from './twitter';
+import { getLatestTweets, filterForValidEvents, isTwitterProtected } from './twitter';
 import _ from 'lodash';
 import { Helpers } from './helpers';
 import { getValidIPTVStreamsFromList, createMessageToSend } from './iptv';
 
-const printKpopMessage = (msg) => (tweets) => {
+const printKpopMessage = (msg) => async (tweets) => {
   if (_.isEmpty(tweets)) {
     Helpers.sendMessageToChannel(msg, `kpop is dead`);
   }
+  const isProtected = await isTwitterProtected();
   for (const tweet of tweets) {
     Helpers.sendMessageToChannel(
       msg,
       `${tweet.showName}\n> PST: **${tweet.time.pst.time}** on ${tweet.time.pst.date}\n> EST: **${
         tweet.time.est.time
-      }** on ${tweet.time.est.date}\n${tweet.link}`
+      }** on ${tweet.time.est.date}\n${isProtected ? '' : tweet.link}`
     );
+    if (isProtected) {
+      Helpers.sendMessageToChannel(msg, '```' + tweet.text + '```');
+    }
   }
 };
 

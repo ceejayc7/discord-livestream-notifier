@@ -8,7 +8,7 @@ const kpopSchedule = [
   {
     day: 'Tuesday',
     show: 'The Show',
-    channel: ['SBS MTV', 'SBS Fun E']
+    channel: ['SBS MTV', 'SBS Fun E', 'SBS Plus']
   },
   {
     day: 'Wednesday',
