@@ -3,6 +3,7 @@ import Twitch from './twitch';
 import Youtube from './youtube';
 import Mixer from './mixer';
 import OkRu from './okru';
+import Vlive from './vlive';
 import { EventEmitter } from 'events';
 import { DISCORD_TOKENS } from './constants';
 import _ from 'lodash';
@@ -29,11 +30,13 @@ function initBots() {
   const mixer = new Mixer(streamEmitter);
   const youtube = new Youtube(streamEmitter);
   const okru = new OkRu(streamEmitter);
+  const vlive = new Vlive(streamEmitter);
 
   streamsList.push(twitch);
   streamsList.push(mixer);
   streamsList.push(youtube);
   streamsList.push(okru);
+  streamsList.push(vlive);
 }
 
 function setTimers() {

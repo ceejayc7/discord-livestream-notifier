@@ -250,6 +250,28 @@ class Bot {
           this.sendEmbed(okruStreamMessage, okruEmbed);
           this.sendIPTVStreams();
           break;
+
+        case 'vlive':
+          const vliveStreamUrl = _.get(stream, 'url');
+          const vliveImage = _.get(stream, 'preview');
+          const vliveName = _.get(stream, 'displayName');
+          const vliveSiteLogo = 'https://i.imgur.com/AaJHKAB.png';
+          const vliveTitle = _.get(stream, 'title');
+          const vliveLogo = _.get(stream, 'logo');
+          const vliveStreamMessage = `${vliveName} is now live at ${vliveStreamUrl}`;
+          const vliveColor = 5568511;
+          const vliveTimestamp = _.get(stream, 'updated_at');
+          const vliveEmbed = new Discord.RichEmbed()
+            .setAuthor(vliveName, vliveSiteLogo, vliveStreamUrl)
+            .setColor(vliveColor)
+            .setImage(vliveImage)
+            .setTitle(vliveTitle)
+            .setThumbnail(vliveLogo)
+            .setURL(vliveStreamUrl)
+            .setTimestamp(vliveTimestamp);
+
+          this.sendEmbed(vliveStreamMessage, vliveEmbed);
+          break;
       }
     }
   };
