@@ -8,6 +8,7 @@ const APP_ID = '8c6cc7b45d2568fb668be6e05b6e5a3b';
 const CHANNEL_ID = '{CHANNEL_ID}';
 const VLIVE_API_ENDPOINT = `https://api-vfan.vlive.tv/v2/channel.${CHANNEL_ID}/home?gcc=US&locale=en&app_id=${APP_ID}&limit=20`;
 const VLIVE_VIDEO = 'https://www.vlive.tv/video/';
+const IMG_REGEX = new RegExp(/(http(s?):)([/|.|\w|\s|-])*\.(?:jpg|gif|png)/, 'gi');
 
 class Vlive {
   constructor(streamEmitter) {
@@ -53,12 +54,21 @@ class Vlive {
           .tz(_.get(stream, 'onAirStartAt'), 'YYYY-MM-DD HH:mm:ss', 'Asia/Seoul')
           .tz('America/Los_Angeles')
           .toISOString();
+
+        let thumbnail = _.get(stream, 'thumbnail');
+        if (!IMG_REGEX.test(thumbnail)) {
+          const width = '1024';
+          const height = '576';
+          // i dont know why we have to do this but we do
+          thumbnail = `https://dthumb-phinf.pstatic.net/?src="${thumbnail}?type=ff${width}_${height}"&twidth=${width}&theight=${height}&opts=12`;
+        }
+
         reducedResponse.push({
           platform: PLATFORM,
           name: _.get(stream, 'id'),
           displayName: _.get(stream, 'representChannelName'),
           logo: _.get(stream, 'representChannelProfileImg'),
-          preview: _.get(stream, 'thumbnail'),
+          preview: thumbnail,
           title: _.get(stream, 'title'),
           url: VLIVE_VIDEO + _.get(stream, 'videoSeq'),
           updated_at: timestamp
