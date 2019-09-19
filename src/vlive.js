@@ -60,7 +60,9 @@ class Vlive {
           const width = '1024';
           const height = '576';
           // i dont know why we have to do this but we do
-          thumbnail = `https://dthumb-phinf.pstatic.net/?src="${thumbnail}?type=ff${width}_${height}"&twidth=${width}&theight=${height}&opts=12`;
+          thumbnail = encodeURI(
+            `https://dthumb-phinf.pstatic.net/?src="${thumbnail}?type=ff${width}_${height}"&twidth=${width}&theight=${height}&opts=12`
+          );
         }
 
         reducedResponse.push({
