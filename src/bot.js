@@ -3,17 +3,12 @@ import _ from 'lodash';
 import Blackjack from './blackjack';
 import { Slots } from './slots';
 import { Helpers } from './helpers';
-import { CHANNEL_TO_SEND_LIVESTREAM_NOTIFICATIONS, SEND_KPOP_IPTV } from './constants';
+import { CHANNEL_TO_SEND_LIVESTREAM_NOTIFICATIONS } from './constants';
 import { BOT_COMMANDS } from './constants_internal';
 import { MoneyManager } from './moneymanager';
 import { Fish } from './fish';
 import { Lotto } from './lotto';
 import { onKpopCommand, parseIPTVCommand } from './kpop';
-import {
-  generateEventFromDayOfWeek,
-  getValidIPTVStreamsFromList,
-  createMessageToSend
-} from './iptv';
 
 class Bot {
   constructor(loginToken) {
@@ -128,23 +123,6 @@ class Bot {
       .catch(Helpers.messageError);
   };
 
-  sendIPTVStreams = async () => {
-    if (SEND_KPOP_IPTV) {
-      const event = generateEventFromDayOfWeek();
-      if (!_.isEmpty(event)) {
-        for (const channel of event.channel) {
-          try {
-            const streams = await getValidIPTVStreamsFromList(channel);
-            const messageToSend = createMessageToSend(streams, event.show, channel);
-            this.sendEmbed(messageToSend);
-          } catch (error) {
-            console.log(`Error retriving IPTV streams. ${error}`);
-          }
-        }
-      }
-    }
-  };
-
   sendLiveMessage = (stream) => {
     if (this.isLoggedIn) {
       switch (stream.platform) {
@@ -248,7 +226,6 @@ class Bot {
             .setTimestamp(okruTimestamp);
 
           this.sendEmbed(okruStreamMessage, okruEmbed);
-          this.sendIPTVStreams();
           break;
 
         case 'vlive':

@@ -4,9 +4,11 @@ import Youtube from './youtube';
 import Mixer from './mixer';
 import OkRu from './okru';
 import Vlive from './vlive';
+import { getFutureEvents, sendIPTVStreams } from './iptv';
 import { EventEmitter } from 'events';
-import { DISCORD_TOKENS } from './constants';
+import { DISCORD_TOKENS, SEND_KPOP_IPTV } from './constants';
 import _ from 'lodash';
+import moment from 'moment-timezone';
 
 const streamEmitter = new EventEmitter();
 const serverDatabase = require('./db.json');
@@ -39,6 +41,24 @@ function initBots() {
   streamsList.push(vlive);
 }
 
+function setMusicShowTimers() {
+  const MS_IN_1_WEEK = 604800000;
+  const OFFSET_IN_SECONDS = 900;
+  const server = _.get(discordBots, SEND_KPOP_IPTV.server);
+  if (!_.isEmpty(SEND_KPOP_IPTV) && server) {
+    const futureEvents = getFutureEvents();
+    futureEvents.forEach((event) => {
+      const channelToSendTo = server.client.channels.get(SEND_KPOP_IPTV.channelId);
+      let timeWhenEventStarts = (event.time() - moment.tz().unix() - OFFSET_IN_SECONDS) * 1000;
+      if (timeWhenEventStarts < 0) {
+        timeWhenEventStarts = 0;
+      }
+      setTimeout(() => sendIPTVStreams(event, channelToSendTo), timeWhenEventStarts);
+    });
+    setTimeout(setMusicShowTimers, MS_IN_1_WEEK);
+  }
+}
+
 function setTimers() {
   const TIME_TO_PING_API = 300000;
   const FIRST_API_PING = 30000;
@@ -46,6 +66,7 @@ function setTimers() {
     setInterval(stream.updateStreams, TIME_TO_PING_API); // continously call API refresh every 5 minutes
     setTimeout(stream.updateStreams, FIRST_API_PING); // on inital timer set, call API after 30 seconds to allow discord bots to log in
   });
+  setTimeout(setMusicShowTimers, FIRST_API_PING); // wait for bot login before setting music show timers
 }
 
 initBots();

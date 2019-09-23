@@ -4,36 +4,45 @@ import rq from 'request-promise';
 import _ from 'lodash';
 import moment from 'moment-timezone';
 
+const TIME_FORMAT = 'dddd h:mmA';
+const TIMEZONE = 'Asia/Seoul';
+
 const kpopSchedule = [
   {
     day: 'Tuesday',
     show: 'The Show',
-    channel: ['SBS MTV', 'SBS Fun E', 'SBS Plus']
+    channel: ['SBS MTV', 'SBS Fun E', 'SBS Plus'],
+    time: () => moment.tz('Tuesday 6:00PM', TIME_FORMAT, TIMEZONE).unix()
   },
   {
     day: 'Wednesday',
     show: 'Show Champion',
-    channel: ['MBC Music', 'MBC Every1']
+    channel: ['MBC Music', 'MBC Every1'],
+    time: () => moment.tz('Wednesday 6:00PM', TIME_FORMAT, TIMEZONE).unix()
   },
   {
     day: 'Thursday',
     show: 'M Countdown',
-    channel: ['Mnet']
+    channel: ['Mnet'],
+    time: () => moment.tz('Thursday 6:00PM', TIME_FORMAT, TIMEZONE).unix()
   },
   {
     day: 'Friday',
     show: 'Music Bank',
-    channel: ['KBS2']
+    channel: ['KBS2'],
+    time: () => moment.tz('Friday 5:00PM', TIME_FORMAT, TIMEZONE).unix()
   },
   {
     day: 'Saturday',
     show: 'Music Core',
-    channel: ['MBC']
+    channel: ['MBC'],
+    time: () => moment.tz('Saturday 11:30PM', TIME_FORMAT, TIMEZONE).unix()
   },
   {
     day: 'Sunday',
     show: 'Inkigayo',
-    channel: ['SBS']
+    channel: ['SBS'],
+    time: () => moment.tz('Sunday 11:50PM', TIME_FORMAT, TIMEZONE).unix()
   }
 ];
 
@@ -140,11 +149,6 @@ export function getValidIPTVStreamsFromList(channelName) {
     .then((data) => _.uniqBy(data, 'stream'));
 }
 
-export function generateEventFromDayOfWeek() {
-  const dayOfWeek = moment.tz('Asia/Seoul').format('dddd');
-  return _.first(_.filter(kpopSchedule, (event) => event.day === dayOfWeek));
-}
-
 export function createMessageToSend(listOfStreams, showName, channelName) {
   if (listOfStreams && listOfStreams.length) {
     let messageToSend = `>>> Generated IPTV streams`;
@@ -162,5 +166,23 @@ export function createMessageToSend(listOfStreams, showName, channelName) {
       return `No streams found for **${showName}** on **${channelName}**`;
     }
     return `No streams found`;
+  }
+}
+
+export function getFutureEvents() {
+  const currentEpoch = moment.tz().unix();
+  return _.filter(kpopSchedule, (event) => event.time() >= currentEpoch);
+}
+
+export async function sendIPTVStreams(event, channelToSendTo) {
+  for (const channel of event.channel) {
+    try {
+      const streams = await getValidIPTVStreamsFromList(channel);
+      const messageToSend = createMessageToSend(streams, event.show, channel);
+      console.log(`[IPTV] Sending ${event.show} on ${channel}`);
+      channelToSendTo.send(messageToSend);
+    } catch (error) {
+      console.log(`Error retriving IPTV streams. ${error}`);
+    }
   }
 }
