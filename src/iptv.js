@@ -7,7 +7,7 @@ import moment from 'moment-timezone';
 const TIME_FORMAT = 'dddd h:mmA';
 const TIMEZONE = 'Asia/Seoul';
 
-const kpopSchedule = [
+export const kpopSchedule = [
   {
     day: 'Tuesday',
     show: 'The Show',
