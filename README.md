@@ -8,6 +8,7 @@
 > - Mixer
 > - Youtube
 > - Ok.RU (via web scraping)
+> - Vlive
 
 ## Getting started
 
@@ -43,6 +44,10 @@ Add `src/db.json` to include the streams to be watching
         "okru": [
             "profile1",
             "profile2"
+        ],
+        "vlive": [
+            "channelCode1",
+            "channelCode2"
         ]
     }
 }
@@ -74,7 +79,10 @@ export const TWITTER = {
   access_token_secret: '{ACCESS_TOKEN_SECRET}'
 };
 // Boolean to send kpop data on okru streams
-export const SEND_KPOP_IPTV = true;
+export const SEND_KPOP_IPTV = {
+  server: 'SERVER_TO_SEND_TO',
+  channelId: 'CHANNEL_ID_TO_SEND_TO'
+};
 ```
 
 Build and run
