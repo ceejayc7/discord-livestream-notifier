@@ -1,14 +1,14 @@
 ﻿# discord-livestream-notifier
 
-> Broadcasts when a livestream goes live to a discord channel. Also contains random fun casino games.
+Broadcasts when a livestream goes live to a discord channel. Also contains random fun casino games.
 
-> Supports the following platforms:
->
-> - Twitch.tv
-> - Mixer
-> - Youtube
-> - Ok.RU (via web scraping)
-> - Vlive
+Supports the following platforms:
+
+> Twitch.tv
+> Mixer
+> Youtube
+> Ok.RU (via web scraping)
+> Vlive
 
 ## Getting started
 
