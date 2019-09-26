@@ -83,6 +83,8 @@ export const SEND_KPOP_IPTV = {
   server: 'SERVER_TO_SEND_TO',
   channelId: 'CHANNEL_ID_TO_SEND_TO'
 };
+// Whitelist 24/7 streams to be broadcasted by the bot. This just checks if the stream title has the substring "24/7"
+export const WHITELIST_ALL_YOUTUBE_STREAMS = false;
 ```
 
 Build and run
