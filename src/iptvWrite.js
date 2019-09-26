@@ -36,12 +36,10 @@ function createNewFile(path) {
 
 function getHeader(channel) {
   const massagedChannel = _.lowerCase(channel).replace(' ', '');
-  return _.get(channelHeaders, massagedChannel);
+  return _.get(channelHeaders, massagedChannel, `#EXTINF:-1 ${channel}`);
 }
 
-async function getExtractedFileContents(path, channel) {
-  const header = getHeader(channel);
-
+async function getExtractedFileContents(path, header) {
   const lineReader = require('readline').createInterface({
     input: require('fs').createReadStream(path)
   });
@@ -62,8 +60,7 @@ async function getExtractedFileContents(path, channel) {
   return fileContents;
 }
 
-function getAppendedStreams(fileContents, streams, channel) {
-  const header = getHeader(channel);
+function getAppendedStreams(fileContents, streams, header) {
   streams.forEach((stream) => {
     fileContents += `${header}\n${stream.stream}\n`;
   });
@@ -80,9 +77,10 @@ async function run() {
   createNewFile(path);
   const channels = _.first(getChannelsForCurrentDay()).channel;
   for await (const channel of channels) {
-    let fileContents = await getExtractedFileContents(path, channel);
+    const header = getHeader(channel);
+    let fileContents = await getExtractedFileContents(path, header);
     const streams = await getValidIPTVStreamsFromList(channel);
-    fileContents = getAppendedStreams(fileContents, streams, channel);
+    fileContents = getAppendedStreams(fileContents, streams, header);
     fs.writeFileSync(path, fileContents);
   }
 }
