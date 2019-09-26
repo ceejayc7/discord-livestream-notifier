@@ -4,11 +4,11 @@ Broadcasts when a livestream goes live to a discord channel. Also contains rando
 
 Supports the following platforms:
 
-> Twitch.tv
-> Mixer
-> Youtube
-> Ok.RU (via web scraping)
-> Vlive
+> - Twitch.tv
+> - Mixer
+> - Youtube
+> - Ok.RU (via web scraping)
+> - Vlive
 
 ## Getting started
 
