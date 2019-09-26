@@ -4,22 +4,24 @@ import moment from 'moment-timezone';
 const fs = require('fs');
 
 const channelHeaders = {
-  sbs:
+  SBS:
     '#EXTINF:-1 tvg-logo="https://iptv.live/images/logo/channel/thumbs/c3cb8a08cd526b96ae0f7f24a7cf65cb.png", SBS',
-  mbc:
+  MBC:
     '#EXTINF:-1 tvg-logo="https://iptv.live/images/logo/channel/crops/9d7fe60f25abdf582afc7cdca238bde8.png", MBC',
-  kbs2:
+  KBS2:
     '#EXTINF:-1 tvg-logo="https://iptv.live/images/logo/channel/crops/8c363622bbbae4b99b777a3555b05b77.png", KBS2',
-  mnet:
+  Mnet:
     '#EXTINF:-1 tvg-logo="https://iptv.live/images/logo/channel/crops/2b351bbc06a1506a8777cc8c66518540.png", Mnet',
-  sbsmtv:
+  'SBS MTV':
     '#EXTINF:-1 tvg-logo="https://iptv.live/images/logo/channel/crops/6af1cc723552a04660ae92c5dab789d1.png", SBS MTV',
-  sbsfune:
+  'SBS Fun E':
     '#EXTINF:-1 tvg-logo="https://iptv.live/images/logo/channel/crops/c25e97f8d30968a017052a16ec71b0c5.png", SBS Fun E',
-  sbsplus:
+  'SBS Plus':
     '#EXTINF:-1 tvg-logo="https://iptv.live/images/logo/channel/crops/2af0944ec6f765253880a3c1e5d89beb.png", SBS Plus',
-  mbcmusic:
-    '#EXTINF:-1 tvg-logo="https://iptv.live/images/logo/channel/crops/a7d009be9219c37b89434d2a2554e97e.png", MBC MUSIC'
+  'MBC Music':
+    '#EXTINF:-1 tvg-logo="https://iptv.live/images/logo/channel/crops/a7d009be9219c37b89434d2a2554e97e.png", MBC MUSIC',
+  'MBC Every1':
+    '#EXTINF:-1 tvg-logo="https://iptv.live/images/logo/channel/crops/acba9d6853088912a883bfe9de5480fd.png", MBC Every1'
 };
 
 function getChannelsForCurrentDay() {
@@ -35,8 +37,7 @@ function createNewFile(path) {
 }
 
 function getHeader(channel) {
-  const massagedChannel = _.lowerCase(channel).replace(' ', '');
-  return _.get(channelHeaders, massagedChannel, `#EXTINF:-1 ${channel}`);
+  return _.get(channelHeaders, channel, `#EXTINF:-1 ${channel}`);
 }
 
 async function getExtractedFileContents(path, header) {
