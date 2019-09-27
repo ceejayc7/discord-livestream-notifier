@@ -42,9 +42,10 @@ function initBots() {
 }
 
 function setMusicShowTimers() {
-  const MS_IN_1_WEEK = 604800000;
   const OFFSET_IN_SECONDS = 900;
+  const TWENTY_FIVE_HOURS_TO_SECONDS = 90000;
   const server = _.get(discordBots, SEND_KPOP_IPTV.server);
+
   if (!_.isEmpty(SEND_KPOP_IPTV) && server) {
     const futureEvents = getFutureEvents();
     futureEvents.forEach((event) => {
@@ -55,7 +56,13 @@ function setMusicShowTimers() {
       }
       setTimeout(() => sendIPTVStreams(event, channelToSendTo), timeWhenEventStarts);
     });
-    setTimeout(setMusicShowTimers, MS_IN_1_WEEK);
+
+    // reset timers on next week's sunday
+    const timeToResetTimers =
+      (moment.tz('Saturday 12:00AM', 'dddd h:mmA', 'Asia/Seoul').unix() +
+        TWENTY_FIVE_HOURS_TO_SECONDS) *
+      1000;
+    setTimeout(setMusicShowTimers, timeToResetTimers);
   }
 }
 
