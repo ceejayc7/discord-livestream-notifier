@@ -54,7 +54,9 @@ function setMusicShowTimers() {
       if (timeWhenEventStarts < 0) {
         timeWhenEventStarts = 0;
       }
-      console.log(`Setting timer on ${event.show} on ${event.day} at ${event.time()}`);
+      console.log(
+        `Setting timer on ${event.show} on ${event.day} at ${event.time() - OFFSET_IN_SECONDS}`
+      );
       setTimeout(() => sendIPTVStreams(event, channelToSendTo), timeWhenEventStarts);
     });
 

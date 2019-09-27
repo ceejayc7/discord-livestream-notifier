@@ -42,13 +42,13 @@ export const kpopSchedule = [
     day: 'Saturday',
     show: 'Music Core',
     channel: ['MBC'],
-    time: () => moment.tz('Saturday 11:30PM', TIME_FORMAT, TIMEZONE).unix()
+    time: () => moment.tz('Saturday 3:30PM', TIME_FORMAT, TIMEZONE).unix()
   },
   {
     day: 'Sunday',
     show: 'Inkigayo',
     channel: ['SBS'],
-    time: () => moment.tz('Sunday 11:50PM', TIME_FORMAT, TIMEZONE).unix()
+    time: () => moment.tz('Sunday 3:50PM', TIME_FORMAT, TIMEZONE).unix()
   }
 ];
 
