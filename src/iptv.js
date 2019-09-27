@@ -28,6 +28,12 @@ export const kpopSchedule = [
   },
   {
     day: 'Friday',
+    show: 'Simply Kpop',
+    channel: ['아리랑 TV'],
+    time: () => moment.tz('Friday 1:00PM', TIME_FORMAT, TIMEZONE).unix()
+  },
+  {
+    day: 'Friday',
     show: 'Music Bank',
     channel: ['KBS2'],
     time: () => moment.tz('Friday 5:00PM', TIME_FORMAT, TIMEZONE).unix()

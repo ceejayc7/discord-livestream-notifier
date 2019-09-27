@@ -21,10 +21,12 @@ const channelHeaders = {
   'MBC Music':
     '#EXTINF:-1 tvg-logo="https://iptv.live/images/logo/channel/crops/a7d009be9219c37b89434d2a2554e97e.png", MBC MUSIC',
   'MBC Every1':
-    '#EXTINF:-1 tvg-logo="https://iptv.live/images/logo/channel/crops/acba9d6853088912a883bfe9de5480fd.png", MBC Every1'
+    '#EXTINF:-1 tvg-logo="https://iptv.live/images/logo/channel/crops/acba9d6853088912a883bfe9de5480fd.png", MBC Every1',
+  '아리랑 TV':
+    '#EXTINF:-1 tvg-logo="https://iptv.live/images/logo/channel/crops/4ec82bee9311030da88db9f44d48592b.png", 아리랑 TV'
 };
 
-function getChannelsForCurrentDay() {
+function getEventsForToday() {
   const day = moment.tz('Asia/Seoul').format('dddd');
   return _.filter(kpopSchedule, (event) => event.day === day);
 }
@@ -76,13 +78,16 @@ async function run() {
   const path = args[0];
 
   createNewFile(path);
-  const channels = _.first(getChannelsForCurrentDay()).channel;
-  for await (const channel of channels) {
-    const header = getHeader(channel);
-    let fileContents = await getExtractedFileContents(path, header);
-    const streams = await getValidIPTVStreamsFromList(channel);
-    fileContents = getAppendedStreams(fileContents, streams, header);
-    fs.writeFileSync(path, fileContents);
+  const events = getEventsForToday();
+  for (const event of events) {
+    const channels = event.channel;
+    for await (const channel of channels) {
+      const header = getHeader(channel);
+      let fileContents = await getExtractedFileContents(path, header);
+      const streams = await getValidIPTVStreamsFromList(channel);
+      fileContents = getAppendedStreams(fileContents, streams, header);
+      fs.writeFileSync(path, fileContents);
+    }
   }
 }
 
