@@ -54,14 +54,21 @@ function setMusicShowTimers() {
       if (timeWhenEventStarts < 0) {
         timeWhenEventStarts = 0;
       }
+      console.log(`Setting timer on ${event.show} on ${event.day} at ${event.time()}`);
       setTimeout(() => sendIPTVStreams(event, channelToSendTo), timeWhenEventStarts);
     });
 
     // reset timers on next week's sunday
     const timeToResetTimers =
       (moment.tz('Saturday 12:00AM', 'dddd h:mmA', 'Asia/Seoul').unix() +
-        TWENTY_FIVE_HOURS_TO_SECONDS) *
+        TWENTY_FIVE_HOURS_TO_SECONDS -
+        moment.tz().unix()) *
       1000;
+    console.log(
+      `Setting weekly timer reset on ${moment
+        .tz('Saturday 12:00AM', 'dddd h:mmA', 'Asia/Seoul')
+        .unix() + TWENTY_FIVE_HOURS_TO_SECONDS}`
+    );
     setTimeout(setMusicShowTimers, timeToResetTimers);
   }
 }
