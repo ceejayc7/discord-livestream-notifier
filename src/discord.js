@@ -61,7 +61,7 @@ function setMusicShowTimers() {
 
     // reset weekly timer in 1 week
     console.log(`Setting weekly timer reset at ${ONE_WEEK + moment.tz().unix()}`);
-    setTimeout(setMusicShowTimers, ONE_WEEK);
+    setTimeout(setMusicShowTimers, ONE_WEEK * 1000);
   }
 }
 
