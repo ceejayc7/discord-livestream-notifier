@@ -4,7 +4,7 @@ import Youtube from './youtube';
 import Mixer from './mixer';
 import OkRu from './okru';
 import Vlive from './vlive';
-import { getFutureEvents, sendIPTVStreams } from './iptv';
+import { kpopSchedule, sendIPTVStreams } from './iptv';
 import { EventEmitter } from 'events';
 import { DISCORD_TOKENS, SEND_KPOP_IPTV } from './constants';
 import _ from 'lodash';
@@ -43,12 +43,11 @@ function initBots() {
 
 function setMusicShowTimers() {
   const OFFSET_IN_SECONDS = 900;
-  const TWENTY_FIVE_HOURS_TO_SECONDS = 90000;
+  const ONE_WEEK = 604800;
   const server = _.get(discordBots, SEND_KPOP_IPTV.server);
 
   if (!_.isEmpty(SEND_KPOP_IPTV) && server) {
-    const futureEvents = getFutureEvents();
-    futureEvents.forEach((event) => {
+    kpopSchedule.forEach((event) => {
       const channelToSendTo = server.client.channels.get(SEND_KPOP_IPTV.channelId);
       let timeWhenEventStarts = (event.time() - moment.tz().unix() - OFFSET_IN_SECONDS) * 1000;
       if (timeWhenEventStarts < 0) {
@@ -60,18 +59,9 @@ function setMusicShowTimers() {
       setTimeout(() => sendIPTVStreams(event, channelToSendTo), timeWhenEventStarts);
     });
 
-    // reset timers on next week's sunday
-    const timeToResetTimers =
-      (moment.tz('Saturday 12:00AM', 'dddd h:mmA', 'Asia/Seoul').unix() +
-        TWENTY_FIVE_HOURS_TO_SECONDS -
-        moment.tz().unix()) *
-      1000;
-    console.log(
-      `Setting weekly timer reset on ${moment
-        .tz('Saturday 12:00AM', 'dddd h:mmA', 'Asia/Seoul')
-        .unix() + TWENTY_FIVE_HOURS_TO_SECONDS}`
-    );
-    setTimeout(setMusicShowTimers, timeToResetTimers);
+    // reset weekly timer in 1 week
+    console.log(`Setting weekly timer reset at ${ONE_WEEK + moment.tz().unix()}`);
+    setTimeout(setMusicShowTimers, ONE_WEEK);
   }
 }
 

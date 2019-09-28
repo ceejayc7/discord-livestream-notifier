@@ -7,48 +7,58 @@ import moment from 'moment-timezone';
 const TIME_FORMAT = 'dddd h:mmA';
 const TIMEZONE = 'Asia/Seoul';
 
+function getRelativeTimeStart(eventMoment) {
+  const currentTime = moment.tz().unix();
+  // if the event is in the future, just return the timestamp
+  if (eventMoment.unix() >= currentTime) {
+    return eventMoment.unix();
+  }
+  // if the event is from a previous weekday, add 1 week
+  return eventMoment.add(1, 'weeks').unix();
+}
+
 export const kpopSchedule = [
   {
     day: 'Tuesday',
     show: 'The Show',
     channel: ['SBS MTV', 'SBS Fun E', 'SBS Plus'],
-    time: () => moment.tz('Tuesday 6:00PM', TIME_FORMAT, TIMEZONE).unix()
+    time: () => getRelativeTimeStart(moment.tz('Tuesday 6:00PM', TIME_FORMAT, TIMEZONE))
   },
   {
     day: 'Wednesday',
     show: 'Show Champion',
     channel: ['MBC Music', 'MBC Every1'],
-    time: () => moment.tz('Wednesday 6:00PM', TIME_FORMAT, TIMEZONE).unix()
+    time: () => getRelativeTimeStart(moment.tz('Wednesday 6:00PM', TIME_FORMAT, TIMEZONE))
   },
   {
     day: 'Thursday',
     show: 'M Countdown',
     channel: ['Mnet'],
-    time: () => moment.tz('Thursday 6:00PM', TIME_FORMAT, TIMEZONE).unix()
+    time: () => getRelativeTimeStart(moment.tz('Thursday 6:00PM', TIME_FORMAT, TIMEZONE))
   },
   {
     day: 'Friday',
     show: 'Simply Kpop',
     channel: ['아리랑 TV'],
-    time: () => moment.tz('Friday 1:00PM', TIME_FORMAT, TIMEZONE).unix()
+    time: () => getRelativeTimeStart(moment.tz('Friday 1:00PM', TIME_FORMAT, TIMEZONE))
   },
   {
     day: 'Friday',
     show: 'Music Bank',
     channel: ['KBS2'],
-    time: () => moment.tz('Friday 5:00PM', TIME_FORMAT, TIMEZONE).unix()
+    time: () => getRelativeTimeStart(moment.tz('Friday 5:00PM', TIME_FORMAT, TIMEZONE))
   },
   {
     day: 'Saturday',
     show: 'Music Core',
     channel: ['MBC'],
-    time: () => moment.tz('Saturday 3:30PM', TIME_FORMAT, TIMEZONE).unix()
+    time: () => getRelativeTimeStart(moment.tz('Saturday 3:30PM', TIME_FORMAT, TIMEZONE))
   },
   {
     day: 'Sunday',
     show: 'Inkigayo',
     channel: ['SBS'],
-    time: () => moment.tz('Sunday 3:50PM', TIME_FORMAT, TIMEZONE).unix()
+    time: () => getRelativeTimeStart(moment.tz('Sunday 3:50PM', TIME_FORMAT, TIMEZONE))
   }
 ];
 
@@ -173,11 +183,6 @@ export function createMessageToSend(listOfStreams, showName, channelName) {
     }
     return `No streams found`;
   }
-}
-
-export function getFutureEvents() {
-  const currentEpoch = moment.tz().unix();
-  return _.filter(kpopSchedule, (event) => event.time() >= currentEpoch);
 }
 
 export async function sendIPTVStreams(event, channelToSendTo) {
