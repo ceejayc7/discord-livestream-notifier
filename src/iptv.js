@@ -7,7 +7,8 @@ import moment from 'moment-timezone';
 const TIME_FORMAT = 'dddd h:mmA';
 const TIMEZONE = 'Asia/Seoul';
 
-function getRelativeTimeStart(eventMoment) {
+function getRelativeTimeStart(timestamp) {
+  const eventMoment = moment.tz(timestamp, TIME_FORMAT, TIMEZONE);
   const currentTime = moment.tz().unix();
   // if the event is in the future, just return the timestamp
   if (eventMoment.unix() >= currentTime) {
@@ -22,43 +23,43 @@ export const kpopSchedule = [
     day: 'Tuesday',
     show: 'The Show',
     channel: ['SBS MTV', 'SBS Fun E', 'SBS Plus'],
-    time: () => getRelativeTimeStart(moment.tz('Tuesday 6:00PM', TIME_FORMAT, TIMEZONE))
+    time: () => getRelativeTimeStart('Tuesday 6:00PM')
   },
   {
     day: 'Wednesday',
     show: 'Show Champion',
     channel: ['MBC Music', 'MBC Every1'],
-    time: () => getRelativeTimeStart(moment.tz('Wednesday 6:00PM', TIME_FORMAT, TIMEZONE))
+    time: () => getRelativeTimeStart('Wednesday 6:00PM')
   },
   {
     day: 'Thursday',
     show: 'M Countdown',
     channel: ['Mnet'],
-    time: () => getRelativeTimeStart(moment.tz('Thursday 6:00PM', TIME_FORMAT, TIMEZONE))
+    time: () => getRelativeTimeStart('Thursday 6:00PM')
   },
   {
     day: 'Friday',
     show: 'Simply Kpop',
     channel: ['아리랑 TV'],
-    time: () => getRelativeTimeStart(moment.tz('Friday 1:00PM', TIME_FORMAT, TIMEZONE))
+    time: () => getRelativeTimeStart('Friday 1:00PM')
   },
   {
     day: 'Friday',
     show: 'Music Bank',
     channel: ['KBS2'],
-    time: () => getRelativeTimeStart(moment.tz('Friday 5:00PM', TIME_FORMAT, TIMEZONE))
+    time: () => getRelativeTimeStart('Friday 5:00PM')
   },
   {
     day: 'Saturday',
     show: 'Music Core',
     channel: ['MBC'],
-    time: () => getRelativeTimeStart(moment.tz('Saturday 3:30PM', TIME_FORMAT, TIMEZONE))
+    time: () => getRelativeTimeStart('Saturday 3:30PM')
   },
   {
     day: 'Sunday',
     show: 'Inkigayo',
     channel: ['SBS'],
-    time: () => getRelativeTimeStart(moment.tz('Sunday 3:50PM', TIME_FORMAT, TIMEZONE))
+    time: () => getRelativeTimeStart('Sunday 3:50PM')
   }
 ];
 
