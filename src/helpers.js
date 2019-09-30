@@ -163,6 +163,25 @@ function printHelp(msg) {
   sendMessageToChannel(msg, messageToSend);
 }
 
+function decodeHTMLEntities(encodedString) {
+  const translateRegex = /&(nbsp|amp|quot|lt|gt);/g;
+  const translate = {
+    nbsp: ' ',
+    amp: '&',
+    quot: '"',
+    lt: '<',
+    gt: '>'
+  };
+  return encodedString
+    .replace(translateRegex, function(match, entity) {
+      return translate[entity];
+    })
+    .replace(/&#(\d+);/gi, function(match, numStr) {
+      const num = parseInt(numStr, 10);
+      return String.fromCharCode(num);
+    });
+}
+
 export const Helpers = {
   isWhitelistedChannel,
   sendMessageToChannel,
@@ -179,5 +198,6 @@ export const Helpers = {
   printLeaderboard,
   apiError,
   retrieveLiveChannels,
-  announceIfStreamIsNew
+  announceIfStreamIsNew,
+  decodeHTMLEntities
 };
