@@ -22,7 +22,7 @@ export const kpopSchedule = [
   {
     day: 'Tuesday',
     show: 'The Show',
-    channel: ['SBS MTV', 'SBS Fun E', 'SBS Plus'],
+    channel: ['SBS MTV', 'SBS F!L UHD'],
     time: () => getRelativeTimeStart('Tuesday 6:00PM')
   },
   {
