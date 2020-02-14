@@ -69,7 +69,14 @@ const KOREAN_BLOG_LINKS_TO_QUERY_FOR = [
   'https://www.extinf.com/category/korean/page/3/',
   'https://www.extinf.com/category/korean/page/4/',
   'https://www.extinf.com/category/korean/page/5/',
-  'https://www.extinf.com/category/korean/page/6/'
+  'https://www.extinf.com/category/korean/page/6/',
+  'https://www.extinf.com/category/korean/page/7/',
+  'https://www.extinf.com/category/korean/page/8/',
+  'https://www.extinf.com/category/korean/page/9/',
+  'https://www.extinf.com/category/korean/page/10/',
+  'https://www.extinf.com/category/korean/page/11/',
+  'https://www.extinf.com/category/korean/page/12/',
+  'https://www.extinf.com/category/korean/page/13/'
 ];
 const IPTV_TIMEOUT_MS = 10000;
 
@@ -156,10 +163,16 @@ function getValidIPTVStreamsFromPage(linkToPage, channelName) {
     .catch((error) => console.log(`[IPTV]: Error when retrieving IPTV streams. ${error}`));
 }
 
+const wait = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+
 export function getValidIPTVStreamsFromList(channelName) {
   const promises = [];
+  const TIMEOUT = 1000;
+  let iter = 0;
   for (const page of KOREAN_BLOG_LINKS_TO_QUERY_FOR) {
-    promises.push(getValidIPTVStreamsFromPage(page, channelName));
+    // add a delay on each promise so we don't spam out the endpoint
+    promises.push(wait(TIMEOUT * iter).then(() => getValidIPTVStreamsFromPage(page, channelName)));
+    iter++;
   }
   return Promise.all(promises)
     .then(_.flatten)
