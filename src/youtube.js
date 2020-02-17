@@ -4,20 +4,36 @@ import { Helpers } from './helpers';
 import { YOUTUBE_KEY, WHITELIST_ALL_YOUTUBE_STREAMS } from './constants';
 
 const PLATFORM = 'youtube';
-const YOUTUBE_API_ENDPOINT = `https://www.googleapis.com/youtube/v3/search?part=snippet&type=video&eventType=live&key=${YOUTUBE_KEY}&channelId=`;
 
 class Youtube {
   constructor(streamEmitter) {
     this.currentLiveStreams = [];
     this.streamEmitter = streamEmitter;
+    this.youtubeApiEndpoint = () =>
+      `https://www.googleapis.com/youtube/v3/search?part=snippet&type=video&eventType=live&key=${this.getYoutubeKey()}&channelId=`;
+    this.indexToUse = 0;
   }
 
   getChannelPromises = (stream) => {
     const httpOptions = {
-      url: YOUTUBE_API_ENDPOINT + stream,
+      url: this.youtubeApiEndpoint() + stream,
       json: true
     };
     return request(httpOptions).catch((error) => Helpers.apiError(PLATFORM, error));
+  };
+
+  getYoutubeKey = () => {
+    // alternative between configured api keys to bypass quota limits
+    if (Array.isArray(YOUTUBE_KEY)) {
+      if (this.indexToUse >= YOUTUBE_KEY.length) {
+        this.indexToUse = 0;
+      }
+      const key = YOUTUBE_KEY[this.indexToUse];
+      this.indexToUse++;
+      return key;
+    } else {
+      return YOUTUBE_KEY;
+    }
   };
 
   updateStreams = () => {
