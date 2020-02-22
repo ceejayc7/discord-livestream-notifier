@@ -52,12 +52,13 @@ class Twitch {
       this.twitchAPIOptions.url = TWITCH_API_USERS_ENDPOINT + userId;
       const usersResponse = await request(this.twitchAPIOptions);
 
+      const loginName = _.get(_.first(usersResponse.data), 'login');
       const logo = _.get(_.first(usersResponse.data), 'profile_image_url');
       const game = _.get(_.first(gamesResponse.data), 'name');
 
       reducedResponse.push({
         platform: PLATFORM,
-        name: _.get(stream, 'user_name').toLowerCase(),
+        name: loginName.toLowerCase(),
         displayName: _.get(stream, 'user_name'),
         game: game,
         preview: preview,
