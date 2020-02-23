@@ -13,11 +13,12 @@ class Youtube {
     this.youtubeApiEndpoint = () =>
       `https://www.googleapis.com/youtube/v3/search?part=snippet&type=video&eventType=live&key=${this.getYoutubeKey()}&channelId=`;
     this.indexToUse = 0;
-    this.resetKeysAndSetTimer();
+    this.setTimer();
     this.currentKey = '';
   }
 
   setTimer = () => {
+    this.resetKeys();
     const timeToResetKeys =
       moment
         .tz('America/Los_Angeles')
@@ -33,14 +34,13 @@ class Youtube {
         .endOf('day')
         .unix() + 1}`
     );
-    setTimeout(this.resetKeysAndSetTimer.bind(this), timeToResetKeys * 1000);
+    setTimeout(this.setTimer.bind(this), timeToResetKeys * 1000);
   };
 
-  resetKeysAndSetTimer = () => {
+  resetKeys = () => {
     console.log('Resetting YouTube Keys');
     this.youtubeKeys = _.map(YOUTUBE_KEY, _.clone);
     console.log(this.youtubeKeys);
-    this.setTimer();
   };
 
   getChannelPromises = (stream) => {
