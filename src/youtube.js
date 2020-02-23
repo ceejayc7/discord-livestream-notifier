@@ -2,7 +2,7 @@ import _ from 'lodash';
 import request from 'request-promise';
 import { Helpers } from './helpers';
 import { YOUTUBE_KEY, WHITELIST_ALL_YOUTUBE_STREAMS } from './constants';
-import moment from 'moment';
+import moment from 'moment-timezone';
 
 const PLATFORM = 'youtube';
 
@@ -19,13 +19,17 @@ class Youtube {
 
   setTimer = () => {
     const timeToResetKeys =
-      moment()
+      moment
+        .tz('America/Los_Angeles')
         .endOf('day')
         .unix() +
       1 -
-      moment().unix();
+      moment()
+        .tz('America/Los_Angeles')
+        .unix();
     console.log(
-      `Setting YouTube API reset timer to ${moment()
+      `Setting YouTube API reset timer to ${moment
+        .tz('America/Los_Angeles')
         .endOf('day')
         .unix() + 1}`
     );
