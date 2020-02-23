@@ -2,6 +2,7 @@ import _ from 'lodash';
 import request from 'request-promise';
 import { Helpers } from './helpers';
 import { YOUTUBE_KEY, WHITELIST_ALL_YOUTUBE_STREAMS } from './constants';
+import moment from 'moment';
 
 const PLATFORM = 'youtube';
 
@@ -12,27 +13,74 @@ class Youtube {
     this.youtubeApiEndpoint = () =>
       `https://www.googleapis.com/youtube/v3/search?part=snippet&type=video&eventType=live&key=${this.getYoutubeKey()}&channelId=`;
     this.indexToUse = 0;
+    this.resetKeysAndSetTimer();
+    this.currentKey = '';
   }
+
+  setTimer = () => {
+    const timeToResetKeys =
+      moment()
+        .endOf('day')
+        .unix() +
+      1 -
+      moment().unix();
+    console.log(
+      `Setting YouTube API reset timer to ${moment()
+        .endOf('day')
+        .unix() + 1}`
+    );
+    setTimeout(this.resetKeysAndSetTimer.bind(this), timeToResetKeys * 1000);
+  };
+
+  resetKeysAndSetTimer = () => {
+    console.log('Resetting YouTube Keys');
+    this.youtubeKeys = _.map(YOUTUBE_KEY, _.clone);
+    console.log(this.youtubeKeys);
+    this.setTimer();
+  };
 
   getChannelPromises = (stream) => {
     const httpOptions = {
       url: this.youtubeApiEndpoint() + stream,
       json: true
     };
-    return request(httpOptions).catch((error) => Helpers.apiError(PLATFORM, error));
+
+    return request(httpOptions).catch((error) => {
+      if (_.includes(error.message, 'keyInvalid')) {
+        // reset the array if the key is invalid
+        this.resetKeys();
+      } else if (
+        _.includes(error.message, 'youtube.quota') ||
+        _.includes(error.message, 'dailyLimitExceeded')
+      ) {
+        // if this key has hit the quota, remove it from the array
+        // and rerun the request
+        this.removeYoutubeKey();
+        Helpers.apiError(PLATFORM, error);
+        return this.getChannelPromises(stream);
+      }
+      Helpers.apiError(PLATFORM, error);
+    });
+  };
+
+  removeYoutubeKey = () => {
+    const index = this.youtubeKeys.indexOf(this.currentKey);
+    this.youtubeKeys.splice(index, 1);
+    console.log(`Removing ${this.currentKey}`);
+    console.log(this.youtubeKeys);
   };
 
   getYoutubeKey = () => {
     // alternative between configured api keys to bypass quota limits
-    if (Array.isArray(YOUTUBE_KEY)) {
-      if (this.indexToUse >= YOUTUBE_KEY.length) {
+    if (Array.isArray(this.youtubeKeys)) {
+      if (this.indexToUse >= this.youtubeKeys.length) {
         this.indexToUse = 0;
       }
-      const key = YOUTUBE_KEY[this.indexToUse];
+      this.currentKey = this.youtubeKeys[this.indexToUse];
       this.indexToUse++;
-      return key;
+      return this.currentKey;
     } else {
-      return YOUTUBE_KEY;
+      return this.youtubeKeys;
     }
   };
 
