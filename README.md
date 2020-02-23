@@ -58,7 +58,7 @@ Add `src/constants.js` to include your tokens
 ```js
 export const TWITCH_CLIENT_ID = '{YOUR_TWITCH_CLIENT_ID_HERE}';
 export const MIXER_CLIENT_ID = '{YOUR_MIXER_CLIENT_ID_HERE}';
-export const YOUTUBE_KEY = ['{YOUR_YOUTUBE_API_KEY_HERE}', '{YOUR_YOUTUBE_API_KEY_HERE_TWO}'];
+export const YOUTUBE_KEY = '{YOUR_YOUTUBE_API_KEY_HERE}';
 export const DISCORD_TOKENS = {
   servername1: '{YOUR_DISCORD_TOKEN_HERE}',
   servername2: '{YOUR_DISCORD_TOKEN_HERE}',
