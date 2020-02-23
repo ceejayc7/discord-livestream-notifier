@@ -42,7 +42,6 @@ class Twitch {
       let preview =
         _.get(stream, 'thumbnail_url') + `?t=${Math.round(new Date().getTime() / 1000)}`;
       preview = preview.replace('{width}', '1920').replace('{height}', '1080');
-      const url = `${TWITCH_BASE_URL}/${_.get(stream, 'user_name')}`;
       const gameId = _.get(stream, 'game_id');
       const userId = _.get(stream, 'user_id');
 
@@ -55,6 +54,7 @@ class Twitch {
       const loginName = _.get(_.first(usersResponse.data), 'login');
       const logo = _.get(_.first(usersResponse.data), 'profile_image_url');
       const game = _.get(_.first(gamesResponse.data), 'name');
+      const url = `${TWITCH_BASE_URL}/${loginName}`;
 
       reducedResponse.push({
         platform: PLATFORM,
