@@ -201,7 +201,7 @@ const processOfflineStreams = async (lines, channel) => {
 const getStreamsFromOfflineDB = (channelName) => {
   const key = Helpers.getCaseInsensitiveKey(iptvDatabase, channelName);
   if (key) {
-    const pathToFile = path.resolve(`${process.cwd()}/dist/${iptvDatabase[key]}`);
+    const pathToFile = path.resolve(`${__dirname}/${iptvDatabase[key]}`);
     console.log(pathToFile);
     return require('fs')
       .readFileSync(pathToFile, 'utf-8')
