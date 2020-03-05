@@ -3,6 +3,8 @@ import request from 'request';
 import rq from 'request-promise';
 import _ from 'lodash';
 import moment from 'moment-timezone';
+import { Helpers } from './helpers';
+const path = require('path');
 
 const TIME_FORMAT = 'dddd h:mmA';
 const TIMEZONE = 'Asia/Seoul';
@@ -62,6 +64,20 @@ export const kpopSchedule = [
     time: () => getRelativeTimeStart('Sunday 3:50PM')
   }
 ];
+
+const iptvDatabase = {
+  'SBS MTV': 'iptv/sbsmtv.txt',
+  'SBS F!L UHD': 'iptv/sbsfil.txt',
+  'MBC Music': 'iptv/mbcmusic.txt',
+  'MBC Every1': 'iptv/mbcevery1.txt',
+  Mnet: 'iptv/mnet.txt',
+  '아리랑 TV': 'iptv/arirang_hd.txt',
+  KBS2: 'iptv/kbs2.txt',
+  MBC: 'iptv/mbc.txt',
+  SBS: 'iptv/sbs.txt',
+  'SBS Fun E': 'iptv/sbsfune.txt',
+  'SBS Plus': 'iptv/sbsplus.txt'
+};
 
 const KOREAN_BLOG_LINKS_TO_QUERY_FOR = [];
 
@@ -157,19 +173,62 @@ function getValidIPTVStreamsFromPage(linkToPage, channelName) {
 
 const wait = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
-export function getValidIPTVStreamsFromList(channelName) {
+const processOfflineStreams = async (lines, channel) => {
   const promises = [];
-  const TIMEOUT = 1000;
+  const results = [];
+
+  // test each stream asyncronously
+  for (const line of lines) {
+    promises.push(isValidIPTVStream(line));
+  }
+
+  // execute all promises
+  const boolResults = await Promise.all(promises);
+
+  // if the promise returned true, index the original lines array to find the ip
+  for (const [index, value] of boolResults.entries()) {
+    if (value) {
+      results.push({
+        channel: `#EXTINF:-1,${channel}`,
+        stream: lines[index]
+      });
+    }
+  }
+
+  return results;
+};
+
+const getStreamsFromOfflineDB = (channelName) => {
+  const key = Helpers.getCaseInsensitiveKey(iptvDatabase, channelName);
+  if (key) {
+    const pathToFile = path.resolve(`${process.cwd()}/dist/${iptvDatabase[key]}`);
+    console.log(pathToFile);
+    return require('fs')
+      .readFileSync(pathToFile, 'utf-8')
+      .split(/\r?\n/);
+  }
+  return [];
+};
+
+const getValidOfflineDBStreams = async (channelName) => {
+  const lines = getStreamsFromOfflineDB(channelName);
+  return await processOfflineStreams(lines, channelName);
+};
+
+export const getValidIPTVStreamsFromList = async (channelName) => {
+  const promises = [];
+  const TIMEOUT = 1500;
   let iter = 0;
   for (const page of KOREAN_BLOG_LINKS_TO_QUERY_FOR) {
     // add a delay on each promise so we don't spam out the endpoint
     promises.push(wait(TIMEOUT * iter).then(() => getValidIPTVStreamsFromPage(page, channelName)));
     iter++;
   }
+  promises.push(getValidOfflineDBStreams(channelName));
   return Promise.all(promises)
     .then(_.flatten)
-    .then((data) => _.uniqBy(data, 'stream'));
-}
+    .then((data) => _.take(_.uniqBy(data, 'stream'), 11));
+};
 
 export function createMessageToSend(listOfStreams, showName, channelName) {
   if (listOfStreams && listOfStreams.length) {

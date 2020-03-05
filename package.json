@@ -6,9 +6,9 @@
   "author": "Ceejay",
   "scripts": {
     "start": "node dist/discord.js",
-    "build": "eslint src/**/*.js && babel src/ -d dist/ --copy-files",
+    "build": "eslint src/**/*.js && babel src/** -d dist/ --copy-files",
     "watch": "concurrently \"npm:watch:babel\" \"npm:watch:eslint\"",
-    "watch:babel": "babel --watch src/ -d dist/ --copy-files",
+    "watch:babel": "babel --watch src/** -d dist/ --copy-files",
     "watch:eslint": "esw --w src/**/*.js",
     "debug": "babel-node --inspect-brk src/discord.js"
   },

@@ -182,6 +182,10 @@ function decodeHTMLEntities(encodedString) {
     });
 }
 
+const getCaseInsensitiveKey = (object, key) => {
+  return Object.keys(object).find((k) => k.toLowerCase() === key.toLowerCase());
+};
+
 export const Helpers = {
   isWhitelistedChannel,
   sendMessageToChannel,
@@ -199,5 +203,6 @@ export const Helpers = {
   apiError,
   retrieveLiveChannels,
   announceIfStreamIsNew,
-  decodeHTMLEntities
+  decodeHTMLEntities,
+  getCaseInsensitiveKey
 };

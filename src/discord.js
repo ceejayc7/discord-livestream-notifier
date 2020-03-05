@@ -42,7 +42,7 @@ function initBots() {
 }
 
 function setMusicShowTimers() {
-  const OFFSET_IN_SECONDS = 900;
+  const OFFSET_IN_SECONDS = 960;
   const ONE_WEEK = 604800;
   const server = _.get(discordBots, SEND_KPOP_IPTV.server);
 
