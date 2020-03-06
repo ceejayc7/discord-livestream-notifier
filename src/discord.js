@@ -4,7 +4,7 @@ import Youtube from './youtube';
 import Mixer from './mixer';
 import OkRu from './okru';
 import Vlive from './vlive';
-import { kpopSchedule, sendIPTVStreams } from './iptv';
+import { KPOP_SCHEDULE, sendIPTVStreams } from './iptv';
 import { EventEmitter } from 'events';
 import { DISCORD_TOKENS, SEND_KPOP_IPTV } from './constants';
 import _ from 'lodash';
@@ -47,7 +47,7 @@ function setMusicShowTimers() {
   const server = _.get(discordBots, SEND_KPOP_IPTV.server);
 
   if (!_.isEmpty(SEND_KPOP_IPTV) && server) {
-    kpopSchedule.forEach((event) => {
+    KPOP_SCHEDULE.forEach((event) => {
       const channelToSendTo = server.client.channels.get(SEND_KPOP_IPTV.channelId);
       let timeWhenEventStarts = (event.time() - moment.tz().unix() - OFFSET_IN_SECONDS) * 1000;
       if (timeWhenEventStarts < 0) {

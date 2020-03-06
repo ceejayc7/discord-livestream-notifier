@@ -1,5 +1,5 @@
 import _ from 'lodash';
-import { kpopSchedule, getValidIPTVStreamsFromList } from './iptv';
+import { KPOP_SCHEDULE, getValidIPTVStreamsFromList } from './iptv';
 import moment from 'moment-timezone';
 const fs = require('fs');
 
@@ -28,7 +28,7 @@ const channelHeaders = {
 
 function getEventsForToday() {
   const day = moment.tz('Asia/Seoul').format('dddd');
-  return _.filter(kpopSchedule, (event) => event.day === day);
+  return _.filter(KPOP_SCHEDULE, (event) => event.day === day);
 }
 
 function createNewFile(path) {

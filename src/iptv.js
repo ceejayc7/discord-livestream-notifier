@@ -4,23 +4,16 @@ import rq from 'request-promise';
 import _ from 'lodash';
 import moment from 'moment-timezone';
 import { Helpers } from './helpers';
+import { IPTV_DATABASE } from './constants_internal';
 const path = require('path');
 
 const TIME_FORMAT = 'dddd h:mmA';
 const TIMEZONE = 'Asia/Seoul';
 
-function getRelativeTimeStart(timestamp) {
-  const eventMoment = moment.tz(timestamp, TIME_FORMAT, TIMEZONE);
-  const currentTime = moment.tz().unix();
-  // if the event is in the future, just return the timestamp
-  if (eventMoment.unix() >= currentTime) {
-    return eventMoment.unix();
-  }
-  // if the event is from a previous weekday, add 1 week
-  return eventMoment.add(1, 'weeks').unix();
-}
+const IPTV_TIMEOUT_MS = 10000;
+const KOREAN_BLOG_LINKS_TO_QUERY_FOR = [];
 
-export const kpopSchedule = [
+export const KPOP_SCHEDULE = [
   {
     day: 'Tuesday',
     show: 'The Show',
@@ -65,28 +58,23 @@ export const kpopSchedule = [
   }
 ];
 
-const iptvDatabase = {
-  'SBS MTV': 'iptv/sbsmtv.txt',
-  'SBS F!L UHD': 'iptv/sbsfil.txt',
-  'MBC Music': 'iptv/mbcmusic.txt',
-  'MBC Every1': 'iptv/mbcevery1.txt',
-  Mnet: 'iptv/mnet.txt',
-  '아리랑 TV': 'iptv/arirang_hd.txt',
-  KBS2: 'iptv/kbs2.txt',
-  MBC: 'iptv/mbc.txt',
-  SBS: 'iptv/sbs.txt',
-  'SBS Fun E': 'iptv/sbsfune.txt',
-  'SBS Plus': 'iptv/sbsplus.txt'
-};
-
-const KOREAN_BLOG_LINKS_TO_QUERY_FOR = [];
-
-// initialize blog array
-for (let page = 1; page <= 15; page++) {
-  KOREAN_BLOG_LINKS_TO_QUERY_FOR.push(`https://www.extinf.com/category/korean/page/${page}/`);
+function getRelativeTimeStart(timestamp) {
+  const eventMoment = moment.tz(timestamp, TIME_FORMAT, TIMEZONE);
+  const currentTime = moment.tz().unix();
+  // if the event is in the future, just return the timestamp
+  if (eventMoment.unix() >= currentTime) {
+    return eventMoment.unix();
+  }
+  // if the event is from a previous weekday, add 1 week
+  return eventMoment.add(1, 'weeks').unix();
 }
 
-const IPTV_TIMEOUT_MS = 10000;
+const generateEndpoints = () => {
+  // initialize blog array
+  for (let page = 1; page <= 15; page++) {
+    KOREAN_BLOG_LINKS_TO_QUERY_FOR.push(`https://www.extinf.com/category/korean/page/${page}/`);
+  }
+};
 
 function isValidIPTVStream(link) {
   return new Promise((resolve) => {
@@ -199,9 +187,9 @@ const processOfflineStreams = async (lines, channel) => {
 };
 
 const getStreamsFromOfflineDB = (channelName) => {
-  const key = Helpers.getCaseInsensitiveKey(iptvDatabase, channelName);
+  const key = Helpers.getCaseInsensitiveKey(IPTV_DATABASE, channelName);
   if (key) {
-    const pathToFile = path.resolve(`${__dirname}/${iptvDatabase[key]}`);
+    const pathToFile = path.resolve(`${__dirname}/${IPTV_DATABASE[key]}`);
     return require('fs')
       .readFileSync(pathToFile, 'utf-8')
       .split(/\r?\n/);
@@ -261,3 +249,5 @@ export async function sendIPTVStreams(event, channelToSendTo) {
     }
   }
 }
+
+generateEndpoints();

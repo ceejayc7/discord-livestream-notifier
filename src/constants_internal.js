@@ -98,3 +98,17 @@ export const LOTTO_MAX = 100000;
 export const MINIMUM_BITCOINS = 10;
 export const PLAYERS = 'players';
 export const LOTTO = 'lotto';
+
+export const IPTV_DATABASE = {
+  'SBS MTV': 'sbsmtv.txt',
+  'SBS F!L UHD': 'sbsfil.txt',
+  'MBC Music': 'mbcmusic.txt',
+  'MBC Every1': 'mbcevery1.txt',
+  Mnet: 'mnet.txt',
+  '아리랑 TV': 'arirang_hd.txt',
+  KBS2: 'kbs2.txt',
+  MBC: 'mbc.txt',
+  SBS: 'sbs.txt',
+  'SBS Fun E': 'sbsfune.txt',
+  'SBS Plus': 'sbsplus.txt'
+};
