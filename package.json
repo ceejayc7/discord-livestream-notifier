@@ -16,16 +16,16 @@
     "node": "10.16.0"
   },
   "dependencies": {
-    "card-deck": "1.0.0",
-    "cheerio": "1.0.0-rc.2",
+    "card-deck": "1.0.1",
+    "cheerio": "1.0.0-rc.3",
     "discord.js": "11.3.2",
     "lodash": "4.17.15",
     "moment": "2.24.0",
-    "moment-timezone": "0.5.26",
+    "moment-timezone": "0.5.28",
     "node-json-db": "0.7.5",
     "prob.js": "1.0.6",
-    "request": "2.87.0",
-    "request-promise": "4.2.2",
+    "request": "2.88.2",
+    "request-promise": "4.2.5",
     "twitter": "1.7.1",
     "uws": "10.148.1",
     "weighted-random": "0.1.0"
