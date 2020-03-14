@@ -31,16 +31,16 @@
     "weighted-random": "0.1.0"
   },
   "devDependencies": {
-    "@babel/cli": "7.5.5",
-    "@babel/core": "7.5.5",
-    "@babel/node": "7.5.5",
-    "@babel/plugin-proposal-class-properties": "7.5.5",
-    "@babel/preset-env": "7.5.5",
-    "babel-eslint": "10.0.2",
-    "concurrently": "4.1.2",
+    "@babel/cli": "7.8.4",
+    "@babel/core": "7.8.7",
+    "@babel/node": "7.8.7",
+    "@babel/plugin-proposal-class-properties": "7.8.3",
+    "@babel/preset-env": "7.8.7",
+    "babel-eslint": "10.1.0",
+    "concurrently": "5.1.0",
     "eslint": "6.8.0",
-    "eslint-config-google": "0.13.0",
-    "eslint-config-prettier": "6.0.0",
-    "eslint-watch": "6.0.0"
+    "eslint-config-google": "0.14.0",
+    "eslint-config-prettier": "6.10.0",
+    "eslint-watch": "6.0.1"
   }
 }
