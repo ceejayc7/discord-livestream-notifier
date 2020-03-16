@@ -48,7 +48,7 @@ function setMusicShowTimers() {
 
   if (!_.isEmpty(SEND_KPOP_IPTV) && server) {
     KPOP_SCHEDULE.forEach((event) => {
-      const channelToSendTo = server.client.channels.get(SEND_KPOP_IPTV.channelId);
+      const channelToSendTo = server.client.channels.cache.get(SEND_KPOP_IPTV.channelId);
       let timeWhenEventStarts = (event.time() - moment.tz().unix() - OFFSET_IN_SECONDS) * 1000;
       if (timeWhenEventStarts < 0) {
         timeWhenEventStarts = 0;

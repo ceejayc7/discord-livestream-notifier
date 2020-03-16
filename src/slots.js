@@ -57,7 +57,7 @@ function handleSlots(msg) {
   } else {
     Database.initializeUser(msg.channel.guild.name, msg.author.username);
   }
-  const emojiList = msg.guild.emojis.map((emoji) => emoji);
+  const emojiList = msg.guild.emojis.cache.map((emoji) => emoji);
   const randomList = generateRandomEmojiList(emojiList);
 
   if (_.first(randomList)) {

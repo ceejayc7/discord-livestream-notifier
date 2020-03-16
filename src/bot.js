@@ -117,7 +117,7 @@ class Bot {
   };
 
   sendEmbed = (streamMessage, embed = '') => {
-    this.client.channels
+    this.client.channels.cache
       .find((channel) => channel.name === CHANNEL_TO_SEND_LIVESTREAM_NOTIFICATIONS)
       .send(streamMessage, embed)
       .catch(Helpers.messageError);
@@ -138,7 +138,7 @@ class Bot {
           const viewers = _.get(stream, 'viewers').toLocaleString();
           const streamMessage = `${streamDisplayName} is now live at ${streamUrl}`;
           const color = 6570404;
-          const embed = new Discord.RichEmbed()
+          const embed = new Discord.MessageEmbed()
             .setAuthor(streamDisplayName, twitchLogo, streamUrl)
             .setColor(color)
             .setImage(image)
@@ -168,7 +168,7 @@ class Bot {
           const beamViewers = _.get(stream, 'viewers').toLocaleString();
           const beamStreamMessage = `${beamName} is now live at ${beamStreamUrl}`;
           const beamColor = 2079469;
-          const beamEmbed = new Discord.RichEmbed()
+          const beamEmbed = new Discord.MessageEmbed()
             .setAuthor(beamName, beamSiteLogo, beamStreamUrl)
             .setColor(beamColor)
             .setImage(beamImage)
@@ -195,7 +195,7 @@ class Bot {
           const youtubeUpdatedAt = _.get(stream, 'updated_at');
           const youtubeStreamMessage = `${youtubeName} is now live at ${youtubeStreamUrl}`;
           const youtubeColor = 16711680;
-          const youtubeEmbed = new Discord.RichEmbed()
+          const youtubeEmbed = new Discord.MessageEmbed()
             .setAuthor(youtubeName, youtubeSiteLogo, youtubeStreamUrl)
             .setColor(youtubeColor)
             .setImage(youtubeImage)
@@ -216,7 +216,7 @@ class Bot {
           const okruStreamMessage = `${okruName} is now live at ${okruStreamUrl}`;
           const okruColor = 16089632;
           const okruTimestamp = _.get(stream, 'updated_at');
-          const okruEmbed = new Discord.RichEmbed()
+          const okruEmbed = new Discord.MessageEmbed()
             .setAuthor(okruName, okruSiteLogo, okruStreamUrl)
             .setColor(okruColor)
             .setImage(okruImage)
@@ -238,7 +238,7 @@ class Bot {
           const vliveStreamMessage = `${vliveName} is now live at ${vliveStreamUrl}`;
           const vliveColor = 5568511;
           const vliveTimestamp = _.get(stream, 'updated_at');
-          const vliveEmbed = new Discord.RichEmbed()
+          const vliveEmbed = new Discord.MessageEmbed()
             .setAuthor(vliveName, vliveSiteLogo, vliveStreamUrl)
             .setColor(vliveColor)
             .setImage(vliveImage)

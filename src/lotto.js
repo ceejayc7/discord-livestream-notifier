@@ -11,9 +11,9 @@ let jackpot;
 let inLottoWaiting = false;
 
 function getOnlineUsersList(msg) {
-  const onlineUsers = msg.guild.members.array().filter((user) => {
-    return user.presence.status !== 'offline' && user.user.bot === false;
-  });
+  const onlineUsers = msg.guild.members.cache
+    .array()
+    .filter((user) => user.presence.status !== 'offline' && user.user.bot === false);
   const onlineUsernameList = onlineUsers.map((user) => {
     return user.user.username;
   });
@@ -85,9 +85,7 @@ function startLotto(msg) {
 
   inLottoWaiting = true;
   winnerObject = _.head(
-    msg.guild.members.array().filter((user) => {
-      return user.user.username === winner;
-    })
+    msg.guild.members.cache.array().filter((user) => user.user.username === winner)
   );
   jackpot = Helpers.getRandomNumberInRange(1, LOTTO_MAX);
   isWinner = true;
