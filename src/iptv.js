@@ -1,10 +1,11 @@
-import cheerio from 'cheerio';
-import request from 'request';
-import rq from 'request-promise';
-import _ from 'lodash';
-import moment from 'moment-timezone';
 import { Helpers } from '@root/helpers';
 import { IPTV_DATABASE } from '@root/constants_internal';
+import _ from 'lodash';
+import cheerio from 'cheerio';
+import moment from 'moment-timezone';
+import request from 'request';
+import rq from 'request-promise';
+
 const path = require('path');
 
 const TIME_FORMAT = 'dddd h:mmA';

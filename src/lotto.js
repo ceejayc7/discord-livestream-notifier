@@ -1,5 +1,6 @@
+import { LOTTO, LOTTO_MAX, PLAYERS } from '@root/constants_internal';
+
 import { Database } from '@root/database';
-import { PLAYERS, LOTTO, LOTTO_MAX } from '@root/constants_internal';
 import { Helpers } from '@root/helpers';
 import { MoneyManager } from '@root/moneymanager';
 import _ from 'lodash';

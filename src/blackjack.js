@@ -1,9 +1,10 @@
-import Deck from 'card-deck';
-import _ from 'lodash';
-import { Helpers } from '@root/helpers';
-import { BOT_COMMANDS, BLACKJACK_MONEY } from '@root/constants_internal';
-import { MoneyManager } from '@root/moneymanager';
+import { BLACKJACK_MONEY, BOT_COMMANDS } from '@root/constants_internal';
+
 import { Database } from '@root/database';
+import Deck from 'card-deck';
+import { Helpers } from '@root/helpers';
+import { MoneyManager } from '@root/moneymanager';
+import _ from 'lodash';
 
 class Blackjack {
   constructor() {

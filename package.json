@@ -15,6 +15,13 @@
   "engines": {
     "node": "12.16.1"
   },
+  "importSort": {
+    ".js": {
+      "parser": "babylon",
+      "style": "eslint",
+      "options": {}
+    }
+  },
   "dependencies": {
     "card-deck": "1.0.1",
     "cheerio": "1.0.0-rc.3",

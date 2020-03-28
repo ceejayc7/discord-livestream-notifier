@@ -1,8 +1,9 @@
+import { WHITELIST_ALL_YOUTUBE_STREAMS, YOUTUBE_KEY } from '@root/constants';
+
+import { Helpers } from '@root/helpers';
+import Livestream from '@stream/livestream';
 import _ from 'lodash';
 import request from 'request-promise';
-import { Helpers } from '@root/helpers';
-import { YOUTUBE_KEY, WHITELIST_ALL_YOUTUBE_STREAMS } from '@root/constants';
-import Livestream from '@stream/livestream';
 
 const PLATFORM = 'youtube';
 const YOUTUBE_API_ENDPOINT = `https://www.googleapis.com/youtube/v3/search?part=snippet&type=video&eventType=live&key=${YOUTUBE_KEY}&channelId=`;

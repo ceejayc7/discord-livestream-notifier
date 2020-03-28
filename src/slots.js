@@ -1,8 +1,9 @@
-import _ from 'lodash';
-import { Helpers } from '@root/helpers';
+import { PLAYERS, SLOTS_MONEY } from '@root/constants_internal';
+
 import { Database } from '@root/database';
+import { Helpers } from '@root/helpers';
 import { MoneyManager } from '@root/moneymanager';
-import { SLOTS_MONEY, PLAYERS } from '@root/constants_internal';
+import _ from 'lodash';
 
 function generateRandomEmojiList(emojiList) {
   const randomList = [];

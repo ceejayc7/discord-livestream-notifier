@@ -1,6 +1,6 @@
+import { Database } from '@root/database';
 import { Helpers } from '@root/helpers';
 import { MoneyManager } from '@root/moneymanager';
-import { Database } from '@root/database';
 import { PLAYERS } from '@root/constants_internal';
 import _ from 'lodash';
 

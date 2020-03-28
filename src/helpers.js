@@ -1,8 +1,9 @@
-import _ from 'lodash';
-import { WHITELISTED_SERVERS, SERVER_FOR_FISHING } from '@root/constants';
-import { BOT_COMMANDS, SLOTS_MONEY, PLAYERS, LOTTO_MAX } from '@root/constants_internal';
+import { BOT_COMMANDS, LOTTO_MAX, PLAYERS, SLOTS_MONEY } from '@root/constants_internal';
+import { SERVER_FOR_FISHING, WHITELISTED_SERVERS } from '@root/constants';
+
 import { Database } from '@root/database';
 import { Prob } from 'prob.js';
+import _ from 'lodash';
 
 function isWhitelistedChannel(msg) {
   const serverWhitelist = _.get(WHITELISTED_SERVERS, msg.channel.guild.name);
