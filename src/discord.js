@@ -12,7 +12,7 @@ import _ from 'lodash';
 import moment from 'moment-timezone';
 
 const streamEmitter = new EventEmitter();
-const serverDatabase = require('@root/db.json');
+const serverDatabase = require('@data/db.json');
 const serverList = Object.keys(serverDatabase);
 const discordBots = {};
 const streamsList = [];

@@ -15,7 +15,7 @@ class Blackjack {
       DISPLAY: 'display',
       VALUE: 'value'
     };
-    this.deck = new Deck(require('@root/cards.json'));
+    this.deck = new Deck(require('@data/cards.json'));
     this.betSize = null;
   }
 

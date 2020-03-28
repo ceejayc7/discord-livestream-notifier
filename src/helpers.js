@@ -38,7 +38,7 @@ const sendMessageToChannel = (msg, stringToSend) => {
 };
 
 const getListOfStreams = (streamSite) => {
-  const streamsDatabase = require('@root/db.json');
+  const streamsDatabase = require('@data/db.json');
   return _.uniq(_.compact(_.flatten(_.map(streamsDatabase, streamSite))));
 };
 

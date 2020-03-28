@@ -19,7 +19,7 @@ $ git clone https://github.com/ceejayc7/discord-livestream-notifier.git
 $ npm install
 ```
 
-Add `src/db.json` to include the streams to be watching
+Add `src/data/db.json` to include the streams to be watching
 
 ```js
 {

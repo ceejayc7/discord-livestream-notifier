@@ -15,9 +15,10 @@
       "module-resolver",
       {
         "alias": {
+          "@data": "./src/data",
+          "@iptv": "./src/iptv",
           "@root": "./src",
-          "@stream": "./src/stream",
-          "@iptv": "./src/iptv"
+          "@stream": "./src/stream"
         }
       }
     ]

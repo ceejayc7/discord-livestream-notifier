@@ -5,7 +5,7 @@ import { PLAYERS } from '@root/constants_internal';
 import _ from 'lodash';
 
 const weightedRandom = require('weighted-random');
-const fishLines = require('@root/fish.json');
+const fishLines = require('@data/fish.json');
 
 const addRewardIfPossible = (line, msg) => {
   if (line.reward && line.reward > 0) {
