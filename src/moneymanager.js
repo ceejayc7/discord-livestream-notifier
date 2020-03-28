@@ -3,7 +3,7 @@ import { MINIMUM_BITCOINS, PLAYERS, SLOTS_MONEY } from '@root/constants_internal
 import { Database } from '@root/database';
 import { Helpers } from '@root/helpers';
 
-function printLeaderboard(msg) {
+const printLeaderboard = (msg) => {
   const template = `%INDEX%. %PLAYERNAME% has %NUMBER% Bitcoins\n`;
   const mapping = {
     '%INDEX%': 'index+1',
@@ -11,9 +11,9 @@ function printLeaderboard(msg) {
     '%NUMBER%': 'player.money.toLocaleString()'
   };
   Helpers.printLeaderboard(msg, ['money'], template, mapping);
-}
+};
 
-function printMoney(msg) {
+const printMoney = (msg) => {
   const userMoney = getUsersMoney(msg);
   if (!userMoney) {
     Helpers.sendMessageToChannel(msg, `You have no bitcoins. Play a game to get some.`);
@@ -21,26 +21,26 @@ function printMoney(msg) {
   }
   const messageToSend = `${msg.author.username} has **${userMoney.toLocaleString()}** Bitcoins`;
   Helpers.sendMessageToChannel(msg, messageToSend);
-}
+};
 
-function getUserKey(msg) {
+const getUserKey = (msg) => {
   return `/${msg.channel.guild.name}/${PLAYERS}/${msg.author.username}/money`;
-}
+};
 
-function getUsersMoney(msg) {
+const getUsersMoney = (msg) => {
   const userMoneyKey = getUserKey(msg);
   return Database.getData(userMoneyKey);
-}
+};
 
-function isEnoughMoney(msg, cost) {
+const isEnoughMoney = (msg, cost) => {
   const money = getUsersMoney(msg);
   if (money >= cost) {
     return true;
   }
   return false;
-}
+};
 
-function getBalanceForBlackjackDouble(msg, currentBetSize) {
+const getBalanceForBlackjackDouble = (msg, currentBetSize) => {
   const DOUBLE = 2;
   const usersMoney = getUsersMoney(msg);
   if (currentBetSize * DOUBLE > usersMoney) {
@@ -51,27 +51,27 @@ function getBalanceForBlackjackDouble(msg, currentBetSize) {
     return usersMoney;
   }
   return currentBetSize * DOUBLE;
-}
+};
 
-function printNotEnoughMoney(msg) {
+const printNotEnoughMoney = (msg) => {
   Helpers.sendMessageToChannel(msg, `You don't have enough bitcoins, sorry bro`);
-}
+};
 
-function removeMoney(msg, cost) {
+const removeMoney = (msg, cost) => {
   const currentMoney = getUsersMoney(msg);
   let newMoney = currentMoney - cost;
   if (newMoney < MINIMUM_BITCOINS) {
     newMoney = MINIMUM_BITCOINS;
   }
   Database.writeData(getUserKey(msg), newMoney);
-}
+};
 
-function addMoney(msg, cost) {
+const addMoney = (msg, cost) => {
   const currentMoney = getUsersMoney(msg);
   Database.writeData(getUserKey(msg), currentMoney + cost);
-}
+};
 
-function updateSlotsMoney(msg, count) {
+const updateSlotsMoney = (msg, count) => {
   const currentMoney = getUsersMoney(msg);
   switch (count) {
     case 2:
@@ -87,7 +87,7 @@ function updateSlotsMoney(msg, count) {
       Database.writeData(getUserKey(msg), currentMoney + SLOTS_MONEY.SLOTS_WIN_REWARD);
       break;
   }
-}
+};
 
 export const MoneyManager = {
   printMoney,

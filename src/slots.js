@@ -5,7 +5,7 @@ import { Helpers } from '@root/helpers';
 import { MoneyManager } from '@root/moneymanager';
 import _ from 'lodash';
 
-function generateRandomEmojiList(emojiList) {
+const generateRandomEmojiList = (emojiList) => {
   const randomList = [];
   const numberOfSlots = 5;
 
@@ -13,9 +13,9 @@ function generateRandomEmojiList(emojiList) {
     randomList.push(Helpers.getRandomElementFromList(emojiList));
   }
   return randomList;
-}
+};
 
-function saveResults(msg, randomList) {
+const saveResults = (msg, randomList) => {
   const uniqueEmojiIds = _.countBy(randomList, 'id');
   const key = `/${msg.channel.guild.name}/${PLAYERS}/${msg.author.username}`;
   const slotsCountKeyTotal = `${key}/total`;
@@ -50,9 +50,9 @@ function saveResults(msg, randomList) {
     Database.writeData(currentDBIdentifer, currentDBCount + 1);
     MoneyManager.updateSlotsMoney(msg, count);
   });
-}
+};
 
-function handleSlots(msg) {
+const handleSlots = (msg) => {
   if (MoneyManager.isEnoughMoney(msg, SLOTS_MONEY.SLOTS_COST)) {
     MoneyManager.removeMoney(msg, SLOTS_MONEY.SLOTS_COST);
   } else {
@@ -68,9 +68,9 @@ function handleSlots(msg) {
       })
       .catch(Helpers.messageError);
   }
-}
+};
 
-function leaderboard(msg) {
+const leaderboard = (msg) => {
   const serverData = Database.getData(`/${msg.channel.guild.name}/${PLAYERS}`);
   const sorted = _.orderBy(serverData, ['x5', 'x4', 'x3', 'x2', 'total'], 'asc').reverse();
   let dataToDisplay = '';
@@ -94,7 +94,7 @@ function leaderboard(msg) {
     dataToDisplay += `\n`;
   });
   Helpers.sendMessageToChannel(msg, '```perl\n' + dataToDisplay + '```');
-}
+};
 
 export const Slots = {
   handleSlots,

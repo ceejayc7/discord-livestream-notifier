@@ -11,7 +11,7 @@ let winnerTimeout;
 let jackpot;
 let inLottoWaiting = false;
 
-function getOnlineUsersList(msg) {
+const getOnlineUsersList = (msg) => {
   const onlineUsers = msg.guild.members.cache
     .array()
     .filter((user) => user.presence.status !== 'offline' && user.user.bot === false);
@@ -19,37 +19,37 @@ function getOnlineUsersList(msg) {
     return user.user.username;
   });
   return onlineUsernameList;
-}
+};
 
-function sendStartingMessage(msg, eligibleLottoUsers) {
+const sendStartingMessage = (msg, eligibleLottoUsers) => {
   let initialMessage = '';
   initialMessage += `Today's jackpot is **${jackpot.toLocaleString()}** Bitcoins! Wow!!!\n`;
   initialMessage += `The ticket holders are: **${eligibleLottoUsers.join(' ')}**\n`;
   initialMessage += `and the winner is........`;
   Helpers.sendMessageToChannel(msg, initialMessage);
-}
+};
 
-function missedClaim(msg) {
+const missedClaim = (msg) => {
   Helpers.sendMessageToChannel(msg, 'Nobody claimed the jackpot!!!! Better luck next time bros');
   clearGlobals();
-}
+};
 
-function printWinner(msg) {
+const printWinner = (msg) => {
   const ONE_MINUTE = 60000;
   inLottoWaiting = false;
   Helpers.sendMessageToChannel(msg, `${winnerObject} has won!!! Type !claim to claim your jackpot`);
   winnerTimeout = setTimeout(() => missedClaim(msg), ONE_MINUTE);
-}
+};
 
-function isNewLottoPlayer(msg, userLottoLottoKey) {
+const isNewLottoPlayer = (msg, userLottoLottoKey) => {
   const userID = Database.getData(userLottoLottoKey);
   if (userID === msg.author.id) {
     return false;
   }
   return true;
-}
+};
 
-function isEligibleLottoEvent(msg) {
+const isEligibleLottoEvent = (msg) => {
   const timeToNextLottoKey = `/${msg.channel.guild.name}/${LOTTO}/timeToNextLotto`;
   const userLottoLottoKey = `/${msg.channel.guild.name}/${LOTTO}/userID`;
   const timeToNextLotto = Database.getData(timeToNextLottoKey);
@@ -69,9 +69,9 @@ function isEligibleLottoEvent(msg) {
     Helpers.sendMessageToChannel(msg, `Sorry bro, !lotto is on cooldown. Try again later`);
   }
   return false;
-}
+};
 
-function startLotto(msg) {
+const startLotto = (msg) => {
   if (!isEligibleLottoEvent(msg)) {
     return;
   }
@@ -94,17 +94,17 @@ function startLotto(msg) {
   sendStartingMessage(msg, eligibleLottoUsers);
 
   setTimeout(() => printWinner(msg), FIVE_SECONDS);
-}
+};
 
-function clearGlobals() {
+const clearGlobals = () => {
   clearTimeout(winnerTimeout);
   isWinner = false;
   winnerObject = null;
   jackpot = null;
   inLottoWaiting = false;
-}
+};
 
-function claimLotto(msg) {
+const claimLotto = (msg) => {
   if (isWinner && winnerObject.user.id === msg.author.id && !inLottoWaiting) {
     Helpers.sendMessageToChannel(
       msg,
@@ -115,7 +115,7 @@ function claimLotto(msg) {
     MoneyManager.addMoney(msg, jackpot);
     clearGlobals();
   }
-}
+};
 
 export const Lotto = {
   startLotto,

@@ -5,97 +5,97 @@ import { Database } from '@root/database';
 import { Prob } from 'prob.js';
 import _ from 'lodash';
 
-function isWhitelistedChannel(msg) {
+const isWhitelistedChannel = (msg) => {
   const serverWhitelist = _.get(WHITELISTED_SERVERS, msg.channel.guild.name);
   if (_.includes(serverWhitelist, msg.channel.name)) {
     return true;
   }
   return false;
-}
+};
 
-function isFishingServer(msg) {
+const isFishingServer = (msg) => {
   const specificServer = SERVER_FOR_FISHING;
   if (msg.channel.guild.name === specificServer) {
     return true;
   }
   return false;
-}
+};
 
-function messageError(error) {
+const messageError = (error) => {
   console.log(
     `Unable to send message. \t Error name: ${error.name} \t Error message: ${error.message}`
   );
-}
+};
 
-function apiError(platform, error) {
+const apiError = (platform, error) => {
   console.log(
     `${platform} API error. \t Error name: ${error.name} \t Error message: ${error.message}`
   );
-}
+};
 
-function sendMessageToChannel(msg, stringToSend) {
+const sendMessageToChannel = (msg, stringToSend) => {
   return msg.channel.send(stringToSend).catch(messageError);
-}
+};
 
-function getListOfStreams(streamSite) {
+const getListOfStreams = (streamSite) => {
   const streamsDatabase = require('@root/db.json');
   return _.uniq(_.compact(_.flatten(_.map(streamsDatabase, streamSite))));
-}
+};
 
-function addQueryParamToList(queryParam, listOfStreams) {
+const addQueryParamToList = (queryParam, listOfStreams) => {
   const newList = [];
   listOfStreams.forEach((stream) => newList.push(`&${queryParam}=${stream}`));
   return newList;
-}
+};
 
-function retrieveLiveChannels(className, channelData) {
+const retrieveLiveChannels = (className, channelData) => {
   if (!_.isEmpty(channelData)) {
     _.forEach(channelData, (stream) => className.announceIfStreamIsNew(stream));
   }
   className.currentLiveStreams = channelData;
-}
+};
 
-function announceIfStreamIsNew(stream) {
+const announceIfStreamIsNew = (stream) => {
   const currentLiveChannels = _.map(this.currentLiveStreams, 'name');
   if (!_.includes(currentLiveChannels, stream.name)) {
     this.streamEmitter.emit('event:streamlive', stream);
   }
-}
+};
 
-function getBlackjackBetsize(msg) {
+const getBlackjackBetsize = (msg) => {
   const betSizeSplit = msg.content.split(' ');
 
   if (betSizeSplit.length >= 2 && parseInt(betSizeSplit[1])) {
     return parseInt(betSizeSplit[1]);
   }
   return false;
-}
+};
 
-function getRandomElementFromList(list) {
+const getRandomElementFromList = (list) => {
   return list[Math.floor(Math.random() * list.length)];
-}
+};
 
-function printSpecifyBetSize(msg) {
+const printSpecifyBetSize = (msg) => {
   Helpers.sendMessageToChannel(
     msg,
     `Usage: !21 <bet size>. Use !bitcoin to see how many bitcoins you have.`
   );
-}
+};
 
-function getRandomNumberInRange(min, max) {
+const getRandomNumberInRange = (min, max) => {
   return parseInt(Math.random() * (max - min) + min);
-}
+};
 
-function getRandomNumberInRangeWithExponentialDistribution(min) {
+const getRandomNumberInRangeWithExponentialDistribution = (min) => {
   const exponentialDistribution = Prob.exponential(1.0);
   let randomNumber = parseInt(exponentialDistribution() * 100);
   while (randomNumber < min) {
     randomNumber = parseInt(exponentialDistribution() * 100);
   }
   return randomNumber;
-}
+};
 
-function printLeaderboard(msg, sortAttributes, printMessage, mapping, hideValue = undefined) {
+const printLeaderboard = (msg, sortAttributes, printMessage, mapping, hideValue = undefined) => {
   const serverData = Database.getData(`/${msg.channel.guild.name}/${PLAYERS}`);
   const sorted = _.orderBy(serverData, sortAttributes, 'asc').reverse();
   let leaderboard = '```perl\n';
@@ -114,9 +114,9 @@ function printLeaderboard(msg, sortAttributes, printMessage, mapping, hideValue 
   leaderboard += '```';
 
   Helpers.sendMessageToChannel(msg, leaderboard);
-}
+};
 
-function printHelp(msg) {
+const printHelp = (msg) => {
   const MARKDOWN = '```';
   const DIVIDER = `=============================================`;
   const filteredBotCommands = _.map(
@@ -162,9 +162,9 @@ function printHelp(msg) {
   messageToSend += `${MARKDOWN}`;
 
   sendMessageToChannel(msg, messageToSend);
-}
+};
 
-function decodeHTMLEntities(encodedString) {
+const decodeHTMLEntities = (encodedString) => {
   const translateRegex = /&(nbsp|amp|quot|lt|gt);/g;
   const translate = {
     nbsp: ' ',
@@ -181,7 +181,7 @@ function decodeHTMLEntities(encodedString) {
       const num = parseInt(numStr, 10);
       return String.fromCharCode(num);
     });
-}
+};
 
 const getCaseInsensitiveKey = (object, key) => {
   return Object.keys(object).find((k) => k.toLowerCase() === key.toLowerCase());

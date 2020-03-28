@@ -7,21 +7,21 @@ import _ from 'lodash';
 const weightedRandom = require('weighted-random');
 const fishLines = require('@root/fish.json');
 
-function addRewardIfPossible(line, msg) {
+const addRewardIfPossible = (line, msg) => {
   if (line.reward && line.reward > 0) {
     Database.initializeUser(msg.channel.guild.name, msg.author.username);
     MoneyManager.addMoney(msg, line.reward);
   }
-}
+};
 
-function isFish(line) {
+const isFish = (line) => {
   if (line.fish) {
     return true;
   }
   return false;
-}
+};
 
-function printLeaderboard(msg) {
+const printLeaderboard = (msg) => {
   const template = `%INDEX%. %PLAYERNAME% has a %NUMBER% pound fish\n`;
   const mapping = {
     '%INDEX%': 'index+1',
@@ -29,24 +29,24 @@ function printLeaderboard(msg) {
     '%NUMBER%': 'player.maxWeightFish.toLocaleString()'
   };
   Helpers.printLeaderboard(msg, ['maxWeightFish'], template, mapping, 'maxWeightFish');
-}
+};
 
-function saveFishWeight(msg, weight) {
+const saveFishWeight = (msg, weight) => {
   const key = `/${msg.channel.guild.name}/${PLAYERS}/${msg.author.username}/maxWeightFish`;
   const savedWeight = Database.getData(key);
   if (weight > savedWeight) {
     Database.writeData(key, weight);
   }
-}
+};
 
-function getWeight(fishLineObj) {
+const getWeight = (fishLineObj) => {
   if (fishLineObj.exponential) {
     return Helpers.getRandomNumberInRangeWithExponentialDistribution(fishLineObj.minWeight);
   }
   return Helpers.getRandomNumberInRange(fishLineObj.minWeight, fishLineObj.maxWeight);
-}
+};
 
-function printFishLine(msg) {
+const printFishLine = (msg) => {
   const weightedProbability = _.map(fishLines, 'weightedProbability');
   const selection = weightedRandom(weightedProbability);
   const fishLineObj = fishLines[selection];
@@ -60,7 +60,7 @@ function printFishLine(msg) {
   }
   addRewardIfPossible(fishLineObj, msg);
   Helpers.sendMessageToChannel(msg, chatLine);
-}
+};
 
 export const Fish = {
   printFishLine,

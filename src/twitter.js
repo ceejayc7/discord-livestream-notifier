@@ -48,7 +48,7 @@ const params = {
   tweet_mode: 'extended'
 };
 
-function parseDateTimeFromTweetText(text) {
+const parseDateTimeFromTweetText = (text) => {
   const dateRegexString = text.match(DATE_REGEX);
   const timeRegexString = text.match(TIME_REGEX);
   if (dateRegexString && dateRegexString.length && timeRegexString && timeRegexString.length) {
@@ -71,17 +71,17 @@ function parseDateTimeFromTweetText(text) {
   }
   console.log(`[Twitter]: Unable to parse tweet for time. Text: ${text}`);
   return null;
-}
+};
 
-function getShowname(text) {
+const getShowname = (text) => {
   const shownameRegex = text.match(SHOWNAME_REGEX);
   if (shownameRegex && shownameRegex.length > 2) {
     return shownameRegex[2];
   }
   return '';
-}
+};
 
-export function getLatestTweets() {
+export const getLatestTweets = () => {
   if (!client) {
     return Promise.resolve();
   }
@@ -112,20 +112,20 @@ export function getLatestTweets() {
       return resolve(filteredTweets);
     });
   });
-}
+};
 
-export function filterForValidEvents(tweets) {
+export const filterForValidEvents = (tweets) => {
   return _.filter(tweets, isEventInFuture);
-}
+};
 
-export function isEventInFuture(tweet) {
+export const isEventInFuture = (tweet) => {
   if (_.get(tweet, 'time.unix', 0) + VALID_TIME_OFFSET > moment().unix()) {
     return true;
   }
   return false;
-}
+};
 
-export function isTwitterProtected() {
+export const isTwitterProtected = () => {
   if (!client) {
     return Promise.resolve();
   }
@@ -139,4 +139,4 @@ export function isTwitterProtected() {
       return resolve(_.get(userInfo, 'protected'));
     });
   });
-}
+};

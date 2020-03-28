@@ -59,7 +59,7 @@ export const KPOP_SCHEDULE = [
   }
 ];
 
-function getRelativeTimeStart(timestamp) {
+const getRelativeTimeStart = (timestamp) => {
   const eventMoment = moment.tz(timestamp, TIME_FORMAT, TIMEZONE);
   const currentTime = moment.tz().unix();
   // if the event is in the future, just return the timestamp
@@ -68,7 +68,7 @@ function getRelativeTimeStart(timestamp) {
   }
   // if the event is from a previous weekday, add 1 week
   return eventMoment.add(1, 'weeks').unix();
-}
+};
 
 const generateEndpoints = () => {
   // initialize blog array
@@ -77,7 +77,7 @@ const generateEndpoints = () => {
   }
 };
 
-function isValidIPTVStream(link) {
+const isValidIPTVStream = (link) => {
   return new Promise((resolve) => {
     const req = request({ url: link, timeout: IPTV_TIMEOUT_MS })
       .on('response', (response) => {
@@ -89,9 +89,9 @@ function isValidIPTVStream(link) {
       })
       .on('error', () => resolve(false));
   });
-}
+};
 
-async function findValidStreams(pages, channelName) {
+const findValidStreams = async (pages, channelName) => {
   const validStreams = [];
   const PLAYLIST_REGEX_STRING = `(#EXTINF:-1,${channelName})\\s(http:\\/\\/\\S+)`;
   const PLAYLIST_REGEX = new RegExp(PLAYLIST_REGEX_STRING, 'gi');
@@ -112,9 +112,9 @@ async function findValidStreams(pages, channelName) {
     }
   }
   return validStreams;
-}
+};
 
-function getAllPageData(pages) {
+const getAllPageData = (pages) => {
   const promises = [];
   pages.forEach((page) => {
     const httpOptions = {
@@ -126,9 +126,9 @@ function getAllPageData(pages) {
     promises.push(rq(httpOptions));
   });
   return Promise.all(promises);
-}
+};
 
-function scrapePageForLinks($) {
+const scrapePageForLinks = ($) => {
   const pages = [];
   if ($('#mas-wrapper').length) {
     $('#mas-wrapper > article').each(function() {
@@ -143,9 +143,9 @@ function scrapePageForLinks($) {
     console.log(`[IPTV]: Unable to scrape page`);
   }
   return pages;
-}
+};
 
-function getValidIPTVStreamsFromPage(linkToPage, channelName) {
+const getValidIPTVStreamsFromPage = (linkToPage, channelName) => {
   const httpOptions = {
     url: linkToPage,
     transform: function(body) {
@@ -158,7 +158,7 @@ function getValidIPTVStreamsFromPage(linkToPage, channelName) {
     .then(getAllPageData)
     .then((data) => findValidStreams(data, channelName))
     .catch((error) => console.log(`[IPTV]: Error when retrieving IPTV streams. ${error}`));
-}
+};
 
 const wait = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 

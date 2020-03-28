@@ -18,7 +18,7 @@ const discordBots = {};
 const streamsList = [];
 const ignoreLowercasePlatforms = ['youtube', 'okru'];
 
-function initBots() {
+const initBots = () => {
   // create new bot per each defined discord server
   _.forEach(serverList, (server) => {
     const loginToken = _.get(DISCORD_TOKENS, server);
@@ -40,9 +40,9 @@ function initBots() {
   streamsList.push(youtube);
   streamsList.push(okru);
   streamsList.push(vlive);
-}
+};
 
-function setMusicShowTimers() {
+const setMusicShowTimers = () => {
   const OFFSET_IN_SECONDS = 960;
   const ONE_WEEK = 604800;
   const server = _.get(discordBots, SEND_KPOP_IPTV.server);
@@ -64,9 +64,9 @@ function setMusicShowTimers() {
     console.log(`Setting weekly timer reset at ${ONE_WEEK + moment.tz().unix()}`);
     setTimeout(setMusicShowTimers, ONE_WEEK * 1000);
   }
-}
+};
 
-function setTimers() {
+const setTimers = () => {
   const TIME_TO_PING_API = 300000;
   const FIRST_API_PING = 30000;
   _.forEach(streamsList, (stream) => {
@@ -74,16 +74,16 @@ function setTimers() {
     setTimeout(stream.updateStreams, FIRST_API_PING); // on inital timer set, call API after 30 seconds to allow discord bots to log in
   });
   setTimeout(setMusicShowTimers, FIRST_API_PING); // wait for bot login before setting music show timers
-}
+};
 
 initBots();
 setTimers();
 
-function getStreamName(stream) {
+const getStreamName = (stream) => {
   return _.includes(ignoreLowercasePlatforms, stream.platform)
     ? stream.name
     : stream.name.toLowerCase();
-}
+};
 
 streamEmitter.on('event:streamlive', (stream) => {
   _.forEach(serverDatabase, (server, serverName) => {
