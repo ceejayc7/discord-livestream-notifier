@@ -1,7 +1,8 @@
-import { TWITCH_CLIENT_ID } from './constants';
+import { TWITCH_CLIENT_ID } from '../constants';
 import _ from 'lodash';
-import { Helpers } from './helpers';
+import { Helpers } from '../helpers';
 import request from 'request-promise';
+import Livestream from './livestream';
 
 const PLATFORM = 'twitch';
 const TWITCH_BASE_URL = 'https://www.twitch.tv';
@@ -9,8 +10,9 @@ const TWITCH_API_STREAMS_ENDPOINT = 'https://api.twitch.tv/helix/streams?first=1
 const TWITCH_API_GAMES_ENDPOINT = 'https://api.twitch.tv/helix/games?id=';
 const TWITCH_API_USERS_ENDPOINT = 'https://api.twitch.tv/helix/users?id=';
 
-class Twitch {
+class Twitch extends Livestream {
   constructor(streamEmitter) {
+    super(streamEmitter);
     this.twitchAPIOptions = {
       url: TWITCH_API_STREAMS_ENDPOINT,
       headers: {
@@ -20,8 +22,6 @@ class Twitch {
       json: true,
       method: 'GET'
     };
-    this.currentLiveStreams = [];
-    this.streamEmitter = streamEmitter;
   }
 
   updateStreams = () => {
@@ -70,13 +70,6 @@ class Twitch {
       });
     }
     return reducedResponse;
-  };
-
-  announceIfStreamIsNew = (stream) => {
-    const currentLiveChannels = _.map(this.currentLiveStreams, 'name');
-    if (!_.includes(currentLiveChannels, stream.name)) {
-      this.streamEmitter.emit('event:streamlive', stream);
-    }
   };
 }
 

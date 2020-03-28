@@ -1,15 +1,15 @@
 import _ from 'lodash';
 import request from 'request-promise';
-import { Helpers } from './helpers';
-import { YOUTUBE_KEY, WHITELIST_ALL_YOUTUBE_STREAMS } from './constants';
+import { Helpers } from '../helpers';
+import { YOUTUBE_KEY, WHITELIST_ALL_YOUTUBE_STREAMS } from '../constants';
+import Livestream from './livestream';
 
 const PLATFORM = 'youtube';
 const YOUTUBE_API_ENDPOINT = `https://www.googleapis.com/youtube/v3/search?part=snippet&type=video&eventType=live&key=${YOUTUBE_KEY}&channelId=`;
 
-class Youtube {
+class Youtube extends Livestream {
   constructor(streamEmitter) {
-    this.currentLiveStreams = [];
-    this.streamEmitter = streamEmitter;
+    super(streamEmitter);
   }
 
   getChannelPromises = (stream) => {
@@ -56,13 +56,6 @@ class Youtube {
       }
     });
     return reducedResponse;
-  };
-
-  announceIfStreamIsNew = (stream) => {
-    const currentLiveChannels = _.map(this.currentLiveStreams, 'name');
-    if (!_.includes(currentLiveChannels, stream.name)) {
-      this.streamEmitter.emit('event:streamlive', stream);
-    }
   };
 }
 

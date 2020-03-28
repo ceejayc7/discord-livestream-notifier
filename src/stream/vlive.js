@@ -1,7 +1,8 @@
 import _ from 'lodash';
 import request from 'request-promise';
-import { Helpers } from './helpers';
+import { Helpers } from '../helpers';
 import moment from 'moment-timezone';
+import Livestream from './livestream';
 
 const PLATFORM = 'vlive';
 const APP_ID = '8c6cc7b45d2568fb668be6e05b6e5a3b';
@@ -10,10 +11,9 @@ const VLIVE_API_ENDPOINT = `https://api-vfan.vlive.tv/v2/channel.${CHANNEL_ID}/h
 const VLIVE_VIDEO = 'https://www.vlive.tv/video/';
 const IMG_REGEX = new RegExp(/(http(s?):)([/|.|\w|\s|-])*\.(?:jpg|gif|png)/, 'gi');
 
-class Vlive {
+class Vlive extends Livestream {
   constructor(streamEmitter) {
-    this.currentLiveStreams = [];
-    this.streamEmitter = streamEmitter;
+    super(streamEmitter);
   }
 
   getChannelPromises = (channelId) => {
@@ -78,13 +78,6 @@ class Vlive {
       }
     });
     return reducedResponse;
-  };
-
-  announceIfStreamIsNew = (stream) => {
-    const currentLiveChannels = _.map(this.currentLiveStreams, 'name');
-    if (!_.includes(currentLiveChannels, stream.name)) {
-      this.streamEmitter.emit('event:streamlive', stream);
-    }
   };
 }
 

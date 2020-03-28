@@ -1,15 +1,15 @@
-import { MIXER_CLIENT_ID } from './constants';
+import { MIXER_CLIENT_ID } from '../constants';
 import _ from 'lodash';
 import request from 'request-promise';
-import { Helpers } from './helpers';
+import { Helpers } from '../helpers';
+import Livestream from './livestream';
 
 const PLATFORM = 'mixer';
 const MIXER_API_ENDPOINT = 'https://mixer.com/api/v1/channels/';
 
-class Mixer {
+class Mixer extends Livestream {
   constructor(streamEmitter) {
-    this.currentLiveStreams = [];
-    this.streamEmitter = streamEmitter;
+    super(streamEmitter);
   }
 
   getChannelPromises = (url) => {
@@ -55,13 +55,6 @@ class Mixer {
       }
     });
     return reducedResponse;
-  };
-
-  announceIfStreamIsNew = (stream) => {
-    const currentLiveChannels = _.map(this.currentLiveStreams, 'name');
-    if (!_.includes(currentLiveChannels, stream.name)) {
-      this.streamEmitter.emit('event:streamlive', stream);
-    }
   };
 }
 

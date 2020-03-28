@@ -1,17 +1,17 @@
 import _ from 'lodash';
 import request from 'request-promise';
 import cheerio from 'cheerio';
-import { Helpers } from './helpers';
+import { Helpers } from '../helpers';
+import Livestream from './livestream';
 
 const PLATFORM = 'okru';
 const OKRU_BASE_URL = 'https://ok.ru';
 const OKRU_ENDPOINT = 'https://ok.ru/live/profile/';
 const PROTOCOL = 'https:';
 
-class OkRu {
+class OkRu extends Livestream {
   constructor(streamEmitter) {
-    this.currentLiveStreams = [];
-    this.streamEmitter = streamEmitter;
+    super(streamEmitter);
   }
 
   scrapePage = ($) => {
@@ -66,13 +66,6 @@ class OkRu {
       .then(_.compact)
       .then((channelData) => Helpers.retrieveLiveChannels(this, channelData))
       .catch((error) => Helpers.apiError(PLATFORM, error));
-  };
-
-  announceIfStreamIsNew = (stream) => {
-    const currentLiveChannels = _.map(this.currentLiveStreams, 'name');
-    if (!_.includes(currentLiveChannels, stream.name)) {
-      this.streamEmitter.emit('event:streamlive', stream);
-    }
   };
 }
 

@@ -1,9 +1,9 @@
 import Bot from './bot';
-import Twitch from './twitch';
-import Youtube from './youtube';
-import Mixer from './mixer';
-import OkRu from './okru';
-import Vlive from './vlive';
+import Twitch from './stream/twitch';
+import Youtube from './stream/youtube';
+import Mixer from './stream/mixer';
+import OkRu from './stream/okru';
+import Vlive from './stream/vlive';
 import { KPOP_SCHEDULE, sendIPTVStreams } from './iptv';
 import { EventEmitter } from 'events';
 import { DISCORD_TOKENS, SEND_KPOP_IPTV } from './constants';
