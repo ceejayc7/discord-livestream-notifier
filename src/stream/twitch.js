@@ -1,8 +1,8 @@
-import { TWITCH_CLIENT_ID } from '../constants';
+import { TWITCH_CLIENT_ID } from '@root/constants';
 import _ from 'lodash';
-import { Helpers } from '../helpers';
+import { Helpers } from '@root/helpers';
 import request from 'request-promise';
-import Livestream from './livestream';
+import Livestream from '@stream/livestream';
 
 const PLATFORM = 'twitch';
 const TWITCH_BASE_URL = 'https://www.twitch.tv';

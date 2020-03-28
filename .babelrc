@@ -9,5 +9,17 @@
       }
     ]
   ],
-  "plugins": ["@babel/plugin-proposal-class-properties"]
+  "plugins": [
+    ["@babel/plugin-proposal-class-properties"],
+    [
+      "module-resolver",
+      {
+        "alias": {
+          "@root": "./src",
+          "@stream": "./src/stream",
+          "@iptv": "./src/iptv"
+        }
+      }
+    ]
+  ]
 }

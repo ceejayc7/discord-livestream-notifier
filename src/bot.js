@@ -1,14 +1,14 @@
 import Discord from 'discord.js';
 import _ from 'lodash';
-import Blackjack from './blackjack';
-import { Slots } from './slots';
-import { Helpers } from './helpers';
-import { CHANNEL_TO_SEND_LIVESTREAM_NOTIFICATIONS } from './constants';
-import { BOT_COMMANDS } from './constants_internal';
-import { MoneyManager } from './moneymanager';
-import { Fish } from './fish';
-import { Lotto } from './lotto';
-import { onKpopCommand, parseIPTVCommand } from './kpop';
+import Blackjack from '@root/blackjack';
+import { Slots } from '@root/slots';
+import { Helpers } from '@root/helpers';
+import { CHANNEL_TO_SEND_LIVESTREAM_NOTIFICATIONS } from '@root/constants';
+import { BOT_COMMANDS } from '@root/constants_internal';
+import { MoneyManager } from '@root/moneymanager';
+import { Fish } from '@root/fish';
+import { Lotto } from '@root/lotto';
+import { onKpopCommand, parseIPTVCommand } from '@root/kpop';
 
 class Bot {
   constructor(loginToken) {

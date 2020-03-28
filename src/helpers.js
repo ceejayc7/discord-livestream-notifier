@@ -1,7 +1,7 @@
 import _ from 'lodash';
-import { WHITELISTED_SERVERS, SERVER_FOR_FISHING } from './constants';
-import { BOT_COMMANDS, SLOTS_MONEY, PLAYERS, LOTTO_MAX } from './constants_internal';
-import { Database } from './database';
+import { WHITELISTED_SERVERS, SERVER_FOR_FISHING } from '@root/constants';
+import { BOT_COMMANDS, SLOTS_MONEY, PLAYERS, LOTTO_MAX } from '@root/constants_internal';
+import { Database } from '@root/database';
 import { Prob } from 'prob.js';
 
 function isWhitelistedChannel(msg) {
@@ -37,7 +37,7 @@ function sendMessageToChannel(msg, stringToSend) {
 }
 
 function getListOfStreams(streamSite) {
-  const streamsDatabase = require('./db.json');
+  const streamsDatabase = require('@root/db.json');
   return _.uniq(_.compact(_.flatten(_.map(streamsDatabase, streamSite))));
 }
 

@@ -1,17 +1,17 @@
-import Bot from './bot';
-import Twitch from './stream/twitch';
-import Youtube from './stream/youtube';
-import Mixer from './stream/mixer';
-import OkRu from './stream/okru';
-import Vlive from './stream/vlive';
-import { KPOP_SCHEDULE, sendIPTVStreams } from './iptv';
+import Bot from '@root/bot';
+import Twitch from '@stream/twitch';
+import Youtube from '@stream/youtube';
+import Mixer from '@stream/mixer';
+import OkRu from '@stream/okru';
+import Vlive from '@stream/vlive';
+import { KPOP_SCHEDULE, sendIPTVStreams } from '@root/iptv';
 import { EventEmitter } from 'events';
-import { DISCORD_TOKENS, SEND_KPOP_IPTV } from './constants';
+import { DISCORD_TOKENS, SEND_KPOP_IPTV } from '@root/constants';
 import _ from 'lodash';
 import moment from 'moment-timezone';
 
 const streamEmitter = new EventEmitter();
-const serverDatabase = require('./db.json');
+const serverDatabase = require('@root/db.json');
 const serverList = Object.keys(serverDatabase);
 const discordBots = {};
 const streamsList = [];

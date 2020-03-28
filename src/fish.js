@@ -1,11 +1,11 @@
-import { Helpers } from './helpers';
-import { MoneyManager } from './moneymanager';
-import { Database } from './database';
-import { PLAYERS } from './constants_internal';
+import { Helpers } from '@root/helpers';
+import { MoneyManager } from '@root/moneymanager';
+import { Database } from '@root/database';
+import { PLAYERS } from '@root/constants_internal';
 import _ from 'lodash';
 
 const weightedRandom = require('weighted-random');
-const fishLines = require('./fish.json');
+const fishLines = require('@root/fish.json');
 
 function addRewardIfPossible(line, msg) {
   if (line.reward && line.reward > 0) {

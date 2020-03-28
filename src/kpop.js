@@ -1,7 +1,7 @@
-import { getLatestTweets, filterForValidEvents, isTwitterProtected } from './twitter';
+import { getLatestTweets, filterForValidEvents, isTwitterProtected } from '@root/twitter';
 import _ from 'lodash';
-import { Helpers } from './helpers';
-import { getValidIPTVStreamsFromList, createMessageToSend } from './iptv';
+import { Helpers } from '@root/helpers';
+import { getValidIPTVStreamsFromList, createMessageToSend } from '@root/iptv';
 
 const printKpopMessage = (msg) => async (tweets) => {
   if (_.isEmpty(tweets)) {

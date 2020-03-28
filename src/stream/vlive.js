@@ -1,8 +1,8 @@
 import _ from 'lodash';
 import request from 'request-promise';
-import { Helpers } from '../helpers';
+import { Helpers } from '@root/helpers';
 import moment from 'moment-timezone';
-import Livestream from './livestream';
+import Livestream from '@stream/livestream';
 
 const PLATFORM = 'vlive';
 const APP_ID = '8c6cc7b45d2568fb668be6e05b6e5a3b';

@@ -1,5 +1,5 @@
 import _ from 'lodash';
-import { KPOP_SCHEDULE, getValidIPTVStreamsFromList } from './iptv';
+import { KPOP_SCHEDULE, getValidIPTVStreamsFromList } from '@root/iptv';
 import moment from 'moment-timezone';
 const fs = require('fs');
 

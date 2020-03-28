@@ -3,8 +3,8 @@ import request from 'request';
 import rq from 'request-promise';
 import _ from 'lodash';
 import moment from 'moment-timezone';
-import { Helpers } from './helpers';
-import { IPTV_DATABASE } from './constants_internal';
+import { Helpers } from '@root/helpers';
+import { IPTV_DATABASE } from '@root/constants_internal';
 const path = require('path');
 
 const TIME_FORMAT = 'dddd h:mmA';

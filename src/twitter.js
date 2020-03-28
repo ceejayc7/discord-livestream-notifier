@@ -1,4 +1,4 @@
-import { TWITTER as TWITTER_CONSTANTS } from './constants';
+import { TWITTER as TWITTER_CONSTANTS } from '@root/constants';
 import _ from 'lodash';
 import moment from 'moment-timezone';
 
@@ -52,9 +52,7 @@ function parseDateTimeFromTweetText(text) {
   const dateRegexString = text.match(DATE_REGEX);
   const timeRegexString = text.match(TIME_REGEX);
   if (dateRegexString && dateRegexString.length && timeRegexString && timeRegexString.length) {
-    const datetime = `${dateRegexString[0]} ${timeRegexString[1]}:${timeRegexString[2]} ${
-      timeRegexString[3]
-    }`;
+    const datetime = `${dateRegexString[0]} ${timeRegexString[1]}:${timeRegexString[2]} ${timeRegexString[3]}`;
     const momentDatetime = moment.tz(datetime, DATETIME_FORMAT_FROM_TWEET, TWEET_TIMEZONE);
 
     const datetimes = {

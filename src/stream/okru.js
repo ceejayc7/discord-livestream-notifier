@@ -1,8 +1,8 @@
 import _ from 'lodash';
 import request from 'request-promise';
 import cheerio from 'cheerio';
-import { Helpers } from '../helpers';
-import Livestream from './livestream';
+import { Helpers } from '@root/helpers';
+import Livestream from '@stream/livestream';
 
 const PLATFORM = 'okru';
 const OKRU_BASE_URL = 'https://ok.ru';

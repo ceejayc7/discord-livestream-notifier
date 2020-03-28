@@ -1,6 +1,6 @@
-import { Helpers } from './helpers';
-import { Database } from './database';
-import { SLOTS_MONEY, MINIMUM_BITCOINS, PLAYERS } from './constants_internal';
+import { Helpers } from '@root/helpers';
+import { Database } from '@root/database';
+import { SLOTS_MONEY, MINIMUM_BITCOINS, PLAYERS } from '@root/constants_internal';
 
 function printLeaderboard(msg) {
   const template = `%INDEX%. %PLAYERNAME% has %NUMBER% Bitcoins\n`;

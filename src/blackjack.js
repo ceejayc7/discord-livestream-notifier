@@ -1,9 +1,9 @@
 import Deck from 'card-deck';
 import _ from 'lodash';
-import { Helpers } from './helpers';
-import { BOT_COMMANDS, BLACKJACK_MONEY } from './constants_internal';
-import { MoneyManager } from './moneymanager';
-import { Database } from './database';
+import { Helpers } from '@root/helpers';
+import { BOT_COMMANDS, BLACKJACK_MONEY } from '@root/constants_internal';
+import { MoneyManager } from '@root/moneymanager';
+import { Database } from '@root/database';
 
 class Blackjack {
   constructor() {
@@ -14,7 +14,7 @@ class Blackjack {
       DISPLAY: 'display',
       VALUE: 'value'
     };
-    this.deck = new Deck(require('./cards.json'));
+    this.deck = new Deck(require('@root/cards.json'));
     this.betSize = null;
   }
 
@@ -138,15 +138,12 @@ class Blackjack {
     const dealerHandValue = this.sumifyHand(this.dealerHand);
 
     if (dealerHandValue > 21) {
-      dealerHandMessages += `\nDealer busts with **${dealerHandValue}**. ${
-        this.msg.author.username
-      } wins with **${playerHandValue}**, good job bro`;
+      dealerHandMessages += `\nDealer busts with **${dealerHandValue}**. ${this.msg.author.username} wins with **${playerHandValue}**, good job bro`;
       MoneyManager.addMoney(this.msg, this.betSize);
     } else if (dealerHandValue <= 21) {
       dealerHandMessages +=
-        `\n${
-          this.msg.author.username
-        } has **${playerHandValue}** and Dealer has **${dealerHandValue}**` + `\n`;
+        `\n${this.msg.author.username} has **${playerHandValue}** and Dealer has **${dealerHandValue}**` +
+        `\n`;
 
       if (dealerHandValue > playerHandValue) {
         dealerHandMessages += `Dealer wins, sorry bro`;
@@ -204,9 +201,7 @@ class Blackjack {
     if (playerHandValue > 21) {
       Helpers.sendMessageToChannel(
         this.msg,
-        `${messageToSend}\n${
-          this.msg.author.username
-        }'s busts with **${playerHandValue}**. Dealer wins, sorry bro`
+        `${messageToSend}\n${this.msg.author.username}'s busts with **${playerHandValue}**. Dealer wins, sorry bro`
       );
       MoneyManager.removeMoney(this.msg, this.betSize);
       this.clearGame();
@@ -236,9 +231,7 @@ class Blackjack {
     if (playerHandValue > 21) {
       Helpers.sendMessageToChannel(
         this.msg,
-        `${messageToSend}\n${
-          this.msg.author.username
-        }'s busts with **${playerHandValue}**. Dealer wins, sorry bro`
+        `${messageToSend}\n${this.msg.author.username}'s busts with **${playerHandValue}**. Dealer wins, sorry bro`
       );
       MoneyManager.removeMoney(this.msg, this.betSize);
       this.clearGame();
