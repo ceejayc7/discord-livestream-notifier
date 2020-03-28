@@ -3,23 +3,23 @@ import { PLAYERS } from '@root/constants_internal';
 
 const db = new JsonDB('slots_database', true, true);
 
-function getData(key) {
+const getData = (key) => {
   try {
     return db.getData(key);
   } catch (error) {
     return 0;
   }
-}
+};
 
-function writeData(key, value) {
+const writeData = (key, value) => {
   try {
     return db.push(key, value);
   } catch (error) {
     return 0;
   }
-}
+};
 
-function initializeUser(server, user) {
+const initializeUser = (server, user) => {
   // check to see if data exists before we initalize a new slots user
   const key = `/${server}/${PLAYERS}/${user}`;
   if (Database.getData(key)) {
@@ -34,7 +34,7 @@ function initializeUser(server, user) {
   writeData(`${key}/total`, 0);
   writeData(`${key}/name`, user);
   writeData(`${key}/maxWeightFish`, 0);
-}
+};
 
 export const Database = {
   getData,
