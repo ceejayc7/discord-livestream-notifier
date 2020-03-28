@@ -13,7 +13,7 @@
     "debug": "babel-node --inspect-brk src/discord.js"
   },
   "engines": {
-    "node": "10.16.0"
+    "node": "12.16.1"
   },
   "dependencies": {
     "card-deck": "1.0.1",
