@@ -1,8 +1,9 @@
 import { DISCORD_TOKENS, SEND_KPOP_IPTV } from '@root/constants';
-import { KPOP_SCHEDULE, sendIPTVStreams } from '@root/iptv';
 
 import Bot from '@root/bot';
 import { EventEmitter } from 'events';
+import { IPTV } from '@root/iptv';
+import { KPOP_SCHEDULE } from '@root/kpop';
 import Mixer from '@stream/mixer';
 import OkRu from '@stream/okru';
 import Twitch from '@stream/twitch';
@@ -11,8 +12,9 @@ import Youtube from '@stream/youtube';
 import _ from 'lodash';
 import moment from 'moment-timezone';
 
-const streamEmitter = new EventEmitter();
 const serverDatabase = require('@data/db.json');
+
+const streamEmitter = new EventEmitter();
 const serverList = Object.keys(serverDatabase);
 const discordBots = {};
 const streamsList = [];
@@ -29,17 +31,11 @@ const initBots = () => {
     }
   });
 
-  const twitch = new Twitch(streamEmitter);
-  const mixer = new Mixer(streamEmitter);
-  const youtube = new Youtube(streamEmitter);
-  const okru = new OkRu(streamEmitter);
-  const vlive = new Vlive(streamEmitter);
-
-  streamsList.push(twitch);
-  streamsList.push(mixer);
-  streamsList.push(youtube);
-  streamsList.push(okru);
-  streamsList.push(vlive);
+  streamsList.push(new Twitch(streamEmitter));
+  streamsList.push(new Mixer(streamEmitter));
+  streamsList.push(new Youtube(streamEmitter));
+  streamsList.push(new OkRu(streamEmitter));
+  streamsList.push(new Vlive(streamEmitter));
 };
 
 const setMusicShowTimers = () => {
@@ -57,7 +53,7 @@ const setMusicShowTimers = () => {
       console.log(
         `Setting timer on ${event.show} on ${event.day} at ${event.time() - OFFSET_IN_SECONDS}`
       );
-      setTimeout(() => sendIPTVStreams(event, channelToSendTo), timeWhenEventStarts);
+      setTimeout(() => IPTV.sendIPTVStreams(event, channelToSendTo), timeWhenEventStarts);
     });
 
     // reset weekly timer in 1 week

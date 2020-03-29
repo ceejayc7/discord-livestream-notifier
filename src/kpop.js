@@ -1,8 +1,68 @@
-import { createMessageToSend, getValidIPTVStreamsFromList } from '@root/iptv';
 import { filterForValidEvents, getLatestTweets, isTwitterProtected } from '@root/twitter';
 
 import { Helpers } from '@root/helpers';
+import { IPTV } from '@root/iptv';
 import _ from 'lodash';
+import moment from 'moment-timezone';
+
+const TIME_FORMAT = 'dddd h:mmA';
+const TIMEZONE = 'Asia/Seoul';
+
+export const KPOP_SCHEDULE = [
+  {
+    day: 'Tuesday',
+    show: 'The Show',
+    channel: ['SBS MTV', 'SBS F!L UHD'],
+    time: () => getRelativeTimeStart('Tuesday 6:00PM')
+  },
+  {
+    day: 'Wednesday',
+    show: 'Show Champion',
+    channel: ['MBC Music', 'MBC Every1'],
+    time: () => getRelativeTimeStart('Wednesday 6:00PM')
+  },
+  {
+    day: 'Thursday',
+    show: 'M Countdown',
+    channel: ['Mnet'],
+    time: () => getRelativeTimeStart('Thursday 6:00PM')
+  },
+  {
+    day: 'Friday',
+    show: 'Simply Kpop',
+    channel: ['아리랑 TV'],
+    time: () => getRelativeTimeStart('Friday 1:00PM')
+  },
+  {
+    day: 'Friday',
+    show: 'Music Bank',
+    channel: ['KBS2'],
+    time: () => getRelativeTimeStart('Friday 5:00PM')
+  },
+  {
+    day: 'Saturday',
+    show: 'Music Core',
+    channel: ['MBC'],
+    time: () => getRelativeTimeStart('Saturday 3:30PM')
+  },
+  {
+    day: 'Sunday',
+    show: 'Inkigayo',
+    channel: ['SBS'],
+    time: () => getRelativeTimeStart('Sunday 3:50PM')
+  }
+];
+
+const getRelativeTimeStart = (timestamp) => {
+  const eventMoment = moment.tz(timestamp, TIME_FORMAT, TIMEZONE);
+  const currentTime = moment.tz().unix();
+  // if the event is in the future, just return the timestamp
+  if (eventMoment.unix() >= currentTime) {
+    return eventMoment.unix();
+  }
+  // if the event is from a previous weekday, add 1 week
+  return eventMoment.add(1, 'weeks').unix();
+};
 
 const printKpopMessage = (msg) => async (tweets) => {
   if (_.isEmpty(tweets)) {
@@ -21,21 +81,21 @@ const printKpopMessage = (msg) => async (tweets) => {
   }
 };
 
-export const parseIPTVCommand = (msg) => {
+const parseIPTVCommand = (msg) => {
   const { content } = msg;
   const index = content.indexOf(' ');
   if (index > 0) {
     const channel = content.substring(index + 1);
     Helpers.sendMessageToChannel(msg, `Generating streams for ${channel}...`);
-    getValidIPTVStreamsFromList(channel)
-      .then(createMessageToSend)
+    IPTV.getValidIPTVStreamsFromList(channel)
+      .then(IPTV.createMessageToSend)
       .then((streams) => Helpers.sendMessageToChannel(msg, streams));
   } else {
     Helpers.sendMessageToChannel(msg, `Usage: !iptv (channel name)`);
   }
 };
 
-export const onKpopCommand = (msg) => {
+const onKpopCommand = (msg) => {
   getLatestTweets()
     .then(filterForValidEvents)
     .then(printKpopMessage(msg))
@@ -43,4 +103,9 @@ export const onKpopCommand = (msg) => {
       Helpers.sendMessageToChannel(msg, `Sorry bro, something went wrong`);
       console.log(`An error occured on !kpop. ${error}`);
     });
+};
+
+export const Kpop = {
+  parseIPTVCommand,
+  onKpopCommand
 };

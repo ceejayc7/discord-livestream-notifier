@@ -1,6 +1,8 @@
+import { IPTV } from '@root/iptv';
+import { KPOP_SCHEDULE } from '@root/kpop';
 import _ from 'lodash';
-import { KPOP_SCHEDULE, getValidIPTVStreamsFromList } from '@root/iptv';
 import moment from 'moment-timezone';
+
 const fs = require('fs');
 
 const channelHeaders = {
@@ -84,7 +86,7 @@ async function run() {
     for await (const channel of channels) {
       const header = getHeader(channel);
       let fileContents = await getExtractedFileContents(path, header);
-      const streams = await getValidIPTVStreamsFromList(channel);
+      const streams = await IPTV.getValidIPTVStreamsFromList(channel);
       fileContents = getAppendedStreams(fileContents, streams, header);
       fs.writeFileSync(path, fileContents);
     }

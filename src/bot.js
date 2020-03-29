@@ -1,11 +1,10 @@
-import { onKpopCommand, parseIPTVCommand } from '@root/kpop';
-
 import { BOT_COMMANDS } from '@root/constants_internal';
 import Blackjack from '@root/blackjack';
 import { CHANNEL_TO_SEND_LIVESTREAM_NOTIFICATIONS } from '@root/constants';
 import Discord from 'discord.js';
 import { Fish } from '@root/fish';
 import { Helpers } from '@root/helpers';
+import { Kpop } from '@root/kpop';
 import { Lotto } from '@root/lotto';
 import { MoneyManager } from '@root/moneymanager';
 import { Slots } from '@root/slots';
@@ -57,7 +56,7 @@ class Bot {
         !this.blackjack.isGameStarted ? this.blackjack.initGame(msg) : false;
         return;
       } else if (_.startsWith(msg.content, BOT_COMMANDS.GENERATE.command)) {
-        parseIPTVCommand(msg);
+        Kpop.parseIPTVCommand(msg);
       }
 
       // non-parameter commands
@@ -111,7 +110,7 @@ class Bot {
           Lotto.claimLotto(msg);
           break;
         case BOT_COMMANDS.KPOP.command:
-          onKpopCommand(msg);
+          Kpop.onKpopCommand(msg);
           break;
       }
     });

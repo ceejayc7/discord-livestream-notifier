@@ -2,73 +2,13 @@ import { Helpers } from '@root/helpers';
 import { IPTV_DATABASE } from '@root/constants_internal';
 import _ from 'lodash';
 import cheerio from 'cheerio';
-import moment from 'moment-timezone';
 import request from 'request';
 import rq from 'request-promise';
 
 const path = require('path');
 
-const TIME_FORMAT = 'dddd h:mmA';
-const TIMEZONE = 'Asia/Seoul';
-
 const IPTV_TIMEOUT_MS = 10000;
 const KOREAN_BLOG_LINKS_TO_QUERY_FOR = [];
-
-export const KPOP_SCHEDULE = [
-  {
-    day: 'Tuesday',
-    show: 'The Show',
-    channel: ['SBS MTV', 'SBS F!L UHD'],
-    time: () => getRelativeTimeStart('Tuesday 6:00PM')
-  },
-  {
-    day: 'Wednesday',
-    show: 'Show Champion',
-    channel: ['MBC Music', 'MBC Every1'],
-    time: () => getRelativeTimeStart('Wednesday 6:00PM')
-  },
-  {
-    day: 'Thursday',
-    show: 'M Countdown',
-    channel: ['Mnet'],
-    time: () => getRelativeTimeStart('Thursday 6:00PM')
-  },
-  {
-    day: 'Friday',
-    show: 'Simply Kpop',
-    channel: ['아리랑 TV'],
-    time: () => getRelativeTimeStart('Friday 1:00PM')
-  },
-  {
-    day: 'Friday',
-    show: 'Music Bank',
-    channel: ['KBS2'],
-    time: () => getRelativeTimeStart('Friday 5:00PM')
-  },
-  {
-    day: 'Saturday',
-    show: 'Music Core',
-    channel: ['MBC'],
-    time: () => getRelativeTimeStart('Saturday 3:30PM')
-  },
-  {
-    day: 'Sunday',
-    show: 'Inkigayo',
-    channel: ['SBS'],
-    time: () => getRelativeTimeStart('Sunday 3:50PM')
-  }
-];
-
-const getRelativeTimeStart = (timestamp) => {
-  const eventMoment = moment.tz(timestamp, TIME_FORMAT, TIMEZONE);
-  const currentTime = moment.tz().unix();
-  // if the event is in the future, just return the timestamp
-  if (eventMoment.unix() >= currentTime) {
-    return eventMoment.unix();
-  }
-  // if the event is from a previous weekday, add 1 week
-  return eventMoment.add(1, 'weeks').unix();
-};
 
 const generateEndpoints = () => {
   // initialize blog array
@@ -203,7 +143,7 @@ const getValidOfflineDBStreams = async (channelName) => {
   return await processOfflineStreams(lines, channelName);
 };
 
-export const getValidIPTVStreamsFromList = async (channelName) => {
+const getValidIPTVStreamsFromList = async (channelName) => {
   const promises = [];
   const TIMEOUT = 1500;
   let iter = 0;
@@ -218,7 +158,7 @@ export const getValidIPTVStreamsFromList = async (channelName) => {
     .then((data) => _.take(_.uniqBy(data, 'stream'), 11));
 };
 
-export function createMessageToSend(listOfStreams, showName, channelName) {
+const createMessageToSend = (listOfStreams, showName, channelName) => {
   if (listOfStreams && listOfStreams.length) {
     let messageToSend = `>>> Generated IPTV streams`;
     if (showName && channelName) {
@@ -236,9 +176,9 @@ export function createMessageToSend(listOfStreams, showName, channelName) {
     }
     return `No streams found`;
   }
-}
+};
 
-export async function sendIPTVStreams(event, channelToSendTo) {
+const sendIPTVStreams = async (event, channelToSendTo) => {
   for (const channel of event.channel) {
     try {
       const streams = await getValidIPTVStreamsFromList(channel);
@@ -249,6 +189,12 @@ export async function sendIPTVStreams(event, channelToSendTo) {
       console.log(`Error retriving IPTV streams. ${error}`);
     }
   }
-}
+};
 
 generateEndpoints();
+
+export const IPTV = {
+  sendIPTVStreams,
+  createMessageToSend,
+  getValidIPTVStreamsFromList
+};
