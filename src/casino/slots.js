@@ -1,16 +1,17 @@
 import { PLAYERS, SLOTS_MONEY } from '@root/constants_internal';
+import { messageError, sendMessageToChannel } from '@util/util';
 
 import { Database } from '@root/database';
-import { Helpers } from '@root/helpers';
-import { MoneyManager } from '@root/moneymanager';
+import { MoneyManager } from '@casino/moneymanager';
 import _ from 'lodash';
+import { getRandomElementFromList } from '@util/casinoUtil';
 
 const generateRandomEmojiList = (emojiList) => {
   const randomList = [];
   const numberOfSlots = 5;
 
   for (let slot = 1; slot <= numberOfSlots; slot++) {
-    randomList.push(Helpers.getRandomElementFromList(emojiList));
+    randomList.push(getRandomElementFromList(emojiList));
   }
   return randomList;
 };
@@ -43,7 +44,7 @@ const saveResults = (msg, randomList) => {
                 `       ${winnerEmoji}         ${msg.author} HAS WON SLOTS!!!!!!!!!!!!!!!!!!!         ${winnerEmoji}\n`+
                 `           ${winnerEmoji}     ${msg.author} HAS WON SLOTS!!!!!!!!!!!!!!!!!!!     ${winnerEmoji}\n`+
                 `               ${winnerEmoji} ${msg.author} HAS WON SLOTS!!!!!!!!!!!!!!!!!!! ${winnerEmoji}\n`;
-      Helpers.sendMessageToChannel(msg, messageToSend);
+      sendMessageToChannel(msg, messageToSend);
     }
     const currentDBIdentifer = `${key}/x${count}`;
     const currentDBCount = Database.getData(currentDBIdentifer);
@@ -62,11 +63,11 @@ const handleSlots = (msg) => {
   const randomList = generateRandomEmojiList(emojiList);
 
   if (_.first(randomList)) {
-    Helpers.sendMessageToChannel(msg, randomList.join(' '))
+    sendMessageToChannel(msg, randomList.join(' '))
       .then(() => {
         saveResults(msg, randomList);
       })
-      .catch(Helpers.messageError);
+      .catch(messageError);
   }
 };
 
@@ -93,7 +94,7 @@ const leaderboard = (msg) => {
     }
     dataToDisplay += `\n`;
   });
-  Helpers.sendMessageToChannel(msg, '```perl\n' + dataToDisplay + '```');
+  sendMessageToChannel(msg, '```perl\n' + dataToDisplay + '```');
 };
 
 export const Slots = {

@@ -1,7 +1,7 @@
-import { Helpers } from '@root/helpers';
 import { IPTV_DATABASE } from '@root/constants_internal';
 import _ from 'lodash';
 import cheerio from 'cheerio';
+import { getCaseInsensitiveKey } from '@util/util';
 import request from 'request';
 import rq from 'request-promise';
 
@@ -128,7 +128,7 @@ const processOfflineStreams = async (lines, channel) => {
 };
 
 const getStreamsFromOfflineDB = (channelName) => {
-  const key = Helpers.getCaseInsensitiveKey(IPTV_DATABASE, channelName);
+  const key = getCaseInsensitiveKey(IPTV_DATABASE, channelName);
   if (key) {
     const pathToFile = path.resolve(`${__dirname}/iptv/${IPTV_DATABASE[key]}`);
     return require('fs')

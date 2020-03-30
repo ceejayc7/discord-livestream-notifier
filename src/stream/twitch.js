@@ -1,4 +1,10 @@
-import { Helpers } from '@root/helpers';
+import {
+  addQueryParamToList,
+  apiError,
+  getListOfStreams,
+  retrieveLiveChannels
+} from '@util/streamUtil';
+
 import Livestream from '@stream/livestream';
 import { TWITCH_CLIENT_ID } from '@root/constants';
 import _ from 'lodash';
@@ -25,15 +31,14 @@ class Twitch extends Livestream {
   }
 
   updateStreams = () => {
-    const flattenStreamsString = Helpers.addQueryParamToList(
-      'user_login',
-      Helpers.getListOfStreams('twitch')
-    ).join('');
+    const flattenStreamsString = addQueryParamToList('user_login', getListOfStreams('twitch')).join(
+      ''
+    );
     this.twitchAPIOptions.url = TWITCH_API_STREAMS_ENDPOINT + flattenStreamsString;
     request(this.twitchAPIOptions)
       .then(this.reduceResponse)
-      .then((channelData) => Helpers.retrieveLiveChannels(this, channelData))
-      .catch((error) => Helpers.apiError(PLATFORM, error));
+      .then((channelData) => retrieveLiveChannels(this, channelData))
+      .catch((error) => apiError(PLATFORM, error));
   };
 
   reduceResponse = async (response) => {

@@ -1,10 +1,11 @@
 import { BLACKJACK_MONEY, BOT_COMMANDS } from '@root/constants_internal';
+import { getBlackjackBetsize, printSpecifyBetSize } from '@util/casinoUtil';
 
 import { Database } from '@root/database';
 import Deck from 'card-deck';
-import { Helpers } from '@root/helpers';
-import { MoneyManager } from '@root/moneymanager';
+import { MoneyManager } from '@casino/moneymanager';
 import _ from 'lodash';
+import { sendMessageToChannel } from '@util/util';
 
 class Blackjack {
   constructor() {
@@ -45,12 +46,12 @@ class Blackjack {
         this.dealerHand,
         this.cardTypes.DISPLAY
       ).join(' ')}** \nBoth Dealer and ${this.msg.author.username} have Blackjack. It's a push bro`;
-      Helpers.sendMessageToChannel(this.msg, initialMessageToSend);
+      sendMessageToChannel(this.msg, initialMessageToSend);
       this.clearGame();
     } else if (isPlayerBlackjack) {
       initialMessageToSend += `\n${this.msg.author.username} has Blackjack. Nice one bro`;
       MoneyManager.addMoney(this.msg, Math.ceil(this.betSize * BLACKJACK_MONEY.BLACKJACK_PAYOUT));
-      Helpers.sendMessageToChannel(this.msg, initialMessageToSend);
+      sendMessageToChannel(this.msg, initialMessageToSend);
       this.clearGame();
     } else if (isDealerBlackjack) {
       initialMessageToSend += `\nDealer has **${this.stringifyHand(
@@ -58,14 +59,14 @@ class Blackjack {
         this.cardTypes.DISPLAY
       ).join(' ')}** \nDealer has Blackjack. Get owned bro`;
       MoneyManager.removeMoney(this.msg, this.betSize);
-      Helpers.sendMessageToChannel(this.msg, initialMessageToSend);
+      sendMessageToChannel(this.msg, initialMessageToSend);
       this.clearGame();
     }
   };
 
   timeout = () => {
     if (this.msg) {
-      Helpers.sendMessageToChannel(this.msg, `${this.msg.author.username} timed out, cmon bro`);
+      sendMessageToChannel(this.msg, `${this.msg.author.username} timed out, cmon bro`);
       this.clearGame();
     }
   };
@@ -82,7 +83,7 @@ class Blackjack {
 
   initGame = (msg) => {
     Database.initializeUser(msg.channel.guild.name, msg.author.username);
-    const betSize = Helpers.getBlackjackBetsize(msg);
+    const betSize = getBlackjackBetsize(msg);
     if (betSize) {
       if (MoneyManager.isEnoughMoney(msg, betSize)) {
         this.betSize = betSize;
@@ -91,7 +92,7 @@ class Blackjack {
         return;
       }
     } else {
-      Helpers.printSpecifyBetSize(msg);
+      printSpecifyBetSize(msg);
       return;
     }
     this.isGameStarted = true;
@@ -115,7 +116,7 @@ class Blackjack {
     this.handleInitialBlackjack(initialMessageToSend, isPlayerBlackjack, isDealerBlackjack);
     if (this.msg) {
       initialMessageToSend += `\n${this.getActions()}`;
-      Helpers.sendMessageToChannel(this.msg, initialMessageToSend);
+      sendMessageToChannel(this.msg, initialMessageToSend);
     }
   };
 
@@ -156,7 +157,7 @@ class Blackjack {
         dealerHandMessages += `It's a push bro`;
       }
     }
-    Helpers.sendMessageToChannel(this.msg, dealerHandMessages);
+    sendMessageToChannel(this.msg, dealerHandMessages);
     this.clearGame();
   };
 
@@ -200,17 +201,17 @@ class Blackjack {
     ).join(' ')}**`;
     const playerHandValue = this.sumifyHand(this.playerHand);
     if (playerHandValue > 21) {
-      Helpers.sendMessageToChannel(
+      sendMessageToChannel(
         this.msg,
         `${messageToSend}\n${this.msg.author.username}'s busts with **${playerHandValue}**. Dealer wins, sorry bro`
       );
       MoneyManager.removeMoney(this.msg, this.betSize);
       this.clearGame();
     } else if (playerHandValue === 21) {
-      Helpers.sendMessageToChannel(this.msg, messageToSend);
+      sendMessageToChannel(this.msg, messageToSend);
       this.stand(msg);
     } else {
-      Helpers.sendMessageToChannel(this.msg, messageToSend);
+      sendMessageToChannel(this.msg, messageToSend);
     }
   };
 
@@ -230,14 +231,14 @@ class Blackjack {
     ).join(' ')}**`;
     const playerHandValue = this.sumifyHand(this.playerHand);
     if (playerHandValue > 21) {
-      Helpers.sendMessageToChannel(
+      sendMessageToChannel(
         this.msg,
         `${messageToSend}\n${this.msg.author.username}'s busts with **${playerHandValue}**. Dealer wins, sorry bro`
       );
       MoneyManager.removeMoney(this.msg, this.betSize);
       this.clearGame();
     } else {
-      Helpers.sendMessageToChannel(this.msg, messageToSend);
+      sendMessageToChannel(this.msg, messageToSend);
       this.stand(msg);
     }
   };

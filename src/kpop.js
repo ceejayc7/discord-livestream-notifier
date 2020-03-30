@@ -1,6 +1,6 @@
+import { decodeHTMLEntities, sendMessageToChannel } from '@util/util';
 import { filterForValidEvents, getLatestTweets, isTwitterProtected } from '@root/twitter';
 
-import { Helpers } from '@root/helpers';
 import { IPTV } from '@root/iptv';
 import _ from 'lodash';
 import moment from 'moment-timezone';
@@ -66,16 +66,16 @@ const getRelativeTimeStart = (timestamp) => {
 
 const printKpopMessage = (msg) => async (tweets) => {
   if (_.isEmpty(tweets)) {
-    Helpers.sendMessageToChannel(msg, `kpop is dead`);
+    sendMessageToChannel(msg, `kpop is dead`);
   }
   const isProtected = await isTwitterProtected();
   for (const tweet of tweets) {
-    Helpers.sendMessageToChannel(
+    sendMessageToChannel(
       msg,
       `${tweet.showName}\n> PST: **${tweet.time.pst.time}** on ${tweet.time.pst.date}\n> EST: **${
         tweet.time.est.time
       }** on ${tweet.time.est.date}\n${
-        isProtected ? '```' + Helpers.decodeHTMLEntities(tweet.text) + '```' : tweet.link
+        isProtected ? '```' + decodeHTMLEntities(tweet.text) + '```' : tweet.link
       }`
     );
   }
@@ -86,12 +86,12 @@ const parseIPTVCommand = (msg) => {
   const index = content.indexOf(' ');
   if (index > 0) {
     const channel = content.substring(index + 1);
-    Helpers.sendMessageToChannel(msg, `Generating streams for ${channel}...`);
+    sendMessageToChannel(msg, `Generating streams for ${channel}...`);
     IPTV.getValidIPTVStreamsFromList(channel)
       .then(IPTV.createMessageToSend)
-      .then((streams) => Helpers.sendMessageToChannel(msg, streams));
+      .then((streams) => sendMessageToChannel(msg, streams));
   } else {
-    Helpers.sendMessageToChannel(msg, `Usage: !iptv (channel name)`);
+    sendMessageToChannel(msg, `Usage: !iptv (channel name)`);
   }
 };
 
@@ -100,7 +100,7 @@ const onKpopCommand = (msg) => {
     .then(filterForValidEvents)
     .then(printKpopMessage(msg))
     .catch((error) => {
-      Helpers.sendMessageToChannel(msg, `Sorry bro, something went wrong`);
+      sendMessageToChannel(msg, `Sorry bro, something went wrong`);
       console.log(`An error occured on !kpop. ${error}`);
     });
 };

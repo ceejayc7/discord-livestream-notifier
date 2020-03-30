@@ -28,23 +28,23 @@ const channelHeaders = {
     '#EXTINF:-1 tvg-logo="https://iptv.live/images/logo/channel/crops/4ec82bee9311030da88db9f44d48592b.png", 아리랑 TV'
 };
 
-function getEventsForToday() {
+const getEventsForToday = () => {
   const day = moment.tz('Asia/Seoul').format('dddd');
   return _.filter(KPOP_SCHEDULE, (event) => event.day === day);
-}
+};
 
-function createNewFile(path) {
+const createNewFile = (path) => {
   if (!fs.existsSync(path)) {
     const header = '#EXTM3U';
     fs.writeFileSync(path, header);
   }
-}
+};
 
-function getHeader(channel) {
+const getHeader = (channel) => {
   return _.get(channelHeaders, channel, `#EXTINF:-1 ${channel}`);
-}
+};
 
-async function getExtractedFileContents(path, header) {
+const getExtractedFileContents = async (path, header) => {
   const lineReader = require('readline').createInterface({
     input: require('fs').createReadStream(path)
   });
@@ -63,16 +63,16 @@ async function getExtractedFileContents(path, header) {
     }
   }
   return fileContents;
-}
+};
 
-function getAppendedStreams(fileContents, streams, header) {
+const getAppendedStreams = (fileContents, streams, header) => {
   streams.forEach((stream) => {
     fileContents += `${header}\n${stream.stream}\n`;
   });
   return fileContents;
-}
+};
 
-async function run() {
+const run = async () => {
   const [, , ...args] = process.argv;
   if (_.isEmpty(args)) {
     throw new Error('Need to specify path in args');
@@ -91,6 +91,6 @@ async function run() {
       fs.writeFileSync(path, fileContents);
     }
   }
-}
+};
 
 run();

@@ -1,6 +1,6 @@
 import { WHITELIST_ALL_YOUTUBE_STREAMS, YOUTUBE_KEY } from '@root/constants';
+import { apiError, getListOfStreams, retrieveLiveChannels } from '@util/streamUtil';
 
-import { Helpers } from '@root/helpers';
 import Livestream from '@stream/livestream';
 import _ from 'lodash';
 import request from 'request-promise';
@@ -18,19 +18,19 @@ class Youtube extends Livestream {
       url: YOUTUBE_API_ENDPOINT + stream,
       json: true
     };
-    return request(httpOptions).catch((error) => Helpers.apiError(PLATFORM, error));
+    return request(httpOptions).catch((error) => apiError(PLATFORM, error));
   };
 
   updateStreams = () => {
-    const flattenStreamsString = Helpers.getListOfStreams('youtube');
+    const flattenStreamsString = getListOfStreams('youtube');
     const currentList = [];
 
     _.forEach(flattenStreamsString, (stream) => currentList.push(this.getChannelPromises(stream)));
 
     Promise.all(currentList)
       .then(this.reduceResponse)
-      .then((channelData) => Helpers.retrieveLiveChannels(this, channelData))
-      .catch((error) => Helpers.apiError(PLATFORM, error));
+      .then((channelData) => retrieveLiveChannels(this, channelData))
+      .catch((error) => apiError(PLATFORM, error));
   };
 
   reduceResponse = (response) => {

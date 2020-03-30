@@ -1,11 +1,9 @@
-import { BOT_COMMANDS, LOTTO_MAX, PLAYERS, SLOTS_MONEY } from '@root/constants_internal';
+import { BOT_COMMANDS, LOTTO_MAX, SLOTS_MONEY } from '@root/constants_internal';
 import { SERVER_FOR_FISHING, WHITELISTED_SERVERS } from '@root/constants';
 
-import { Database } from '@root/database';
-import { Prob } from 'prob.js';
 import _ from 'lodash';
 
-const isWhitelistedChannel = (msg) => {
+export const isWhitelistedChannel = (msg) => {
   const serverWhitelist = _.get(WHITELISTED_SERVERS, msg.channel.guild.name);
   if (_.includes(serverWhitelist, msg.channel.name)) {
     return true;
@@ -13,7 +11,7 @@ const isWhitelistedChannel = (msg) => {
   return false;
 };
 
-const isFishingServer = (msg) => {
+export const isFishingServer = (msg) => {
   const specificServer = SERVER_FOR_FISHING;
   if (msg.channel.guild.name === specificServer) {
     return true;
@@ -21,102 +19,17 @@ const isFishingServer = (msg) => {
   return false;
 };
 
-const messageError = (error) => {
+export const messageError = (error) => {
   console.log(
     `Unable to send message. \t Error name: ${error.name} \t Error message: ${error.message}`
   );
 };
 
-const apiError = (platform, error) => {
-  console.log(
-    `${platform} API error. \t Error name: ${error.name} \t Error message: ${error.message}`
-  );
-};
-
-const sendMessageToChannel = (msg, stringToSend) => {
+export const sendMessageToChannel = (msg, stringToSend) => {
   return msg.channel.send(stringToSend).catch(messageError);
 };
 
-const getListOfStreams = (streamSite) => {
-  const streamsDatabase = require('@data/db.json');
-  return _.uniq(_.compact(_.flatten(_.map(streamsDatabase, streamSite))));
-};
-
-const addQueryParamToList = (queryParam, listOfStreams) => {
-  const newList = [];
-  listOfStreams.forEach((stream) => newList.push(`&${queryParam}=${stream}`));
-  return newList;
-};
-
-const retrieveLiveChannels = (className, channelData) => {
-  if (!_.isEmpty(channelData)) {
-    _.forEach(channelData, (stream) => className.announceIfStreamIsNew(stream));
-  }
-  className.currentLiveStreams = channelData;
-};
-
-const announceIfStreamIsNew = (stream) => {
-  const currentLiveChannels = _.map(this.currentLiveStreams, 'name');
-  if (!_.includes(currentLiveChannels, stream.name)) {
-    this.streamEmitter.emit('event:streamlive', stream);
-  }
-};
-
-const getBlackjackBetsize = (msg) => {
-  const betSizeSplit = msg.content.split(' ');
-
-  if (betSizeSplit.length >= 2 && parseInt(betSizeSplit[1])) {
-    return parseInt(betSizeSplit[1]);
-  }
-  return false;
-};
-
-const getRandomElementFromList = (list) => {
-  return list[Math.floor(Math.random() * list.length)];
-};
-
-const printSpecifyBetSize = (msg) => {
-  Helpers.sendMessageToChannel(
-    msg,
-    `Usage: !21 <bet size>. Use !bitcoin to see how many bitcoins you have.`
-  );
-};
-
-const getRandomNumberInRange = (min, max) => {
-  return parseInt(Math.random() * (max - min) + min);
-};
-
-const getRandomNumberInRangeWithExponentialDistribution = (min) => {
-  const exponentialDistribution = Prob.exponential(1.0);
-  let randomNumber = parseInt(exponentialDistribution() * 100);
-  while (randomNumber < min) {
-    randomNumber = parseInt(exponentialDistribution() * 100);
-  }
-  return randomNumber;
-};
-
-const printLeaderboard = (msg, sortAttributes, printMessage, mapping, hideValue = undefined) => {
-  const serverData = Database.getData(`/${msg.channel.guild.name}/${PLAYERS}`);
-  const sorted = _.orderBy(serverData, sortAttributes, 'asc').reverse();
-  let leaderboard = '```perl\n';
-
-  _.forEach(sorted, (player, index) => {
-    if (hideValue && _.has(player, hideValue) && player[hideValue] === 0) {
-      return;
-    }
-    let template = printMessage;
-    _.forEach(mapping, (value, key) => {
-      template = _.replace(template, key, eval(value));
-    });
-    leaderboard += template;
-  });
-
-  leaderboard += '```';
-
-  Helpers.sendMessageToChannel(msg, leaderboard);
-};
-
-const printHelp = (msg) => {
+export const printHelp = (msg) => {
   const MARKDOWN = '```';
   const DIVIDER = `=============================================`;
   const filteredBotCommands = _.map(
@@ -164,7 +77,7 @@ const printHelp = (msg) => {
   sendMessageToChannel(msg, messageToSend);
 };
 
-const decodeHTMLEntities = (encodedString) => {
+export const decodeHTMLEntities = (encodedString) => {
   const translateRegex = /&(nbsp|amp|quot|lt|gt);/g;
   const translate = {
     nbsp: ' ',
@@ -183,27 +96,6 @@ const decodeHTMLEntities = (encodedString) => {
     });
 };
 
-const getCaseInsensitiveKey = (object, key) => {
+export const getCaseInsensitiveKey = (object, key) => {
   return Object.keys(object).find((k) => k.toLowerCase() === key.toLowerCase());
-};
-
-export const Helpers = {
-  isWhitelistedChannel,
-  sendMessageToChannel,
-  messageError,
-  getListOfStreams,
-  addQueryParamToList,
-  printHelp,
-  getBlackjackBetsize,
-  printSpecifyBetSize,
-  getRandomElementFromList,
-  isFishingServer,
-  getRandomNumberInRange,
-  getRandomNumberInRangeWithExponentialDistribution,
-  printLeaderboard,
-  apiError,
-  retrieveLiveChannels,
-  announceIfStreamIsNew,
-  decodeHTMLEntities,
-  getCaseInsensitiveKey
 };

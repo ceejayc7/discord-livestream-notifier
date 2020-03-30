@@ -1,13 +1,14 @@
+import { isFishingServer, isWhitelistedChannel, messageError, printHelp } from '@util/util';
+
 import { BOT_COMMANDS } from '@root/constants_internal';
-import Blackjack from '@root/blackjack';
+import Blackjack from '@casino/blackjack';
 import { CHANNEL_TO_SEND_LIVESTREAM_NOTIFICATIONS } from '@root/constants';
 import Discord from 'discord.js';
-import { Fish } from '@root/fish';
-import { Helpers } from '@root/helpers';
+import { Fish } from '@casino/fish';
 import { Kpop } from '@root/kpop';
-import { Lotto } from '@root/lotto';
-import { MoneyManager } from '@root/moneymanager';
-import { Slots } from '@root/slots';
+import { Lotto } from '@casino/lotto';
+import { MoneyManager } from '@casino/moneymanager';
+import { Slots } from '@casino/slots';
 import _ from 'lodash';
 
 class Bot {
@@ -47,7 +48,7 @@ class Bot {
     });
 
     this.client.on('message', (msg) => {
-      if (!Helpers.isWhitelistedChannel(msg)) {
+      if (!isWhitelistedChannel(msg)) {
         return;
       }
 
@@ -87,19 +88,19 @@ class Bot {
           MoneyManager.printMoney(msg);
           break;
         case BOT_COMMANDS.HELP.command:
-          Helpers.printHelp(msg);
+          printHelp(msg);
           break;
         case BOT_COMMANDS.LEADERBOARD_SHORTHAND.command:
         case BOT_COMMANDS.LEADERBOARD.command:
           MoneyManager.printLeaderboard(msg);
           break;
         case BOT_COMMANDS.FISH.command:
-          if (Helpers.isFishingServer(msg)) {
+          if (isFishingServer(msg)) {
             Fish.printFishLine(msg);
           }
           break;
         case BOT_COMMANDS.FISH_LEADERBOARD.command:
-          if (Helpers.isFishingServer(msg)) {
+          if (isFishingServer(msg)) {
             Fish.printLeaderboard(msg);
           }
           break;
@@ -120,7 +121,7 @@ class Bot {
     this.client.channels.cache
       .find((channel) => channel.name === CHANNEL_TO_SEND_LIVESTREAM_NOTIFICATIONS)
       .send(streamMessage, embed)
-      .catch(Helpers.messageError);
+      .catch(messageError);
   };
 
   sendLiveMessage = (stream) => {

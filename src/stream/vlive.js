@@ -1,4 +1,5 @@
-import { Helpers } from '@root/helpers';
+import { apiError, getListOfStreams, retrieveLiveChannels } from '@util/streamUtil';
+
 import Livestream from '@stream/livestream';
 import _ from 'lodash';
 import moment from 'moment-timezone';
@@ -31,19 +32,19 @@ class Vlive extends Livestream {
         }
         return data;
       })
-      .catch((error) => Helpers.apiError(PLATFORM, error));
+      .catch((error) => apiError(PLATFORM, error));
   };
 
   updateStreams = () => {
-    const flattenStreamsString = Helpers.getListOfStreams('vlive');
+    const flattenStreamsString = getListOfStreams('vlive');
     const currentList = [];
 
     _.forEach(flattenStreamsString, (stream) => currentList.push(this.getChannelPromises(stream)));
 
     Promise.all(currentList)
       .then(this.reduceResponse)
-      .then((channelData) => Helpers.retrieveLiveChannels(this, channelData))
-      .catch((error) => Helpers.apiError(PLATFORM, error));
+      .then((channelData) => retrieveLiveChannels(this, channelData))
+      .catch((error) => apiError(PLATFORM, error));
   };
 
   reduceResponse = (response) => {

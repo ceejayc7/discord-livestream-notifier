@@ -1,9 +1,10 @@
 import { LOTTO, LOTTO_MAX, PLAYERS } from '@root/constants_internal';
+import { getRandomElementFromList, getRandomNumberInRange } from '@util/casinoUtil';
 
 import { Database } from '@root/database';
-import { Helpers } from '@root/helpers';
-import { MoneyManager } from '@root/moneymanager';
+import { MoneyManager } from '@casino/moneymanager';
 import _ from 'lodash';
+import { sendMessageToChannel } from '@util/util';
 
 let isWinner;
 let winnerObject;
@@ -26,18 +27,18 @@ const sendStartingMessage = (msg, eligibleLottoUsers) => {
   initialMessage += `Today's jackpot is **${jackpot.toLocaleString()}** Bitcoins! Wow!!!\n`;
   initialMessage += `The ticket holders are: **${eligibleLottoUsers.join(' ')}**\n`;
   initialMessage += `and the winner is........`;
-  Helpers.sendMessageToChannel(msg, initialMessage);
+  sendMessageToChannel(msg, initialMessage);
 };
 
 const missedClaim = (msg) => {
-  Helpers.sendMessageToChannel(msg, 'Nobody claimed the jackpot!!!! Better luck next time bros');
+  sendMessageToChannel(msg, 'Nobody claimed the jackpot!!!! Better luck next time bros');
   clearGlobals();
 };
 
 const printWinner = (msg) => {
   const ONE_MINUTE = 60000;
   inLottoWaiting = false;
-  Helpers.sendMessageToChannel(msg, `${winnerObject} has won!!! Type !claim to claim your jackpot`);
+  sendMessageToChannel(msg, `${winnerObject} has won!!! Type !claim to claim your jackpot`);
   winnerTimeout = setTimeout(() => missedClaim(msg), ONE_MINUTE);
 };
 
@@ -63,10 +64,10 @@ const isEligibleLottoEvent = (msg) => {
       Database.writeData(userLottoLottoKey, msg.author.id);
       return true;
     } else {
-      Helpers.sendMessageToChannel(msg, `Hey bro, give someone else a chance!`);
+      sendMessageToChannel(msg, `Hey bro, give someone else a chance!`);
     }
   } else {
-    Helpers.sendMessageToChannel(msg, `Sorry bro, !lotto is on cooldown. Try again later`);
+    sendMessageToChannel(msg, `Sorry bro, !lotto is on cooldown. Try again later`);
   }
   return false;
 };
@@ -82,13 +83,13 @@ const startLotto = (msg) => {
   const onlineUsers = getOnlineUsersList(msg);
   const serverUsers = _.map(serverData, 'name');
   const eligibleLottoUsers = _.intersection(onlineUsers, serverUsers);
-  const winner = Helpers.getRandomElementFromList(eligibleLottoUsers);
+  const winner = getRandomElementFromList(eligibleLottoUsers);
 
   inLottoWaiting = true;
   winnerObject = _.head(
     msg.guild.members.cache.array().filter((user) => user.user.username === winner)
   );
-  jackpot = Helpers.getRandomNumberInRange(1, LOTTO_MAX);
+  jackpot = getRandomNumberInRange(1, LOTTO_MAX);
   isWinner = true;
 
   sendStartingMessage(msg, eligibleLottoUsers);
@@ -106,7 +107,7 @@ const clearGlobals = () => {
 
 const claimLotto = (msg) => {
   if (isWinner && winnerObject.user.id === msg.author.id && !inLottoWaiting) {
-    Helpers.sendMessageToChannel(
+    sendMessageToChannel(
       msg,
       `Congrats to ${
         msg.author.username

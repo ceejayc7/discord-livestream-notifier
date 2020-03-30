@@ -1,8 +1,14 @@
+import {
+  getRandomNumberInRange,
+  getRandomNumberInRangeWithExponentialDistribution
+} from '@util/casinoUtil';
+
 import { Database } from '@root/database';
-import { Helpers } from '@root/helpers';
-import { MoneyManager } from '@root/moneymanager';
+import { MoneyManager } from '@casino/moneymanager';
 import { PLAYERS } from '@root/constants_internal';
 import _ from 'lodash';
+import { printLeaderboard } from '@util/casinoUtil';
+import { sendMessageToChannel } from '@util/util';
 
 const weightedRandom = require('weighted-random');
 const fishLines = require('@data/fish.json');
@@ -21,14 +27,14 @@ const isFish = (line) => {
   return false;
 };
 
-const printLeaderboard = (msg) => {
+const printFishingLeaderboard = (msg) => {
   const template = `%INDEX%. %PLAYERNAME% has a %NUMBER% pound fish\n`;
   const mapping = {
     '%INDEX%': 'index+1',
     '%PLAYERNAME%': 'player.name',
     '%NUMBER%': 'player.maxWeightFish.toLocaleString()'
   };
-  Helpers.printLeaderboard(msg, ['maxWeightFish'], template, mapping, 'maxWeightFish');
+  printLeaderboard(msg, ['maxWeightFish'], template, mapping, 'maxWeightFish');
 };
 
 const saveFishWeight = (msg, weight) => {
@@ -41,9 +47,9 @@ const saveFishWeight = (msg, weight) => {
 
 const getWeight = (fishLineObj) => {
   if (fishLineObj.exponential) {
-    return Helpers.getRandomNumberInRangeWithExponentialDistribution(fishLineObj.minWeight);
+    return getRandomNumberInRangeWithExponentialDistribution(fishLineObj.minWeight);
   }
-  return Helpers.getRandomNumberInRange(fishLineObj.minWeight, fishLineObj.maxWeight);
+  return getRandomNumberInRange(fishLineObj.minWeight, fishLineObj.maxWeight);
 };
 
 const printFishLine = (msg) => {
@@ -59,10 +65,10 @@ const printFishLine = (msg) => {
     saveFishWeight(msg, weight);
   }
   addRewardIfPossible(fishLineObj, msg);
-  Helpers.sendMessageToChannel(msg, chatLine);
+  sendMessageToChannel(msg, chatLine);
 };
 
 export const Fish = {
   printFishLine,
-  printLeaderboard
+  printLeaderboard: printFishingLeaderboard
 };

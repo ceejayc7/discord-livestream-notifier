@@ -1,4 +1,5 @@
-import { Helpers } from '@root/helpers';
+import { apiError, getListOfStreams, retrieveLiveChannels } from '@util/streamUtil';
+
 import Livestream from '@stream/livestream';
 import _ from 'lodash';
 import cheerio from 'cheerio';
@@ -51,11 +52,11 @@ class OkRu extends Livestream {
 
     return request(httpOptions)
       .then(this.scrapePage)
-      .catch((error) => Helpers.apiError(PLATFORM, error));
+      .catch((error) => apiError(PLATFORM, error));
   };
 
   updateStreams = () => {
-    const flattenStreamsString = Helpers.getListOfStreams('okru');
+    const flattenStreamsString = getListOfStreams('okru');
     const currentList = [];
 
     _.forEach(flattenStreamsString, (stream) =>
@@ -64,8 +65,8 @@ class OkRu extends Livestream {
 
     Promise.all(currentList)
       .then(_.compact)
-      .then((channelData) => Helpers.retrieveLiveChannels(this, channelData))
-      .catch((error) => Helpers.apiError(PLATFORM, error));
+      .then((channelData) => retrieveLiveChannels(this, channelData))
+      .catch((error) => apiError(PLATFORM, error));
   };
 }
 

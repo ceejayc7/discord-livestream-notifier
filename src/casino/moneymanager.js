@@ -1,26 +1,27 @@
 import { MINIMUM_BITCOINS, PLAYERS, SLOTS_MONEY } from '@root/constants_internal';
 
 import { Database } from '@root/database';
-import { Helpers } from '@root/helpers';
+import { printLeaderboard } from '@util/casinoUtil';
+import { sendMessageToChannel } from '@util/util';
 
-const printLeaderboard = (msg) => {
+const printMoneyLeaderboard = (msg) => {
   const template = `%INDEX%. %PLAYERNAME% has %NUMBER% Bitcoins\n`;
   const mapping = {
     '%INDEX%': 'index+1',
     '%PLAYERNAME%': 'player.name',
     '%NUMBER%': 'player.money.toLocaleString()'
   };
-  Helpers.printLeaderboard(msg, ['money'], template, mapping);
+  printLeaderboard(msg, ['money'], template, mapping);
 };
 
 const printMoney = (msg) => {
   const userMoney = getUsersMoney(msg);
   if (!userMoney) {
-    Helpers.sendMessageToChannel(msg, `You have no bitcoins. Play a game to get some.`);
+    sendMessageToChannel(msg, `You have no bitcoins. Play a game to get some.`);
     return;
   }
   const messageToSend = `${msg.author.username} has **${userMoney.toLocaleString()}** Bitcoins`;
-  Helpers.sendMessageToChannel(msg, messageToSend);
+  sendMessageToChannel(msg, messageToSend);
 };
 
 const getUserKey = (msg) => {
@@ -44,7 +45,7 @@ const getBalanceForBlackjackDouble = (msg, currentBetSize) => {
   const DOUBLE = 2;
   const usersMoney = getUsersMoney(msg);
   if (currentBetSize * DOUBLE > usersMoney) {
-    Helpers.sendMessageToChannel(
+    sendMessageToChannel(
       msg,
       `Not enough money to double, going all-in with **${usersMoney}** Bitcoins!!!`
     );
@@ -54,7 +55,7 @@ const getBalanceForBlackjackDouble = (msg, currentBetSize) => {
 };
 
 const printNotEnoughMoney = (msg) => {
-  Helpers.sendMessageToChannel(msg, `You don't have enough bitcoins, sorry bro`);
+  sendMessageToChannel(msg, `You don't have enough bitcoins, sorry bro`);
 };
 
 const removeMoney = (msg, cost) => {
@@ -94,7 +95,7 @@ export const MoneyManager = {
   isEnoughMoney,
   updateSlotsMoney,
   removeMoney,
-  printLeaderboard,
+  printLeaderboard: printMoneyLeaderboard,
   addMoney,
   getBalanceForBlackjackDouble,
   printNotEnoughMoney
