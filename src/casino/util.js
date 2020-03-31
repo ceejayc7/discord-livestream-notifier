@@ -2,7 +2,7 @@ import { Database } from '@root/database';
 import { PLAYERS } from '@root/constants_internal';
 import { Prob } from 'prob.js';
 import _ from 'lodash';
-import { sendMessageToChannel } from '@util/util';
+import { sendMessageToChannel } from '@root/util';
 
 export const getBlackjackBetsize = (msg) => {
   const betSizeSplit = msg.content.split(' ');

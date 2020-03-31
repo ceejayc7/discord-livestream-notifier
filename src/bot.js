@@ -1,4 +1,4 @@
-import { isFishingServer, isWhitelistedChannel, messageError, printHelp } from '@util/util';
+import { isFishingServer, isWhitelistedChannel, messageError, printHelp } from '@root/util';
 
 import { BOT_COMMANDS } from '@root/constants_internal';
 import Blackjack from '@casino/blackjack';

@@ -1,14 +1,14 @@
 import {
   getRandomNumberInRange,
-  getRandomNumberInRangeWithExponentialDistribution
-} from '@util/casinoUtil';
+  getRandomNumberInRangeWithExponentialDistribution,
+  printLeaderboard
+} from '@casino/util';
 
 import { Database } from '@root/database';
 import { MoneyManager } from '@casino/moneymanager';
 import { PLAYERS } from '@root/constants_internal';
 import _ from 'lodash';
-import { printLeaderboard } from '@util/casinoUtil';
-import { sendMessageToChannel } from '@util/util';
+import { sendMessageToChannel } from '@root/util';
 
 const weightedRandom = require('weighted-random');
 const fishLines = require('@data/fish.json');

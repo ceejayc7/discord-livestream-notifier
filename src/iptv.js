@@ -1,7 +1,7 @@
 import { IPTV_DATABASE } from '@root/constants_internal';
 import _ from 'lodash';
 import cheerio from 'cheerio';
-import { getCaseInsensitiveKey } from '@util/util';
+import { getCaseInsensitiveKey } from '@root/util';
 import request from 'request';
 import rq from 'request-promise';
 

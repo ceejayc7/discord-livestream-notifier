@@ -1,13 +1,7 @@
-import {
-  addQueryParamToList,
-  apiError,
-  getListOfStreams,
-  retrieveLiveChannels
-} from '@util/streamUtil';
-
 import Livestream from '@stream/livestream';
 import { TWITCH_CLIENT_ID } from '@root/constants';
 import _ from 'lodash';
+import { addQueryParamToList } from '@stream/util';
 import request from 'request-promise';
 
 const PLATFORM = 'twitch';
@@ -31,14 +25,15 @@ class Twitch extends Livestream {
   }
 
   updateStreams = () => {
-    const flattenStreamsString = addQueryParamToList('user_login', getListOfStreams('twitch')).join(
-      ''
-    );
+    const flattenStreamsString = addQueryParamToList(
+      'user_login',
+      this.getListOfStreams(PLATFORM)
+    ).join('');
     this.twitchAPIOptions.url = TWITCH_API_STREAMS_ENDPOINT + flattenStreamsString;
     request(this.twitchAPIOptions)
       .then(this.reduceResponse)
-      .then((channelData) => retrieveLiveChannels(this, channelData))
-      .catch((error) => apiError(PLATFORM, error));
+      .then(this.retrieveLiveChannels)
+      .catch((error) => this.apiError(PLATFORM, error));
   };
 
   reduceResponse = async (response) => {

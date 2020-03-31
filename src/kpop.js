@@ -1,4 +1,4 @@
-import { decodeHTMLEntities, sendMessageToChannel } from '@util/util';
+import { decodeHTMLEntities, sendMessageToChannel } from '@root/util';
 import { filterForValidEvents, getLatestTweets, isTwitterProtected } from '@root/twitter';
 
 import { IPTV } from '@root/iptv';

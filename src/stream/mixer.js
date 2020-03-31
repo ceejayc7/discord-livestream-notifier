@@ -1,5 +1,3 @@
-import { apiError, getListOfStreams, retrieveLiveChannels } from '@util/streamUtil';
-
 import Livestream from '@stream/livestream';
 import { MIXER_CLIENT_ID } from '@root/constants';
 import _ from 'lodash';
@@ -22,19 +20,19 @@ class Mixer extends Livestream {
         'content-type': 'application/json'
       }
     };
-    return request(httpOptions).catch((error) => apiError(PLATFORM, error));
+    return request(httpOptions).catch((error) => this.apiError(PLATFORM, error));
   };
 
   updateStreams = () => {
-    const flattenStreamsString = getListOfStreams('mixer');
+    const flattenStreamsString = this.getListOfStreams(PLATFORM);
     const currentList = [];
 
     _.forEach(flattenStreamsString, (stream) => currentList.push(this.getChannelPromises(stream)));
 
     Promise.all(currentList)
       .then(this.reduceResponse)
-      .then((channelData) => retrieveLiveChannels(this, channelData))
-      .catch((error) => apiError(PLATFORM, error));
+      .then(this.retrieveLiveChannels)
+      .catch((error) => this.apiError(PLATFORM, error));
   };
 
   reduceResponse = (response) => {

@@ -1,8 +1,8 @@
 import { MINIMUM_BITCOINS, PLAYERS, SLOTS_MONEY } from '@root/constants_internal';
 
 import { Database } from '@root/database';
-import { printLeaderboard } from '@util/casinoUtil';
-import { sendMessageToChannel } from '@util/util';
+import { printLeaderboard } from '@casino/util';
+import { sendMessageToChannel } from '@root/util';
 
 const printMoneyLeaderboard = (msg) => {
   const template = `%INDEX%. %PLAYERNAME% has %NUMBER% Bitcoins\n`;

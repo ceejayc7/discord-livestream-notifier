@@ -1,10 +1,10 @@
 import { LOTTO, LOTTO_MAX, PLAYERS } from '@root/constants_internal';
-import { getRandomElementFromList, getRandomNumberInRange } from '@util/casinoUtil';
+import { getRandomElementFromList, getRandomNumberInRange } from '@casino/util';
 
 import { Database } from '@root/database';
 import { MoneyManager } from '@casino/moneymanager';
 import _ from 'lodash';
-import { sendMessageToChannel } from '@util/util';
+import { sendMessageToChannel } from '@root/util';
 
 let isWinner;
 let winnerObject;

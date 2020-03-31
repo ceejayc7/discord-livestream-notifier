@@ -1,10 +1,10 @@
 import { PLAYERS, SLOTS_MONEY } from '@root/constants_internal';
-import { messageError, sendMessageToChannel } from '@util/util';
+import { messageError, sendMessageToChannel } from '@root/util';
 
 import { Database } from '@root/database';
 import { MoneyManager } from '@casino/moneymanager';
 import _ from 'lodash';
-import { getRandomElementFromList } from '@util/casinoUtil';
+import { getRandomElementFromList } from '@casino/util';
 
 const generateRandomEmojiList = (emojiList) => {
   const randomList = [];

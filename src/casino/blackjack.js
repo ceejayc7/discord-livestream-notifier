@@ -1,11 +1,11 @@
 import { BLACKJACK_MONEY, BOT_COMMANDS } from '@root/constants_internal';
-import { getBlackjackBetsize, printSpecifyBetSize } from '@util/casinoUtil';
+import { getBlackjackBetsize, printSpecifyBetSize } from '@casino/util';
 
 import { Database } from '@root/database';
 import Deck from 'card-deck';
 import { MoneyManager } from '@casino/moneymanager';
 import _ from 'lodash';
-import { sendMessageToChannel } from '@util/util';
+import { sendMessageToChannel } from '@root/util';
 
 class Blackjack {
   constructor() {
