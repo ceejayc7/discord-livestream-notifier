@@ -5,7 +5,12 @@ class Livestream {
     this.currentLiveStreams = [];
     this.streamEmitter = streamEmitter;
     this.streamsDatabase = require('@data/db.json');
+    this.PLATFORM = 'livestream';
   }
+
+  updateStreams = () => {
+    throw new Error('This must be implemented');
+  };
 
   announceIfStreamIsNew = (stream) => {
     const currentLiveChannels = _.map(this.currentLiveStreams, 'name');
@@ -16,9 +21,31 @@ class Livestream {
 
   retrieveLiveChannels = (channelData) => {
     if (!_.isEmpty(channelData)) {
-      _.forEach(channelData, (stream) => this.announceIfStreamIsNew(stream));
+      for (const stream of channelData) {
+        this.announceIfStreamIsNew(stream);
+      }
     }
     this.currentLiveStreams = channelData;
+  };
+
+  getAPIDataAndAnnounce = (getChannelPromises, reduceResponse, multipleCalls) => {
+    let promise;
+    if (multipleCalls) {
+      const flattenStreamsString = this.getListOfStreams(this.PLATFORM);
+      const listOfPromises = [];
+      for (const stream of flattenStreamsString) {
+        listOfPromises.push(getChannelPromises(stream));
+      }
+      promise = Promise.all(listOfPromises);
+    } else {
+      promise = Promise.all(getChannelPromises());
+    }
+
+    return promise
+      .then(_.compact)
+      .then(reduceResponse)
+      .then(this.retrieveLiveChannels)
+      .catch((error) => this.apiError(this.PLATFORM, error));
   };
 
   apiError = (platform, error) => {

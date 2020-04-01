@@ -3,7 +3,6 @@ import _ from 'lodash';
 import moment from 'moment-timezone';
 import request from 'request-promise';
 
-const PLATFORM = 'vlive';
 const APP_ID = '8c6cc7b45d2568fb668be6e05b6e5a3b';
 const CHANNEL_ID = '{CHANNEL_ID}';
 const VLIVE_API_ENDPOINT = `https://api-vfan.vlive.tv/v2/channel.${CHANNEL_ID}/home?gcc=US&locale=en&app_id=${APP_ID}&limit=20`;
@@ -13,7 +12,13 @@ const IMG_REGEX = new RegExp(/(http(s?):)([/|.|\w|\s|-])*\.(?:jpg|gif|png)/, 'gi
 class Vlive extends Livestream {
   constructor(streamEmitter) {
     super(streamEmitter);
+    this.PLATFORM = 'vlive';
+    this.multipleCalls = true;
   }
+
+  updateStreams = () => {
+    this.getAPIDataAndAnnounce(this.getChannelPromises, this.reduceResponse, this.multipleCalls);
+  };
 
   getChannelPromises = (channelId) => {
     const httpOptions = {
@@ -30,52 +35,38 @@ class Vlive extends Livestream {
         }
         return data;
       })
-      .catch((error) => this.apiError(PLATFORM, error));
-  };
-
-  updateStreams = () => {
-    const flattenStreamsString = this.getListOfStreams(PLATFORM);
-    const currentList = [];
-
-    _.forEach(flattenStreamsString, (stream) => currentList.push(this.getChannelPromises(stream)));
-
-    Promise.all(currentList)
-      .then(this.reduceResponse)
-      .then(this.retrieveLiveChannels)
-      .catch((error) => this.apiError(PLATFORM, error));
+      .catch((error) => this.apiError(this.PLATFORM, error));
   };
 
   reduceResponse = (response) => {
     const reducedResponse = [];
-    response.forEach((stream) => {
-      if (stream) {
-        const timestamp = moment
-          .tz(_.get(stream, 'onAirStartAt'), 'YYYY-MM-DD HH:mm:ss', 'Asia/Seoul')
-          .tz('America/Los_Angeles')
-          .toISOString();
+    for (const stream of response) {
+      const timestamp = moment
+        .tz(_.get(stream, 'onAirStartAt'), 'YYYY-MM-DD HH:mm:ss', 'Asia/Seoul')
+        .tz('America/Los_Angeles')
+        .toISOString();
 
-        let thumbnail = _.get(stream, 'thumbnail');
-        if (!IMG_REGEX.test(thumbnail)) {
-          const width = '1024';
-          const height = '576';
-          // i dont know why we have to do this but we do
-          thumbnail = encodeURI(
-            `https://dthumb-phinf.pstatic.net/?src="${thumbnail}?type=ff${width}_${height}"&twidth=${width}&theight=${height}&opts=12`
-          );
-        }
-
-        reducedResponse.push({
-          platform: PLATFORM,
-          name: _.get(stream, 'id'),
-          displayName: _.get(stream, 'representChannelName'),
-          logo: _.get(stream, 'representChannelProfileImg'),
-          preview: thumbnail,
-          title: _.get(stream, 'title'),
-          url: VLIVE_VIDEO + _.get(stream, 'videoSeq'),
-          updated_at: timestamp
-        });
+      let thumbnail = _.get(stream, 'thumbnail');
+      if (!IMG_REGEX.test(thumbnail)) {
+        const width = '1024';
+        const height = '576';
+        // i dont know why we have to do this but we do
+        thumbnail = encodeURI(
+          `https://dthumb-phinf.pstatic.net/?src="${thumbnail}?type=ff${width}_${height}"&twidth=${width}&theight=${height}&opts=12`
+        );
       }
-    });
+
+      reducedResponse.push({
+        platform: this.PLATFORM,
+        name: _.get(stream, 'id'),
+        displayName: _.get(stream, 'representChannelName'),
+        logo: _.get(stream, 'representChannelProfileImg'),
+        preview: thumbnail,
+        title: _.get(stream, 'title'),
+        url: VLIVE_VIDEO + _.get(stream, 'videoSeq'),
+        updated_at: timestamp
+      });
+    }
     return reducedResponse;
   };
 }

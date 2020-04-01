@@ -4,7 +4,6 @@ import _ from 'lodash';
 import { addQueryParamToList } from '@stream/util';
 import request from 'request-promise';
 
-const PLATFORM = 'twitch';
 const TWITCH_BASE_URL = 'https://www.twitch.tv';
 const TWITCH_API_STREAMS_ENDPOINT = 'https://api.twitch.tv/helix/streams?first=100';
 const TWITCH_API_GAMES_ENDPOINT = 'https://api.twitch.tv/helix/games?id=';
@@ -22,23 +21,29 @@ class Twitch extends Livestream {
       json: true,
       method: 'GET'
     };
+    this.PLATFORM = 'twitch';
+    this.multipleCalls = false;
   }
 
   updateStreams = () => {
     const flattenStreamsString = addQueryParamToList(
       'user_login',
-      this.getListOfStreams(PLATFORM)
+      this.getListOfStreams(this.PLATFORM)
     ).join('');
+
     this.twitchAPIOptions.url = TWITCH_API_STREAMS_ENDPOINT + flattenStreamsString;
-    request(this.twitchAPIOptions)
-      .then(this.reduceResponse)
-      .then(this.retrieveLiveChannels)
-      .catch((error) => this.apiError(PLATFORM, error));
+
+    this.getAPIDataAndAnnounce(this.getChannelPromises, this.reduceResponse, this.multipleCalls);
+  };
+
+  getChannelPromises = () => {
+    return [request(this.twitchAPIOptions).catch((error) => this.apiError(this.PLATFORM, error))];
   };
 
   reduceResponse = async (response) => {
     const reducedResponse = [];
-    for (const stream of response.data) {
+    const data = _.first(response)?.data ?? [];
+    for (const stream of data) {
       let preview =
         _.get(stream, 'thumbnail_url') + `?t=${Math.round(new Date().getTime() / 1000)}`;
       preview = preview.replace('{width}', '1920').replace('{height}', '1080');
@@ -57,7 +62,7 @@ class Twitch extends Livestream {
       const url = `${TWITCH_BASE_URL}/${loginName}`;
 
       reducedResponse.push({
-        platform: PLATFORM,
+        platform: this.PLATFORM,
         name: loginName.toLowerCase(),
         displayName: _.get(stream, 'user_name'),
         game: game,

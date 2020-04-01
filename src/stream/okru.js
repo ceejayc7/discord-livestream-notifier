@@ -3,7 +3,6 @@ import _ from 'lodash';
 import cheerio from 'cheerio';
 import request from 'request-promise';
 
-const PLATFORM = 'okru';
 const OKRU_BASE_URL = 'https://ok.ru';
 const OKRU_ENDPOINT = 'https://ok.ru/live/profile/';
 const PROTOCOL = 'https:';
@@ -11,7 +10,13 @@ const PROTOCOL = 'https:';
 class OkRu extends Livestream {
   constructor(streamEmitter) {
     super(streamEmitter);
+    this.PLATFORM = 'okru';
+    this.multipleCalls = true;
   }
+
+  updateStreams = () => {
+    this.getAPIDataAndAnnounce(this.getChannelPromises, null, this.multipleCalls);
+  };
 
   scrapePage = ($) => {
     if ($('.video-card_live.__active').length) {
@@ -28,7 +33,7 @@ class OkRu extends Livestream {
       const timestamp = new Date().toISOString();
 
       return {
-        platform: PLATFORM,
+        platform: this.PLATFORM,
         name: channelName,
         displayName: displayName,
         title: title,
@@ -42,7 +47,7 @@ class OkRu extends Livestream {
 
   getChannelPromises = (url) => {
     const httpOptions = {
-      url: url,
+      url: OKRU_ENDPOINT + url,
       transform: function(body) {
         return cheerio.load(body);
       }
@@ -50,21 +55,7 @@ class OkRu extends Livestream {
 
     return request(httpOptions)
       .then(this.scrapePage)
-      .catch((error) => this.apiError(PLATFORM, error));
-  };
-
-  updateStreams = () => {
-    const flattenStreamsString = this.getListOfStreams(PLATFORM);
-    const currentList = [];
-
-    _.forEach(flattenStreamsString, (stream) =>
-      currentList.push(this.getChannelPromises(OKRU_ENDPOINT + stream))
-    );
-
-    Promise.all(currentList)
-      .then(_.compact)
-      .then(this.retrieveLiveChannels)
-      .catch((error) => this.apiError(PLATFORM, error));
+      .catch((error) => this.apiError(this.PLATFORM, error));
   };
 }
 
