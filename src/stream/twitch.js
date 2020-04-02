@@ -1,5 +1,6 @@
+import { TWITCH_CLIENT_ID, TWITCH_CLIENT_SECRET } from '@root/constants';
+
 import Livestream from '@stream/livestream';
-import { TWITCH_CLIENT_ID } from '@root/constants';
 import _ from 'lodash';
 import { addQueryParamToList } from '@stream/util';
 import request from 'request-promise';
@@ -8,6 +9,7 @@ const TWITCH_BASE_URL = 'https://www.twitch.tv';
 const TWITCH_API_STREAMS_ENDPOINT = 'https://api.twitch.tv/helix/streams?first=100';
 const TWITCH_API_GAMES_ENDPOINT = 'https://api.twitch.tv/helix/games?id=';
 const TWITCH_API_USERS_ENDPOINT = 'https://api.twitch.tv/helix/users?id=';
+const TWITCH_API_OAUTH = `https://id.twitch.tv/oauth2/token?client_id=${TWITCH_CLIENT_ID}&client_secret=${TWITCH_CLIENT_SECRET}&grant_type=client_credentials`;
 
 class Twitch extends Livestream {
   constructor(streamEmitter) {
@@ -15,7 +17,6 @@ class Twitch extends Livestream {
     this.twitchAPIOptions = {
       url: TWITCH_API_STREAMS_ENDPOINT,
       headers: {
-        'Client-ID': TWITCH_CLIENT_ID,
         'content-type': 'application/json'
       },
       json: true,
@@ -28,14 +29,26 @@ class Twitch extends Livestream {
     this.embedColor = 6570404;
   }
 
-  updateStreams = () => {
+  updateOAuth = async () => {
+    const options = {
+      url: TWITCH_API_OAUTH,
+      json: true,
+      method: 'POST'
+    };
+    const oauthResponse = await request(options).catch((error) =>
+      this.apiError(this.PLATFORM, error)
+    );
+    this.twitchAPIOptions.headers.Authorization = `Bearer ${oauthResponse?.access_token}`; // eslint-disable-line
+  };
+
+  updateStreams = async () => {
+    await this.updateOAuth();
     const flattenStreamsString = addQueryParamToList(
       'user_login',
       this.getListOfStreams(this.PLATFORM)
     ).join('');
 
     this.twitchAPIOptions.url = TWITCH_API_STREAMS_ENDPOINT + flattenStreamsString;
-
     this.getAPIDataAndAnnounce(this.getChannelPromises, this.reduceResponse, this.multipleCalls);
   };
 
