@@ -18,7 +18,6 @@ const streamEmitter = new EventEmitter();
 const serverList = Object.keys(serverDatabase);
 const discordBots = {};
 const streamsList = [];
-const ignoreLowercasePlatforms = ['youtube', 'okru'];
 
 const initBots = () => {
   // create new bot per each defined discord server
@@ -75,18 +74,13 @@ const setTimers = () => {
 initBots();
 setTimers();
 
-const getStreamName = (stream) => {
-  return _.includes(ignoreLowercasePlatforms, stream.platform)
-    ? stream.name
-    : stream.name.toLowerCase();
-};
-
-streamEmitter.on('event:streamlive', (stream) => {
+streamEmitter.on('event:streamlive', (streamData) => {
+  const { stream } = streamData;
   _.forEach(serverDatabase, (server, serverName) => {
-    const isChannelInServer = _.includes(_.get(server, [stream.platform]), getStreamName(stream));
+    const isChannelInServer = _.includes(_.get(server, [stream.platform]), stream.name);
     if (isChannelInServer) {
       console.log(`${stream.name} went live, notifying channel`);
-      discordBots[serverName].sendLiveMessage(stream);
+      discordBots[serverName].sendLiveMessage(streamData);
     }
   });
 });

@@ -12,8 +12,11 @@ const IMG_REGEX = new RegExp(/(http(s?):)([/|.|\w|\s|-])*\.(?:jpg|gif|png)/, 'gi
 class Vlive extends Livestream {
   constructor(streamEmitter) {
     super(streamEmitter);
+
     this.PLATFORM = 'vlive';
     this.multipleCalls = true;
+    this.siteLogo = 'https://i.imgur.com/AaJHKAB.png';
+    this.embedColor = 5568511;
   }
 
   updateStreams = () => {
@@ -42,15 +45,15 @@ class Vlive extends Livestream {
     const reducedResponse = [];
     for (const stream of response) {
       const timestamp = moment
-        .tz(_.get(stream, 'onAirStartAt'), 'YYYY-MM-DD HH:mm:ss', 'Asia/Seoul')
+        .tz(stream?.onAirStartAt, 'YYYY-MM-DD HH:mm:ss', 'Asia/Seoul')
         .tz('America/Los_Angeles')
         .toISOString();
 
-      let thumbnail = _.get(stream, 'thumbnail');
+      // magic logic to generate a thumbnail
+      let thumbnail = stream?.thumbnail;
       if (!IMG_REGEX.test(thumbnail)) {
         const width = '1024';
         const height = '576';
-        // i dont know why we have to do this but we do
         thumbnail = encodeURI(
           `https://dthumb-phinf.pstatic.net/?src="${thumbnail}?type=ff${width}_${height}"&twidth=${width}&theight=${height}&opts=12`
         );
@@ -58,13 +61,13 @@ class Vlive extends Livestream {
 
       reducedResponse.push({
         platform: this.PLATFORM,
-        name: _.get(stream, 'id'),
-        displayName: _.get(stream, 'representChannelName'),
-        logo: _.get(stream, 'representChannelProfileImg'),
+        name: stream?.id,
+        displayName: stream?.representChannelName,
+        logo: stream?.representChannelProfileImg,
         preview: thumbnail,
-        title: _.get(stream, 'title'),
-        url: VLIVE_VIDEO + _.get(stream, 'videoSeq'),
-        updated_at: timestamp
+        title: stream?.title,
+        url: VLIVE_VIDEO + stream?.videoSeq,
+        updatedAt: timestamp
       });
     }
     return reducedResponse;

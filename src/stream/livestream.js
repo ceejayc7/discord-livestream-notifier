@@ -1,3 +1,4 @@
+import { MessageEmbed } from 'discord.js';
 import _ from 'lodash';
 
 class Livestream {
@@ -6,16 +7,43 @@ class Livestream {
     this.streamEmitter = streamEmitter;
     this.streamsDatabase = require('@data/db.json');
     this.PLATFORM = 'livestream';
+    this.siteLogo = '';
+    this.embedColor = '';
   }
 
   updateStreams = () => {
     throw new Error('This must be implemented');
   };
 
+  getDiscordMessage = (stream) => {
+    const url = stream?.url;
+    const displayName = stream?.displayName ?? stream?.name;
+    const streamMessage = `${displayName} is now live at ${url}`;
+    const embed = new MessageEmbed()
+      .setAuthor(displayName, this.siteLogo, url)
+      .setColor(this.embedColor)
+      .setImage(stream?.preview)
+      .setTitle(stream?.title)
+      .setURL(url)
+      .setThumbnail(stream?.logo)
+      .setTimestamp(`${stream?.updatedAt}`);
+
+    if (stream?.game) {
+      embed.addField('Game', stream?.game, true);
+    }
+
+    if (stream?.viewers) {
+      embed.addField('Viewers', stream?.viewers.toLocaleString(), true);
+    }
+
+    return { stream, streamMessage, embed };
+  };
+
   announceIfStreamIsNew = (stream) => {
     const currentLiveChannels = _.map(this.currentLiveStreams, 'name');
     if (!_.includes(currentLiveChannels, stream.name)) {
-      this.streamEmitter.emit('event:streamlive', stream);
+      const streamData = this.getDiscordMessage(stream);
+      this.streamEmitter.emit('event:streamlive', streamData);
     }
   };
 

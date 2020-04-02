@@ -1,5 +1,4 @@
 import Livestream from '@stream/livestream';
-import _ from 'lodash';
 import cheerio from 'cheerio';
 import request from 'request-promise';
 
@@ -10,8 +9,11 @@ const PROTOCOL = 'https:';
 class OkRu extends Livestream {
   constructor(streamEmitter) {
     super(streamEmitter);
+
     this.PLATFORM = 'okru';
     this.multipleCalls = true;
+    this.siteLogo = 'http://puu.sh/Bz2nm/aacfb2c3d6.png';
+    this.embedColor = 16089632;
   }
 
   updateStreams = () => {
@@ -20,7 +22,7 @@ class OkRu extends Livestream {
 
   scrapePage = ($) => {
     if ($('.video-card_live.__active').length) {
-      const streamUrl = OKRU_BASE_URL + $('.video-card_img-w a').attr('href');
+      const url = OKRU_BASE_URL + $('.video-card_img-w a').attr('href');
       const channelName = $('.compact-profile_img a')
         .attr('href')
         .match(/\d+/g)
@@ -35,12 +37,12 @@ class OkRu extends Livestream {
       return {
         platform: this.PLATFORM,
         name: channelName,
-        displayName: displayName,
-        title: title,
+        displayName,
+        title,
         logo: channelLogo,
-        url: streamUrl,
-        preview: preview,
-        updated_at: timestamp
+        url,
+        preview,
+        updatedAt: timestamp
       };
     }
   };
