@@ -1,5 +1,6 @@
 import { DISCORD_TOKENS, SEND_KPOP_IPTV } from '@root/constants';
 
+import Afreeca from '@stream/afreeca';
 import Bot from '@root/bot';
 import { EventEmitter } from 'events';
 import { IPTV } from '@root/iptv';
@@ -35,6 +36,7 @@ const initBots = () => {
   streamsList.push(new Youtube(streamEmitter));
   streamsList.push(new OkRu(streamEmitter));
   streamsList.push(new Vlive(streamEmitter));
+  streamsList.push(new Afreeca(streamEmitter));
 };
 
 const setMusicShowTimers = () => {
