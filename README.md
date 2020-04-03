@@ -9,6 +9,7 @@ Supports the following platforms:
 > - Youtube
 > - Ok.RU (via web scraping)
 > - Vlive
+> - Afreeca
 
 ## Getting started
 
