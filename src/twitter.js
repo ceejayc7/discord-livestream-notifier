@@ -102,7 +102,7 @@ export const sendTweet = (msg) => {
 };
 
 const handleError = (error, reject) => {
-  console.log(`[Twitter]: Twitter API Error - error: ${error}`);
+  console.log(`[Twitter]: Twitter API Error - error: ${error[0].code} ${error[0].message}`);
   return reject(Error());
 };
 
