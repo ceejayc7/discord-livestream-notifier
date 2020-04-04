@@ -82,6 +82,10 @@ export const BOT_COMMANDS = {
   GENERATE: {
     command: '!iptv',
     showOnHelp: false
+  },
+  TWEET: {
+    command: '!tweet ',
+    showOnHelp: false
   }
 };
 export const SLOTS_MONEY = {

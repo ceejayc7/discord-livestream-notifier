@@ -1,6 +1,8 @@
+import { BOT_COMMANDS } from '@root/constants_internal';
 import { TWITTER as TWITTER_CONSTANTS } from '@root/constants';
 import _ from 'lodash';
 import moment from 'moment-timezone';
+import { sendMessageToChannel } from '@root/util';
 
 const Twitter = require('twitter');
 
@@ -81,6 +83,29 @@ const getShowname = (text) => {
   return '';
 };
 
+export const sendTweet = (msg) => {
+  const status = msg.content.replace(BOT_COMMANDS.TWEET.command, '');
+  const params = {
+    status
+  };
+  console.log(`[Twitter]: Tweeting ${status}`);
+  client.post('statuses/update', params, (error, tweets) => {
+    if (error) {
+      console.log(`[Twitter]: Twitter API Error - error: ${error[0].code} ${error[0].message}`);
+      sendMessageToChannel(msg, `Couldn't send tweet bro`);
+      return;
+    }
+    const handle = tweets?.user?.screen_name; // eslint-disable-line
+    const tweetId = tweets?.id_str; // eslint-disable-line
+    sendMessageToChannel(msg, `https://twitter.com/${handle}/status/${tweetId}`);
+  });
+};
+
+const handleError = (error, reject) => {
+  console.log(`[Twitter]: Twitter API Error - error: ${error}`);
+  return reject(Error());
+};
+
 export const getLatestTweets = () => {
   if (!client) {
     return Promise.resolve();
@@ -88,8 +113,7 @@ export const getLatestTweets = () => {
   return new Promise((resolve, reject) => {
     client.get('statuses/user_timeline', params, (error, tweets) => {
       if (error) {
-        console.log(`[Twitter]: Twitter API Error - error: ${error}`);
-        return reject(Error());
+        return handleError(error, reject);
       }
       const filteredTweets = [];
 
@@ -133,8 +157,7 @@ export const isTwitterProtected = () => {
   return new Promise((resolve, reject) => {
     client.get('users/show', parameters, (error, userInfo) => {
       if (error) {
-        console.log(`[Twitter]: Twitter API Error - error: ${error}`);
-        return reject(Error());
+        return handleError(error, reject);
       }
       return resolve(_.get(userInfo, 'protected'));
     });

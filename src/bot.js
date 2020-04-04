@@ -10,6 +10,7 @@ import { Lotto } from '@casino/lotto';
 import { MoneyManager } from '@casino/moneymanager';
 import { Slots } from '@casino/slots';
 import _ from 'lodash';
+import { sendTweet } from '@root/twitter';
 
 class Bot {
   constructor(loginToken) {
@@ -58,6 +59,10 @@ class Bot {
         return;
       } else if (_.startsWith(msg.content, BOT_COMMANDS.GENERATE.command)) {
         Kpop.parseIPTVCommand(msg);
+      } else if (_.startsWith(msg.content, BOT_COMMANDS.TWEET.command)) {
+        if (isFishingServer(msg)) {
+          sendTweet(msg);
+        }
       }
 
       // non-parameter commands
