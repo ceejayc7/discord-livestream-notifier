@@ -49,6 +49,9 @@ class Bot {
     });
 
     this.client.on('message', (msg) => {
+      if (isFishingServer(msg) && _.startsWith(msg.content, BOT_COMMANDS.TWEET.command)) {
+        sendTweet(msg);
+      }
       if (!isWhitelistedChannel(msg)) {
         return;
       }
@@ -59,10 +62,6 @@ class Bot {
         return;
       } else if (_.startsWith(msg.content, BOT_COMMANDS.GENERATE.command)) {
         Kpop.parseIPTVCommand(msg);
-      } else if (_.startsWith(msg.content, BOT_COMMANDS.TWEET.command)) {
-        if (isFishingServer(msg)) {
-          sendTweet(msg);
-        }
       }
 
       // non-parameter commands
