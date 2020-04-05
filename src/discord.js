@@ -1,5 +1,3 @@
-import { DISCORD_TOKENS, SEND_KPOP_IPTV } from '@root/constants';
-
 import Afreeca from '@stream/afreeca';
 import Bot from '@root/bot';
 import { EventEmitter } from 'events';
@@ -11,42 +9,48 @@ import Twitch from '@stream/twitch';
 import Vlive from '@stream/vlive';
 import Youtube from '@stream/youtube';
 import _ from 'lodash';
+import { getKpopChannels } from '@root/util';
 import moment from 'moment-timezone';
 
-const serverDatabase = require('@data/db.json');
+const SERVER_DATABASE = require('@data/db.json');
+const CONSTANTS = require('@data/constants.json').serverConfig;
 
 const streamEmitter = new EventEmitter();
-const serverList = Object.keys(serverDatabase);
+const serverList = Object.keys(SERVER_DATABASE);
 const discordBots = {};
 const streamsList = [];
 
 const initBots = () => {
   // create new bot per each defined discord server
   _.forEach(serverList, (server) => {
-    const loginToken = _.get(DISCORD_TOKENS, server);
+    const loginToken = CONSTANTS?.[server]?.discordToken;
     if (loginToken) {
-      discordBots[server] = new Bot(loginToken);
+      discordBots[server] = new Bot(loginToken, server);
       discordBots[server].attachListeners();
       discordBots[server].loginToDiscord();
+    } else {
+      const error = `Discord token for ${server} doesn't exist`;
+      throw new Error(error);
     }
   });
 
-  streamsList.push(new Twitch(streamEmitter));
-  streamsList.push(new Mixer(streamEmitter));
-  streamsList.push(new Youtube(streamEmitter));
-  streamsList.push(new OkRu(streamEmitter));
-  streamsList.push(new Vlive(streamEmitter));
-  streamsList.push(new Afreeca(streamEmitter));
+  streamsList.push(
+    new Twitch(streamEmitter),
+    new Mixer(streamEmitter),
+    new Youtube(streamEmitter),
+    new OkRu(streamEmitter),
+    new Vlive(streamEmitter),
+    new Afreeca(streamEmitter)
+  );
 };
 
 const setMusicShowTimers = () => {
   const OFFSET_IN_SECONDS = 960;
   const ONE_WEEK = 604800;
-  const server = _.get(discordBots, SEND_KPOP_IPTV.server);
+  const channels = getKpopChannels(discordBots);
 
-  if (!_.isEmpty(SEND_KPOP_IPTV) && server) {
+  if (!_.isEmpty(channels)) {
     KPOP_SCHEDULE.forEach((event) => {
-      const channelToSendTo = server.client.channels.cache.get(SEND_KPOP_IPTV.channelId);
       let timeWhenEventStarts = (event.time() - moment.tz().unix() - OFFSET_IN_SECONDS) * 1000;
       if (timeWhenEventStarts < 0) {
         timeWhenEventStarts = 0;
@@ -54,7 +58,7 @@ const setMusicShowTimers = () => {
       console.log(
         `Setting timer on ${event.show} on ${event.day} at ${event.time() - OFFSET_IN_SECONDS}`
       );
-      setTimeout(() => IPTV.sendIPTVStreams(event, channelToSendTo), timeWhenEventStarts);
+      setTimeout(() => IPTV.sendIPTVStreams(event, channels), timeWhenEventStarts);
     });
 
     // reset weekly timer in 1 week
@@ -78,7 +82,7 @@ setTimers();
 
 streamEmitter.on('event:streamlive', (streamData) => {
   const { stream } = streamData;
-  _.forEach(serverDatabase, (server, serverName) => {
+  _.forEach(SERVER_DATABASE, (server, serverName) => {
     const isChannelInServer = _.includes(_.get(server, [stream.platform]), stream.name);
     if (isChannelInServer) {
       console.log(`${stream.name} went live, notifying channel`);

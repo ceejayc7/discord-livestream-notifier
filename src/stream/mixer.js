@@ -1,7 +1,7 @@
 import Livestream from '@stream/livestream';
-import { MIXER_CLIENT_ID } from '@root/constants';
 import request from 'request-promise';
 
+const CONSTANTS = require('@data/constants.json').tokens;
 const MIXER_API_ENDPOINT = 'https://mixer.com/api/v1/channels/';
 
 class Mixer extends Livestream {
@@ -23,9 +23,9 @@ class Mixer extends Livestream {
       url: MIXER_API_ENDPOINT + url,
       json: true,
       headers: {
-        'Client-ID': MIXER_CLIENT_ID,
-        'content-type': 'application/json'
-      }
+        'Client-ID': CONSTANTS?.mixer?.clientId,
+        'content-type': 'application/json',
+      },
     };
     return request(httpOptions).catch((error) => this.apiError(this.PLATFORM, error));
   };
@@ -45,7 +45,7 @@ class Mixer extends Livestream {
           title: stream?.name,
           logo: stream?.user?.avatarUrl,
           url,
-          updatedAt: stream?.updatedAt
+          updatedAt: stream?.updatedAt,
         });
       }
     }

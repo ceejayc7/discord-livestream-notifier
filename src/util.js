@@ -1,22 +1,53 @@
 import { BOT_COMMANDS, LOTTO_MAX, SLOTS_MONEY } from '@root/constants_internal';
-import { SERVER_FOR_FISHING, WHITELISTED_SERVERS } from '@root/constants';
 
 import _ from 'lodash';
 
-export const isWhitelistedChannel = (msg) => {
-  const serverWhitelist = _.get(WHITELISTED_SERVERS, msg.channel.guild.name);
-  if (_.includes(serverWhitelist, msg.channel.name)) {
-    return true;
+const CONSTANTS = require('@data/constants.json').serverConfig;
+
+export const getKpopChannels = (discordBots) => {
+  const channels = [];
+  for (const server in CONSTANTS) {
+    if (CONSTANTS[server]?.kpopChannels) {
+      const discordChannels = CONSTANTS[server].kpopChannels;
+      const discordServer = discordBots[server];
+
+      for (const configuredChannel of discordChannels) {
+        discordServer.client.channels.cache.forEach((channel) => {
+          if (configuredChannel === channel.name) {
+            channels.push(channel);
+          }
+        });
+      }
+    }
+  }
+  return _.compact(channels);
+};
+
+const isChannelType = (msg, channelConfig) => {
+  if (channelConfig) {
+    for (const channel of channelConfig) {
+      if (channel === msg.channel.name) {
+        return true;
+      }
+    }
   }
   return false;
 };
 
+export const isCasinoChannel = (msg) => {
+  return isChannelType(msg, CONSTANTS?.[msg.guild.name]?.casinoChannels);
+};
+
+export const isKpopChannel = (msg) => {
+  return isChannelType(msg, CONSTANTS?.[msg.guild.name]?.kpopChannels);
+};
+
 export const isFishingServer = (msg) => {
-  const specificServer = SERVER_FOR_FISHING;
-  if (msg.channel.guild.name === specificServer) {
-    return true;
-  }
-  return false;
+  return CONSTANTS?.[msg.guild.name]?.allowFishing && isCasinoChannel(msg);
+};
+
+export const isTweetingServer = (msg) => {
+  return CONSTANTS?.[msg.guild.name]?.allowTweeting;
 };
 
 export const messageError = (error) => {
@@ -84,13 +115,13 @@ export const decodeHTMLEntities = (encodedString) => {
     amp: '&',
     quot: '"',
     lt: '<',
-    gt: '>'
+    gt: '>',
   };
   return encodedString
-    .replace(translateRegex, function(match, entity) {
+    .replace(translateRegex, function (match, entity) {
       return translate[entity];
     })
-    .replace(/&#(\d+);/gi, function(match, numStr) {
+    .replace(/&#(\d+);/gi, function (match, numStr) {
       const num = parseInt(numStr, 10);
       return String.fromCharCode(num);
     });

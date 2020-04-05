@@ -1,9 +1,9 @@
 import { BOT_COMMANDS } from '@root/constants_internal';
-import { TWITTER as TWITTER_CONSTANTS } from '@root/constants';
 import _ from 'lodash';
 import moment from 'moment-timezone';
 import { sendMessageToChannel } from '@root/util';
 
+const CONSTANTS = require('@data/constants.json').tokens;
 const Twitter = require('twitter');
 
 // Identifiers
@@ -25,19 +25,13 @@ const SHOWNAME_REGEX = /(\[LIVE\])\s(.+?)$/m;
 
 let client;
 
-if (
-  TWITTER_CONSTANTS &&
-  TWITTER_CONSTANTS.consumer_key &&
-  TWITTER_CONSTANTS.consumer_secret &&
-  TWITTER_CONSTANTS.access_token_key &&
-  TWITTER_CONSTANTS.access_token_secret
-) {
+if (CONSTANTS?.twitter) {
   // Twitter client
   client = new Twitter({
-    consumer_key: TWITTER_CONSTANTS.consumer_key,
-    consumer_secret: TWITTER_CONSTANTS.consumer_secret,
-    access_token_key: TWITTER_CONSTANTS.access_token_key,
-    access_token_secret: TWITTER_CONSTANTS.access_token_secret
+    consumer_key: CONSTANTS?.twitter?.consumerKey,
+    consumer_secret: CONSTANTS?.twitter?.consumerSecret,
+    access_token_key: CONSTANTS?.twitter?.accessTokenKey,
+    access_token_secret: CONSTANTS?.twitter?.accessTokenSecret,
   });
 } else {
   client = null;
@@ -47,7 +41,7 @@ const params = {
   screen_name: TWITTER_HANDLE,
   include_rts: false,
   exclude_replies: true,
-  tweet_mode: 'extended'
+  tweet_mode: 'extended',
 };
 
 const parseDateTimeFromTweetText = (text) => {
@@ -60,13 +54,13 @@ const parseDateTimeFromTweetText = (text) => {
     const datetimes = {
       pst: {
         time: momentDatetime.tz('America/Los_Angeles').format(TIME_FORMAT_TO_STORE),
-        date: momentDatetime.tz('America/Los_Angeles').format(DATE_FORMAT_TO_STORE)
+        date: momentDatetime.tz('America/Los_Angeles').format(DATE_FORMAT_TO_STORE),
       },
       est: {
         time: momentDatetime.tz('America/New_York').format(TIME_FORMAT_TO_STORE),
-        date: momentDatetime.tz('America/New_York').format(DATE_FORMAT_TO_STORE)
+        date: momentDatetime.tz('America/New_York').format(DATE_FORMAT_TO_STORE),
       },
-      unix: momentDatetime.tz('America/Los_Angeles').unix()
+      unix: momentDatetime.tz('America/Los_Angeles').unix(),
     };
 
     return datetimes;
@@ -86,7 +80,7 @@ const getShowname = (text) => {
 export const sendTweet = (msg) => {
   const status = msg.content.replace(BOT_COMMANDS.TWEET.command, '');
   const params = {
-    status
+    status,
   };
   console.log(`[Twitter]: Tweeting ${status}`);
   client.post('statuses/update', params, (error, tweets) => {
@@ -129,7 +123,7 @@ export const getLatestTweets = () => {
             time,
             id: idStr,
             showName,
-            link: `${LINK_TO_TWEET}${idStr}`
+            link: `${LINK_TO_TWEET}${idStr}`,
           });
         }
       });

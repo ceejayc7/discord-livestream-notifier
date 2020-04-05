@@ -12,7 +12,7 @@ const KOREAN_BLOG_LINKS_TO_QUERY_FOR = [];
 
 const generateEndpoints = () => {
   // initialize blog array
-  for (let page = 1; page <= 15; page++) {
+  for (let page = 1; page <= 10; page++) {
     KOREAN_BLOG_LINKS_TO_QUERY_FOR.push(`https://www.extinf.com/category/korean/page/${page}/`);
   }
 };
@@ -46,7 +46,7 @@ const findValidStreams = async (pages, channelName) => {
       if (isValidStream) {
         validStreams.push({
           channel: match[1],
-          stream: match[2]
+          stream: match[2],
         });
       }
     }
@@ -59,9 +59,9 @@ const getAllPageData = (pages) => {
   pages.forEach((page) => {
     const httpOptions = {
       url: page,
-      transform: function(body) {
+      transform: function (body) {
         return cheerio.load(body);
-      }
+      },
     };
     promises.push(rq(httpOptions));
   });
@@ -71,13 +71,8 @@ const getAllPageData = (pages) => {
 const scrapePageForLinks = ($) => {
   const pages = [];
   if ($('#mas-wrapper').length) {
-    $('#mas-wrapper > article').each(function() {
-      pages.push(
-        $(this)
-          .find('a')
-          .first()
-          .attr('href')
-      );
+    $('#mas-wrapper > article').each(function () {
+      pages.push($(this).find('a').first().attr('href'));
     });
   } else {
     console.log(`[IPTV]: Unable to scrape page`);
@@ -88,9 +83,9 @@ const scrapePageForLinks = ($) => {
 const getValidIPTVStreamsFromPage = (linkToPage, channelName) => {
   const httpOptions = {
     url: linkToPage,
-    transform: function(body) {
+    transform: function (body) {
       return cheerio.load(body);
-    }
+    },
   };
 
   return rq(httpOptions)
@@ -119,7 +114,7 @@ const processOfflineStreams = async (lines, channel) => {
     if (value) {
       results.push({
         channel: `#EXTINF:-1,${channel}`,
-        stream: lines[index]
+        stream: lines[index],
       });
     }
   }
@@ -131,9 +126,7 @@ const getStreamsFromOfflineDB = (channelName) => {
   const key = getCaseInsensitiveKey(IPTV_DATABASE, channelName);
   if (key) {
     const pathToFile = path.resolve(`${__dirname}/iptv/${IPTV_DATABASE[key]}`);
-    return require('fs')
-      .readFileSync(pathToFile, 'utf-8')
-      .split(/\r?\n/);
+    return require('fs').readFileSync(pathToFile, 'utf-8').split(/\r?\n/);
   }
   return [];
 };
@@ -178,13 +171,15 @@ const createMessageToSend = (listOfStreams, showName, channelName) => {
   }
 };
 
-const sendIPTVStreams = async (event, channelToSendTo) => {
+const sendIPTVStreams = async (event, discordChannels) => {
   for (const channel of event.channel) {
     try {
       const streams = await getValidIPTVStreamsFromList(channel);
       const messageToSend = createMessageToSend(streams, event.show, channel);
       console.log(`[IPTV] Sending ${event.show} on ${channel}`);
-      channelToSendTo.send(messageToSend);
+      for (const discordChannel of discordChannels) {
+        discordChannel.send(messageToSend);
+      }
     } catch (error) {
       console.log(`Error retriving IPTV streams. ${error}`);
     }
@@ -196,5 +191,5 @@ generateEndpoints();
 export const IPTV = {
   sendIPTVStreams,
   createMessageToSend,
-  getValidIPTVStreamsFromList
+  getValidIPTVStreamsFromList,
 };

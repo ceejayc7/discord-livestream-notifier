@@ -1,15 +1,14 @@
-import { TWITCH_CLIENT_ID, TWITCH_CLIENT_SECRET } from '@root/constants';
-
 import Livestream from '@stream/livestream';
 import _ from 'lodash';
 import { addQueryParamToList } from '@stream/util';
 import request from 'request-promise';
 
+const CONSTANTS = require('@data/constants.json').tokens;
 const TWITCH_BASE_URL = 'https://www.twitch.tv';
 const TWITCH_API_STREAMS_ENDPOINT = 'https://api.twitch.tv/helix/streams?first=100';
 const TWITCH_API_GAMES_ENDPOINT = 'https://api.twitch.tv/helix/games?id=';
 const TWITCH_API_USERS_ENDPOINT = 'https://api.twitch.tv/helix/users?id=';
-const TWITCH_API_OAUTH = `https://id.twitch.tv/oauth2/token?client_id=${TWITCH_CLIENT_ID}&client_secret=${TWITCH_CLIENT_SECRET}&grant_type=client_credentials`;
+const TWITCH_API_OAUTH = `https://id.twitch.tv/oauth2/token?client_id=${CONSTANTS?.twitch?.clientId}&client_secret=${CONSTANTS?.twitch?.clientSecret}&grant_type=client_credentials`;
 
 class Twitch extends Livestream {
   constructor(streamEmitter) {
@@ -17,10 +16,10 @@ class Twitch extends Livestream {
     this.twitchAPIOptions = {
       url: TWITCH_API_STREAMS_ENDPOINT,
       headers: {
-        'content-type': 'application/json'
+        'content-type': 'application/json',
       },
       json: true,
-      method: 'GET'
+      method: 'GET',
     };
 
     this.PLATFORM = 'twitch';
@@ -33,7 +32,7 @@ class Twitch extends Livestream {
     const options = {
       url: TWITCH_API_OAUTH,
       json: true,
-      method: 'POST'
+      method: 'POST',
     };
     const oauthResponse = await request(options).catch((error) =>
       this.apiError(this.PLATFORM, error)
@@ -86,7 +85,7 @@ class Twitch extends Livestream {
         title: stream?.title,
         logo,
         url,
-        updatedAt: stream?.started_at // eslint-disable-line
+        updatedAt: stream?.started_at, // eslint-disable-line
       });
     }
     return reducedResponse;
