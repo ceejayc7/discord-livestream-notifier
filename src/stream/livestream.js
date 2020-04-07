@@ -32,7 +32,7 @@ class Livestream {
       embed.addField('Game', stream?.game, true);
     }
 
-    if (stream?.viewers) {
+    if (stream?.viewers !== undefined) {
       embed.addField('Viewers', stream?.viewers.toLocaleString(), true);
     }
 
