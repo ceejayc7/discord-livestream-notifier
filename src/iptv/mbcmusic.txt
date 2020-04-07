@@ -1,3 +1,10 @@
+http://110.14.2.104:9981/stream/channelid/1490638253
+http://14.52.248.122:9981/stream/channelid/89930279
+http://1.229.5.89:9981/stream/channelid/1825567793
+http://211.55.109.123:9981/stream/channelid/870570362
+http://180.70.158.42:9981/stream/channelid/568883554
+http://110.15.137.114:9981/stream/channelid/364176469
+http://211.227.78.251:9981/stream/channelid/1471339102
 http://218.147.152.52:9981/stream/channelid/1808744403
 http://112.173.126.81:9981/stream/channelid/1741434420
 http://222.234.217.135:9981/stream/channelid/1675624244
@@ -36,10 +43,8 @@ http://116.33.95.67:9981/stream/channelid/299189534
 http://61.73.238.131:9981/stream/channelid/236556969
 http://119.64.99.238:9981/stream/channelid/1356060483
 http://58.122.115.168:9991/stream/channelid/1159921847
-http://211.245.55.198:22514/m2u/239.192.53.4:49220
 http://219.249.78.172:9981/stream/channelid/1691523768
 http://222.236.107.101:9981/stream/channelid/1708073560
-http://211.245.55.198:22514/m2u/239.192.53.4:49220&amp;transcoder=h264ts&amp;bitrate=1024&amp;width=570&amp;height=320.webm
 http://211.49.39.17:9981/stream/channelid/511467026
 http://116.122.29.79:9981/stream/channelid/1960554776
 http://39.113.245.63:9981/stream/channelid/1162790205
@@ -252,7 +257,6 @@ http://221.141.246.43:9981/stream/channelid/1032921621?profile=pass
 http://125.180.209.70:9981/stream/channelid/795442252
 http://58.238.55.219:9981/stream/channelid/718484248
 http://124.50.47.242:9981/stream/channelid/462063618
-http://211.245.55.198:22515/m2u/239.192.53.4:49220
 http://121.147.203.220:9981/stream/channelid/1300496550
 http://39.120.255.92:9981/stream/channelid/88051513
 http://114.200.183.21:9981/stream/channelid/695201162
@@ -377,5 +381,3 @@ http://58.230.68.120:9981/stream/channelid/1804565130
 http://110.12.187.175:9981/stream/channelid/319414784
 http://175.121.74.188:9981/stream/channelid/1419745905
 http://175.121.74.188:9981/stream/channelid/491280013
-http://1.236.240.6:8080/udp/239.192.53.4:49220
-http://cdn1.lightiptv.me:2017/play/mbc-music-hd?token=8361-1002

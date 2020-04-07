@@ -1,3 +1,11 @@
+http://114.206.182.11:9981/stream/channelid/455999285
+http://110.14.2.104:9981/stream/channelid/746247523
+http://1.229.5.89:9981/stream/channelid/1077730191
+http://211.55.109.123:9981/stream/channelid/1619358765
+http://180.70.158.42:9981/stream/channelid/1473641685
+http://1.240.92.192:9981/stream/channelid/133868104
+http://110.15.137.114:9981/stream/channelid/86100911
+http://211.227.78.251:9981/stream/channelid/32260013
 http://218.147.152.52:9981/stream/channelid/1957009037
 http://222.234.217.135:9981/stream/channelid/259084537
 http://39.117.94.88:9981/stream/channelid/1049115590
@@ -34,10 +42,8 @@ http://124.49.186.90:9981/stream/channelid/948746652
 http://61.73.238.131:9981/stream/channelid/1652511600
 http://119.64.99.238:9981/stream/channelid/1956757224
 http://58.122.115.168:9991/stream/channelid/13988517
-http://211.245.55.198:22514/m2u/239.192.55.4:49220
 http://219.249.78.172:9981/stream/channelid/1427589137
 http://222.236.107.101:9981/stream/channelid/2052189167
-http://211.245.55.198:22514/m2u/239.192.55.4:49220&amp;transcoder=h264ts&amp;bitrate=1024&amp;width=570&amp;height=320.webm
 http://211.49.39.17:9981/stream/channelid/2046408535
 http://116.122.29.79:9981/stream/channelid/786867357
 http://39.113.245.63:9981/stream/channelid/2056134238
@@ -248,7 +254,6 @@ http://221.141.246.43:9981/stream/channelid/2070231608?profile=pass
 http://125.180.209.70:9981/stream/channelid/882538454
 http://58.238.55.219:9981/stream/channelid/942186860
 http://124.50.47.242:9981/stream/channelid/1739738533
-http://211.245.55.198:22515/m2u/239.192.55.4:49220
 http://121.147.203.220:9981/stream/channelid/1011810661
 http://122.34.234.105:9981/stream/channelid/1370701695
 http://39.120.255.92:9981/stream/channelid/330830489

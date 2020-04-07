@@ -1,3 +1,13 @@
+http://114.206.182.11:9981/stream/channelid/1903191693
+http://110.14.2.104:9981/stream/channelid/658850835
+http://14.52.248.122:9981/stream/channelid/357648191
+http://1.229.5.89:9981/stream/channelid/1725980104
+http://114.29.90.71:9981/stream/channelid/181225162
+http://211.55.109.123:9981/stream/channelid/76196539
+http://180.70.158.42:9981/stream/channelid/1320348739
+http://110.15.137.114:9981/stream/channelid/678449325
+http://211.227.78.251:9981/stream/channelid/1822474274
+http://175.142.196.240:9981/stream/channelid/2082835147
 http://222.234.217.135:9981/stream/channelid/1128808367
 http://39.117.94.88:9981/stream/channelid/2111726285
 http://210.205.191.19:9981/stream/channelid/248741367
@@ -39,7 +49,6 @@ http://61.73.238.131:9981/stream/channelid/1002941333
 http://34.84.183.100:9981/stream/channelid/2074611542
 http://119.64.99.238:9981/stream/channelid/1520258845
 http://58.122.115.168:9991/stream/channelid/209385816
-http://211.245.55.198:22514/m2u/239.192.50.6:49220
 http://219.249.78.172:9981/stream/channelid/320808580
 http://222.236.107.101:9981/stream/channelid/1505604357
 http://211.49.39.17:9981/stream/channelid/218679884
@@ -283,7 +292,6 @@ http://125.180.209.70:9981/stream/channelid/1569129934
 http://114.207.77.30:9981/stream/channelid/1760419383
 http://58.238.55.219:9981/stream/channelid/882016260
 http://124.50.47.242:9981/stream/channelid/606675109
-http://211.245.55.198:22515/m2u/239.192.50.6:49220
 http://121.147.203.220:9981/stream/channelid/275245832
 http://39.120.255.92:9981/stream/channelid/537187213
 http://114.200.183.21:9981/stream/channelid/2020631310
@@ -322,7 +330,6 @@ http://112.144.184.132:9981/stream/channelid/291255514
 http://220.71.90.139:9981/stream/channelid/47402057
 http://221.140.204.158:9981/stream/channelid/688271900
 http://119.194.58.213:9981/stream/channelid/1679343043
-http://112.161.11.216:9981/play/stream/channel/e0ef5e1679d9f1e66c761f5d31f78be5
 http://175.195.253.252:9981/stream/channelid/1114260859
 http://220.125.160.36:9981/stream/channelid/1065798221
 http://121.160.117.115:9981/stream/channelid/528850784

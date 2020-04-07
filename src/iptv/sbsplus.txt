@@ -1,3 +1,10 @@
+http://14.52.248.122:9981/stream/channelid/616722564
+http://1.229.5.89:9981/stream/channelid/672337618
+http://114.29.90.71:9981/stream/channelid/2132879915
+http://211.55.109.123:9981/stream/channelid/1863393697
+http://1.240.92.192:9981/stream/channelid/1012864385
+http://110.15.137.114:9981/stream/channelid/1701147742
+http://211.227.78.251:9981/stream/channelid/1828392474
 http://210.205.191.19:9981/stream/channelid/1292130108
 http://221.167.234.160:9981/stream/channelid/332934492
 http://61.83.97.38:9981/stream/channelid/1569679053
@@ -20,13 +27,11 @@ http://58.126.164.96:9981/stream/channelid/389816484
 http://1.236.136.243:9981/stream/channelid/1788944372
 http://39.120.6.252:9981/stream/channelid/1438416432
 http://116.33.95.67:9981/stream/channelid/434139184
-https://ch.iptvmate.net/562a0d042842a664e472096e2704d212.m3u8
 http://1.224.253.94:9981/stream/channelid/1713212016
 http://218.237.78.78:9981/stream/channelid/1829121699
 http://119.64.99.238:9981/stream/channelid/318091701
 http://58.122.115.168:9991/stream/channelid/95420948
 http://222.236.107.101:9981/stream/channelid/1174823246
-http://211.245.55.198:22514/m2u/239.192.49.7:49220&amp;transcoder=h264ts&amp;bitrate=1024&amp;width=570&amp;height=320.webm
 http://211.49.39.17:9981/stream/channelid/1520006131
 http://116.122.29.79:9981/stream/channelid/1641345854
 http://1.225.138.75:9981/stream/channelid/2042729443
@@ -127,7 +132,6 @@ http://211.179.15.73:9981/stream/channelid/76985108
 http://1.243.100.220:9981/stream/channelid/1632580852
 http://219.249.158.175:9981/stream/channelid/298851800
 http://125.180.146.39:9981/stream/channelid/677923474
-https://streaming-a-802.cdn.nextologies.com/SBS_Plus/playlist.m3u8
 http://175.125.208.40:9981/stream/channelid/56201685
 http://175.124.113.128:9981/stream/channelid/1637946177
 http://175.119.121.140:9981/stream/channelid/1058347140
@@ -169,7 +173,6 @@ http://114.204.150.69:9981/stream/channelid/1210057135
 http://122.42.35.81:9981/stream/channelid/2129820161
 http://182.227.31.43:9981/stream/channelid/633589634
 http://125.180.209.70:9981/stream/channelid/1087898416
-http://122.34.247.82:9000/udp/233.69.194.64:20000
 http://124.50.47.242:9981/stream/channelid/185561308
 http://121.147.203.220:9981/stream/channelid/1643270585
 http://39.120.255.92:9981/stream/channelid/427565210

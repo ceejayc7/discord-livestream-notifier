@@ -1,3 +1,12 @@
+http://114.206.182.11:9981/stream/channelid/2003381386
+http://14.52.248.122:9981/stream/channelid/406238367
+http://1.229.5.89:9981/stream/channelid/1437914351
+http://114.29.90.71:9981/stream/channelid/1716097872
+http://1.240.92.192:9981/stream/channelid/1854566001
+http://110.15.137.114:9981/stream/channelid/6686686
+http://58.228.129.137:4022/udp/239.192.48.5:49220
+http://211.227.78.251:9981/stream/channelid/1812719427
+http://121.159.183.222:9981/stream/channelid/183837614
 http://218.147.152.52:9981/stream/channelid/227607587
 http://183.96.5.157:9981/stream/channelid/504278405
 http://39.115.219.13:9981/stream/channelid/53
@@ -35,7 +44,6 @@ http://61.73.238.131:9981/stream/channelid/1755369802
 http://34.84.183.100:9981/stream/channelid/1886834140
 http://119.64.99.238:9981/stream/channelid/1967228156
 http://58.122.115.168:9991/stream/channelid/410522448
-http://211.245.55.198:22514/m2u/239.192.48.5:49220
 http://222.236.107.101:9981/stream/channelid/912678109
 http://211.49.39.17:9981/stream/channelid/1994937585
 http://116.122.29.79:9981/stream/channelid/1018507615
@@ -245,7 +253,6 @@ http://211.49.140.7:9981/stream/channelid/2075307963
 http://112.155.36.229:9981/stream/channelid/1150355494
 http://1.235.56.250:9981/stream/channelid/1343828667
 http://221.153.129.215:9981/stream/channelid/1346909134
-http://tv.woonet.co/direct_tv/freetv/freetv/mnet.m3u8
 http://59.20.210.249:9981/stream/channelid/156200053
 http://14.63.18.102:9981/stream/channelid/9638834
 http://121.161.216.230:9981/stream/channelid/65097194
@@ -254,7 +261,6 @@ http://210.121.222.146:9981/stream/channelid/691666324
 http://58.79.206.245:9981/stream/channelid/656589177
 http://49.166.116.66:9981/stream/channelid/460426398
 http://221.163.188.165:9981/stream/channelid/1684297187
-http://tv.woonet.co/direct_tv/freeiptv/___free_2_days____/mnet.m3u8
 http://220.71.90.139:9981/stream/channelid/750553299
 http://221.140.204.158:9981/stream/channelid/1510750988
 http://119.194.58.213:9981/stream/channelid/1288035098
@@ -262,13 +268,11 @@ http://222.108.79.24:9981/stream/channelid/510188816
 http://175.195.253.252:9981/stream/channelid/751296494
 http://220.125.160.36:9981/stream/channelid/1771131931
 http://121.160.117.115:9981/stream/channelid/781679925
-http://tv.woonet.co/direct_tv/freeiptv/___only_availabel_in_sat_and_sun____/mnet.m3u8
 http://59.1.237.194:9981/stream/channelid/508294336
 http://14.42.75.186:9981/stream/channelid/1943134742
 http://220.77.115.246:9981/stream/channelid/735539823
 http://211.186.157.141:9981/stream/channelid/385961363
 http://218.150.123.58:9981/stream/channelid/222462569
-http://vaders.tv:80/live/kxL568S0is/YakYgl2e8T/74513.ts
 http://112.165.246.56:9981/stream/channelid/728961947
 http://211.199.66.179:9981/stream/channelid/476723390
 http://221.167.234.160:9981/stream/channelid/476933686
@@ -294,9 +298,7 @@ http://119.197.38.74:9981/stream/channelid/1532681416
 http://121.129.125.58:9981/stream/channelid/1323968074
 http://220.92.33.145:9981/stream/channelid/1713543309
 http://121.157.27.172:9981/stream/channelid/23252483
-http://vaders.tv:80/live/aCMC3nJFkG/ZKDMLGR04r/74513.m3u8
 http://222.110.20.166:9981/stream/channelid/1411290626
-http://vapi.vaders.tv/play/74513.m3u8?token=eyJ1c2VybmFtZSI6ImdrY2UzYWNma2giLCJwYXNzd29yZCI6ImllcHNibm14cmwifQ==
 http://39.120.45.46:9981/stream/channelid/1396549811
 http://210.105.42.84:9981/stream/channelid/321473155
 http://183.102.111.46:9981/stream/channelid/1479603850
@@ -318,7 +320,6 @@ http://211.213.151.175:9981/stream/channelid/1576481542
 http://110.8.171.205:9981/stream/channelid/473467783
 http://183.100.234.45:9981/stream/channelid/1835525118
 http://1.243.100.220:9981/stream/channelid/15702617
-http://vapi.vaders.tv/play/74513.ts?token=eyJ1c2VybmFtZSI6ImNlY2lsMSIsInBhc3N3b3JkIjoiY2VjaWwxIn0=
 http://118.36.186.142:9981/stream/channelid/1193643006
 http://121.154.143.125:9981/stream/channelid/961739391
 http://124.49.155.90:9981/stream/channelid/122939544
