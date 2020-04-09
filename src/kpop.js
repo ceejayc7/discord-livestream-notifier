@@ -64,12 +64,7 @@ const getRelativeTimeStart = (timestamp) => {
   return eventMoment.add(1, 'weeks').unix();
 };
 
-const sendEmptyKpopMsg = (msg) => sendMessageToChannel(msg, `kpop is dead`);
-
 const printSkpbKpopMessage = async (msg, tweets) => {
-  if (_.isEmpty(tweets)) {
-    sendEmptyKpopMsg(msg);
-  }
   const isProtected = await isTwitterProtected();
   for (const tweet of tweets) {
     sendMessageToChannel(
@@ -100,12 +95,13 @@ const parseIPTVCommand = (msg) => {
 const onKpopCommand = async (msg) => {
   const skpbTimeline = await getSkpbTimeline();
   const teamAQTweetLink = await getAQPinnedTweet();
+
   if (!_.isEmpty(skpbTimeline)) {
     printSkpbKpopMessage(msg, skpbTimeline);
   } else if (teamAQTweetLink) {
     sendMessageToChannel(msg, teamAQTweetLink);
   } else {
-    sendEmptyKpopMsg(msg);
+    sendMessageToChannel(msg, 'kpop is dead');
   }
 };
 
