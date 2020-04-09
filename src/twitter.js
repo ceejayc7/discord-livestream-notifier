@@ -7,8 +7,9 @@ const CONSTANTS = require('@data/constants.json').tokens;
 const Twitter = require('twitter');
 
 // Identifiers
-const TWITTER_HANDLE = 'skpblive';
-const LINK_TO_TWEET = `https://twitter.com/${TWITTER_HANDLE}/status/`;
+const SKPB_TWITTER_HANDLE = 'skpblive';
+const TEAMAQ_TWITTER_HANDLE = 'team_AQ2';
+const LINK_TO_TWEET = `https://twitter.com/${SKPB_TWITTER_HANDLE}/status/`;
 const TWEET_TEXT_TO_CHECK_FOR = '[LIVE]';
 
 // Datetime
@@ -36,13 +37,6 @@ if (CONSTANTS?.twitter) {
 } else {
   client = null;
 }
-
-const params = {
-  screen_name: TWITTER_HANDLE,
-  include_rts: false,
-  exclude_replies: true,
-  tweet_mode: 'extended',
-};
 
 const parseDateTimeFromTweetText = (text) => {
   const dateRegexString = text.match(DATE_REGEX);
@@ -78,6 +72,10 @@ const getShowname = (text) => {
 };
 
 export const sendTweet = (msg) => {
+  if (!client) {
+    return Promise.resolve();
+  }
+
   const status = msg.content.replace(BOT_COMMANDS.TWEET.command, '');
   const params = {
     status,
@@ -96,14 +94,41 @@ export const sendTweet = (msg) => {
 };
 
 const handleError = (error, reject) => {
-  console.log(`[Twitter]: Twitter API Error - error: ${error[0].code} ${error[0].message}`);
+  console.log(`[Twitter]: Twitter API Error - error: ${error.code} ${error.message}`);
   return reject(Error());
 };
 
-export const getLatestTweets = () => {
+export const getAQPinnedTweet = async () => {
   if (!client) {
     return Promise.resolve();
   }
+
+  return await new Promise((resolve, reject) => {
+    client.get(
+      `https://api.twitter.com/labs/2/users/by?usernames=${TEAMAQ_TWITTER_HANDLE}&user.fields=pinned_tweet_id`,
+      (error, user) => {
+        if (error) {
+          return handleError(error, reject);
+        }
+        const pinnedTweetId = user?.data[0]?.pinned_tweet_id; // eslint-disable-line
+        return resolve(`https://www.twitter.com/team_AQ2/status/${pinnedTweetId}`);
+      }
+    );
+  });
+};
+
+export const getSkpbTimeline = async () => {
+  if (!client) {
+    return Promise.resolve();
+  }
+
+  const params = {
+    screen_name: 'skpblive',
+    include_rts: false,
+    exclude_replies: true,
+    tweet_mode: 'extended',
+  };
+
   return new Promise((resolve, reject) => {
     client.get('statuses/user_timeline', params, (error, tweets) => {
       if (error) {
@@ -111,7 +136,7 @@ export const getLatestTweets = () => {
       }
       const filteredTweets = [];
 
-      _.forEach(tweets, (tweet) => {
+      for (const tweet of tweets) {
         const text = _.get(tweet, 'full_text', '');
         if (_.includes(text, TWEET_TEXT_TO_CHECK_FOR)) {
           const time = parseDateTimeFromTweetText(text);
@@ -126,17 +151,17 @@ export const getLatestTweets = () => {
             link: `${LINK_TO_TWEET}${idStr}`,
           });
         }
-      });
-      return resolve(filteredTweets);
+      }
+      return resolve(filterForValidEvents(filteredTweets));
     });
   });
 };
 
-export const filterForValidEvents = (tweets) => {
+const filterForValidEvents = (tweets) => {
   return _.filter(tweets, isEventInFuture);
 };
 
-export const isEventInFuture = (tweet) => {
+const isEventInFuture = (tweet) => {
   if (_.get(tweet, 'time.unix', 0) + VALID_TIME_OFFSET > moment().unix()) {
     return true;
   }
@@ -147,13 +172,13 @@ export const isTwitterProtected = () => {
   if (!client) {
     return Promise.resolve();
   }
-  const parameters = { screen_name: TWITTER_HANDLE };
+  const parameters = { screen_name: SKPB_TWITTER_HANDLE };
   return new Promise((resolve, reject) => {
     client.get('users/show', parameters, (error, userInfo) => {
       if (error) {
         return handleError(error, reject);
       }
-      return resolve(_.get(userInfo, 'protected'));
+      return resolve(userInfo?.protected);
     });
   });
 };
