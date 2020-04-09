@@ -103,7 +103,7 @@ export const getAQPinnedTweet = async () => {
     return Promise.resolve();
   }
 
-  return await new Promise((resolve, reject) => {
+  return new Promise((resolve, reject) => {
     client.get(
       `https://api.twitter.com/labs/2/users/by?usernames=${TEAMAQ_TWITTER_HANDLE}&user.fields=pinned_tweet_id`,
       (error, user) => {
