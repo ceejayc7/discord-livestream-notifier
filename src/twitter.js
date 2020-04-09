@@ -111,7 +111,13 @@ export const getAQPinnedTweet = async () => {
           return handleError(error, reject);
         }
         const pinnedTweetId = user?.data[0]?.pinned_tweet_id; // eslint-disable-line
-        return resolve(`https://www.twitter.com/team_AQ2/status/${pinnedTweetId}`);
+        if (pinnedTweetId) {
+          return resolve(
+            `https://www.twitter.com/${TEAMAQ_TWITTER_HANDLE}/status/${pinnedTweetId}`
+          );
+        } else {
+          resolve();
+        }
       }
     );
   });
