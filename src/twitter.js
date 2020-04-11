@@ -1,4 +1,4 @@
-import { BOT_COMMANDS } from '@root/constants_internal';
+import { BOT_COMMANDS } from '@root/constants';
 import _ from 'lodash';
 import moment from 'moment-timezone';
 import { sendMessageToChannel } from '@root/util';

@@ -1,4 +1,4 @@
-import { MINIMUM_BITCOINS, PLAYERS, SLOTS_MONEY } from '@root/constants_internal';
+import { MINIMUM_BITCOINS, PLAYERS, SLOTS_MONEY } from '@root/constants';
 
 import { Database } from '@root/database';
 import { printLeaderboard } from '@casino/util';
@@ -9,7 +9,7 @@ const printMoneyLeaderboard = (msg) => {
   const mapping = {
     '%INDEX%': 'index+1',
     '%PLAYERNAME%': 'player.name',
-    '%NUMBER%': 'player.money.toLocaleString()'
+    '%NUMBER%': 'player.money.toLocaleString()',
   };
   printLeaderboard(msg, ['money'], template, mapping);
 };
@@ -98,5 +98,5 @@ export const MoneyManager = {
   printLeaderboard: printMoneyLeaderboard,
   addMoney,
   getBalanceForBlackjackDouble,
-  printNotEnoughMoney
+  printNotEnoughMoney,
 };

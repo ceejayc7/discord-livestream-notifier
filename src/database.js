@@ -1,5 +1,5 @@
 import JsonDB from 'node-json-db';
-import { PLAYERS } from '@root/constants_internal';
+import { PLAYERS } from '@root/constants';
 
 const db = new JsonDB('slots_database', true, true);
 
@@ -39,5 +39,5 @@ const initializeUser = (server, user) => {
 export const Database = {
   getData,
   writeData,
-  initializeUser
+  initializeUser,
 };

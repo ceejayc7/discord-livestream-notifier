@@ -1,4 +1,4 @@
-import { IPTV_DATABASE } from '@root/constants_internal';
+import { IPTV_DATABASE } from '@root/constants';
 import _ from 'lodash';
 import cheerio from 'cheerio';
 import { getCaseInsensitiveKey } from '@root/util';

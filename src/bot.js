@@ -7,7 +7,7 @@ import {
   printHelp,
 } from '@root/util';
 
-import { BOT_COMMANDS } from '@root/constants_internal';
+import { BOT_COMMANDS } from '@root/constants';
 import Blackjack from '@casino/blackjack';
 import Discord from 'discord.js';
 import { Fish } from '@casino/fish';

@@ -1,5 +1,5 @@
 import { Database } from '@root/database';
-import { PLAYERS } from '@root/constants_internal';
+import { PLAYERS } from '@root/constants';
 import { Prob } from 'prob.js';
 import _ from 'lodash';
 import { sendMessageToChannel } from '@root/util';

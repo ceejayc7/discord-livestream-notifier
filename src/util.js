@@ -1,4 +1,4 @@
-import { BOT_COMMANDS, LOTTO_MAX, SLOTS_MONEY } from '@root/constants_internal';
+import { BOT_COMMANDS, LOTTO_MAX, SLOTS_MONEY } from '@root/constants';
 
 import _ from 'lodash';
 

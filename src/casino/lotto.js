@@ -1,4 +1,4 @@
-import { LOTTO, LOTTO_MAX, PLAYERS } from '@root/constants_internal';
+import { LOTTO, LOTTO_MAX, PLAYERS } from '@root/constants';
 import { getRandomElementFromList, getRandomNumberInRange } from '@casino/util';
 
 import { Database } from '@root/database';
@@ -120,5 +120,5 @@ const claimLotto = (msg) => {
 
 export const Lotto = {
   startLotto,
-  claimLotto
+  claimLotto,
 };

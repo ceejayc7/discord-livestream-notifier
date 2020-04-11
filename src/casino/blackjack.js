@@ -1,4 +1,4 @@
-import { BLACKJACK_MONEY, BOT_COMMANDS } from '@root/constants_internal';
+import { BLACKJACK_MONEY, BOT_COMMANDS } from '@root/constants';
 import { getBlackjackBetsize, printSpecifyBetSize } from '@casino/util';
 
 import { Database } from '@root/database';
@@ -14,7 +14,7 @@ class Blackjack {
     this.cardTypes = {
       SUIT: 'suit',
       DISPLAY: 'display',
-      VALUE: 'value'
+      VALUE: 'value',
     };
     this.deck = new Deck(require('@data/cards.json'));
     this.betSize = null;
@@ -256,7 +256,7 @@ class Blackjack {
   };
 
   numberOfAcesInHand = (hand) => {
-    const aces = _.countBy(hand, function(card) {
+    const aces = _.countBy(hand, function (card) {
       return card.display == 'A';
     });
     return _.get(aces, 'true', 0);

@@ -1,4 +1,4 @@
-import { PLAYERS, SLOTS_MONEY } from '@root/constants_internal';
+import { PLAYERS, SLOTS_MONEY } from '@root/constants';
 import { messageError, sendMessageToChannel } from '@root/util';
 
 import { Database } from '@root/database';
@@ -99,5 +99,5 @@ const leaderboard = (msg) => {
 
 export const Slots = {
   handleSlots,
-  leaderboard
+  leaderboard,
 };
