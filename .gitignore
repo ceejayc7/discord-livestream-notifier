@@ -1,6 +1,5 @@
 node_modules/*
 dist/*
-src/constants.js
 src/data/db.json
 slots_database.json
 constants.js
