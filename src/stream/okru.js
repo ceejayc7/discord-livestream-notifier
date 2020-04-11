@@ -11,13 +11,14 @@ class OkRu extends Livestream {
     super(streamEmitter);
 
     this.PLATFORM = 'okru';
-    this.multipleCalls = true;
+    this.useMultipleCalls = true;
+    this.useReduceResponse = false;
     this.siteLogo = 'http://puu.sh/Bz2nm/aacfb2c3d6.png';
     this.embedColor = 16089632;
   }
 
   updateStreams = () => {
-    this.getAPIDataAndAnnounce(this.getChannelPromises, null, this.multipleCalls);
+    this.getAPIDataAndAnnounce(this.useReduceResponse, this.useMultipleCalls);
   };
 
   scrapePage = ($) => {
@@ -42,7 +43,7 @@ class OkRu extends Livestream {
         logo: channelLogo,
         url,
         preview,
-        updatedAt: timestamp
+        updatedAt: timestamp,
       };
     }
   };
@@ -50,9 +51,9 @@ class OkRu extends Livestream {
   getChannelPromises = (url) => {
     const httpOptions = {
       url: OKRU_ENDPOINT + url,
-      transform: function(body) {
+      transform: function (body) {
         return cheerio.load(body);
-      }
+      },
     };
 
     return request(httpOptions)

@@ -14,19 +14,20 @@ class Vlive extends Livestream {
     super(streamEmitter);
 
     this.PLATFORM = 'vlive';
-    this.multipleCalls = true;
+    this.useMultipleCalls = true;
+    this.useReduceResponse = true;
     this.siteLogo = 'https://i.imgur.com/AaJHKAB.png';
     this.embedColor = 5568511;
   }
 
   updateStreams = () => {
-    this.getAPIDataAndAnnounce(this.getChannelPromises, this.reduceResponse, this.multipleCalls);
+    this.getAPIDataAndAnnounce(this.useReduceResponse, this.useMultipleCalls);
   };
 
   getChannelPromises = (channelId) => {
     const httpOptions = {
       url: VLIVE_API_ENDPOINT.replace(CHANNEL_ID, channelId),
-      json: true
+      json: true,
     };
     return request(httpOptions)
       .then((response) => {
@@ -67,7 +68,7 @@ class Vlive extends Livestream {
         preview: thumbnail,
         title: stream?.title,
         url: VLIVE_VIDEO + stream?.videoSeq,
-        updatedAt: timestamp
+        updatedAt: timestamp,
       });
     }
     return reducedResponse;

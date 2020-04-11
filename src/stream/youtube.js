@@ -12,13 +12,14 @@ class Youtube extends Livestream {
     super(streamEmitter);
 
     this.PLATFORM = 'youtube';
-    this.multipleCalls = true;
+    this.useMultipleCalls = true;
+    this.useReduceResponse = true;
     this.siteLogo = 'https://puu.sh/Bucut/9645bccf23.png';
     this.embedColor = 16711680;
   }
 
   updateStreams = () => {
-    this.getAPIDataAndAnnounce(this.getChannelPromises, this.reduceResponse, this.multipleCalls);
+    this.getAPIDataAndAnnounce(this.useReduceResponse, this.useMultipleCalls);
   };
 
   getChannelPromises = (stream) => {

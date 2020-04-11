@@ -9,13 +9,14 @@ class Mixer extends Livestream {
     super(streamEmitter);
 
     this.PLATFORM = 'mixer';
-    this.multipleCalls = true;
+    this.useMultipleCalls = true;
+    this.useReduceResponse = true;
     this.siteLogo = 'https://i.imgur.com/nEQjHf4.png';
     this.embedColor = 2079469;
   }
 
   updateStreams = () => {
-    this.getAPIDataAndAnnounce(this.getChannelPromises, this.reduceResponse, this.multipleCalls);
+    this.getAPIDataAndAnnounce(this.useReduceResponse, this.useMultipleCalls);
   };
 
   getChannelPromises = (url) => {

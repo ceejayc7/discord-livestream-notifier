@@ -56,22 +56,24 @@ class Livestream {
     this.currentLiveStreams = channelData;
   };
 
-  getAPIDataAndAnnounce = (getChannelPromises, reduceResponse, multipleCalls) => {
+  getAPIDataAndAnnounce = (useReduceResponse, useMultipleCalls) => {
     let promise;
-    if (multipleCalls) {
+    if (useMultipleCalls) {
       const flattenStreamsString = this.getListOfStreams(this.PLATFORM);
       const listOfPromises = [];
       for (const stream of flattenStreamsString) {
-        listOfPromises.push(getChannelPromises(stream));
+        listOfPromises.push(this.getChannelPromises(stream));
       }
       promise = Promise.all(listOfPromises);
     } else {
-      promise = Promise.all(getChannelPromises());
+      promise = Promise.all(this.getChannelPromises());
     }
 
     return promise
       .then(_.compact)
-      .then(reduceResponse)
+      .then((responseList) =>
+        useReduceResponse ? this.reduceResponse(responseList) : responseList
+      )
       .then(this.retrieveLiveChannels)
       .catch((error) => this.apiError(this.PLATFORM, error));
   };

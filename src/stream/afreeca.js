@@ -11,14 +11,15 @@ class Afreeca extends Livestream {
     super(streamEmitter);
 
     this.PLATFORM = 'afreeca';
-    this.multipleCalls = true;
+    this.useMultipleCalls = true;
+    this.useReduceResponse = false;
     this.siteLogo = 'https://i.imgur.com/8tSdx8X.jpg';
     this.embedColor = 689888;
     this.BROODWAR_PLAYERS = require('@data/broodwar.json');
   }
 
   updateStreams = () => {
-    this.getAPIDataAndAnnounce(this.getChannelPromises, null, this.multipleCalls);
+    this.getAPIDataAndAnnounce(this.useReduceResponse, this.useMultipleCalls);
   };
 
   getChannelPromises = (stream) => {
@@ -46,10 +47,10 @@ class Afreeca extends Livestream {
             url: $('LiveInfo url').text(),
             title: '',
             preview,
-            updatedAt: new Date().toISOString()
+            updatedAt: new Date().toISOString(),
           };
         }
-      }
+      },
     };
     return request(httpOptions).catch((error) => this.apiError(this.PLATFORM, error));
   };

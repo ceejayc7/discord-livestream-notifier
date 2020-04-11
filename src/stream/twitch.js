@@ -23,7 +23,8 @@ class Twitch extends Livestream {
     };
 
     this.PLATFORM = 'twitch';
-    this.multipleCalls = false;
+    this.useMultipleCalls = false;
+    this.useReduceResponse = true;
     this.siteLogo = 'https://cdn.discordapp.com/emojis/287637883022737418';
     this.embedColor = 6570404;
   }
@@ -48,7 +49,7 @@ class Twitch extends Livestream {
     ).join('');
 
     this.twitchAPIOptions.url = TWITCH_API_STREAMS_ENDPOINT + flattenStreamsString;
-    this.getAPIDataAndAnnounce(this.getChannelPromises, this.reduceResponse, this.multipleCalls);
+    this.getAPIDataAndAnnounce(this.useReduceResponse, this.useMultipleCalls);
   };
 
   getChannelPromises = () => {
