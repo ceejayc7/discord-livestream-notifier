@@ -1,102 +1,102 @@
 export const BOT_COMMANDS = {
   SLOTS: {
     command: '!slots',
-    showOnHelp: true
+    showOnHelp: true,
   },
   SLOTS_LB: {
     command: '!slotslb',
-    showOnHelp: true
+    showOnHelp: true,
   },
   BLACKJACK: {
     command: '!21',
-    showOnHelp: true
+    showOnHelp: true,
   },
   BLACKJACK_HIT: {
     command: '!hit',
-    showOnHelp: false
+    showOnHelp: false,
   },
   BLACKJACK_HIT_SHORTHAND: {
     command: '!h',
-    showOnHelp: false
+    showOnHelp: false,
   },
   BLACKJACK_STAND: {
     command: '!stand',
-    showOnHelp: false
+    showOnHelp: false,
   },
   BLACKJACK_STAND_SHORTHAND: {
     command: '!s',
-    showOnHelp: false
+    showOnHelp: false,
   },
   BLACKJACK_DOUBLE: {
     command: '!double',
-    showOnHelp: false
+    showOnHelp: false,
   },
   BLACKJACK_DOUBLE_SHORTHAND: {
     command: '!d',
-    showOnHelp: false
+    showOnHelp: false,
   },
   BLACKJACK_SPLIT: {
     command: '!split',
-    showOnHelp: false
+    showOnHelp: false,
   },
   BITCOIN: {
     command: '!bitcoin',
-    showOnHelp: true
+    showOnHelp: true,
   },
   BITCOIN_SHORTHAND: {
     command: '!btc',
-    showOnHelp: false
+    showOnHelp: false,
   },
   LEADERBOARD: {
     command: '!leaderboard',
-    showOnHelp: true
+    showOnHelp: true,
   },
   LEADERBOARD_SHORTHAND: {
     command: '!lb',
-    showOnHelp: false
+    showOnHelp: false,
   },
   HELP: {
     command: '!help',
-    showOnHelp: false
+    showOnHelp: false,
   },
   FISH: {
     command: '!fish',
-    showOnHelp: false
+    showOnHelp: false,
   },
   FISH_LEADERBOARD: {
     command: '!fishlb',
-    showOnHelp: false
+    showOnHelp: false,
   },
   LOTTO: {
     command: '!lotto',
-    showOnHelp: true
+    showOnHelp: true,
   },
   LOTTO_CLAIM: {
     command: '!claim',
-    showOnHelp: false
+    showOnHelp: false,
   },
   KPOP: {
     command: '!kpop',
-    showOnHelp: false
+    showOnHelp: false,
   },
   GENERATE: {
     command: '!iptv',
-    showOnHelp: false
+    showOnHelp: false,
   },
   TWEET: {
-    command: '!tweet ',
-    showOnHelp: false
-  }
+    command: '!tweet',
+    showOnHelp: false,
+  },
 };
 export const SLOTS_MONEY = {
   SLOTS_COST: 10,
   SLOTS_DOUBLE_REWARD: 100,
   SLOTS_TRIPLE_REWARD: 10000,
   SLOTS_QUADS_REWARD: 100000,
-  SLOTS_WIN_REWARD: 100000000
+  SLOTS_WIN_REWARD: 100000000,
 };
 export const BLACKJACK_MONEY = {
-  BLACKJACK_PAYOUT: 1.5
+  BLACKJACK_PAYOUT: 1.5,
 };
 export const LOTTO_MAX = 100000;
 export const MINIMUM_BITCOINS = 10;
@@ -114,5 +114,5 @@ export const IPTV_DATABASE = {
   MBC: 'mbc.txt',
   SBS: 'sbs.txt',
   'SBS Fun E': 'sbsfune.txt',
-  'SBS Plus': 'sbsplus.txt'
+  'SBS Plus': 'sbsplus.txt',
 };
