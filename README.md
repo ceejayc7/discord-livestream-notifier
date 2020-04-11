@@ -58,7 +58,7 @@ Add `src/data/db.json` to include the streams to be watching
 }
 ```
 
-Add `src/db/constants.json` to include tokens and server configuration
+Add `src/data/constants.json` to include tokens and server configuration
 
 ```js
 {
