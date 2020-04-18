@@ -23,6 +23,7 @@ const streamEmitter = new EventEmitter();
 const serverList = Object.keys(SERVER_DATABASE);
 const discordBots = {};
 const streamsList = [];
+console.log(`Silent mode: ${argv.silent}`);
 
 const initBots = () => {
   // create new bot per each defined discord server
