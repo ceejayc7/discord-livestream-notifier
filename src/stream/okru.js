@@ -7,9 +7,10 @@ const OKRU_ENDPOINT = 'https://ok.ru/live/profile/';
 const PROTOCOL = 'https:';
 
 class OkRu extends Livestream {
-  constructor(streamEmitter) {
+  constructor(streamEmitter, silentMode) {
     super(streamEmitter);
 
+    this.silentMode = silentMode;
     this.PLATFORM = 'okru';
     this.useMultipleCalls = true;
     this.useReduceResponse = false;

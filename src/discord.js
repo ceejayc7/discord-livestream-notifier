@@ -12,9 +12,13 @@ import _ from 'lodash';
 import { getKpopChannels } from '@root/util';
 import moment from 'moment-timezone';
 
+const argv = require('yargs')
+  .option('silent', { alias: 's', describe: 'Do not send streams on first load', default: false })
+  .help('h')
+  .alias('h', 'help').argv;
+
 const SERVER_DATABASE = require('@data/db.json');
 const CONSTANTS = require('@data/constants.json').serverConfig;
-
 const streamEmitter = new EventEmitter();
 const serverList = Object.keys(SERVER_DATABASE);
 const discordBots = {};
@@ -35,12 +39,12 @@ const initBots = () => {
   });
 
   streamsList.push(
-    new Twitch(streamEmitter),
-    new Mixer(streamEmitter),
-    new Youtube(streamEmitter),
-    new OkRu(streamEmitter),
-    new Vlive(streamEmitter),
-    new Afreeca(streamEmitter)
+    new Twitch(streamEmitter, argv.silent),
+    new Mixer(streamEmitter, argv.silent),
+    new Youtube(streamEmitter, argv.silent),
+    new OkRu(streamEmitter, argv.silent),
+    new Vlive(streamEmitter, argv.silent),
+    new Afreeca(streamEmitter, argv.silent)
   );
 };
 

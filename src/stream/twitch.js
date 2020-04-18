@@ -11,8 +11,9 @@ const TWITCH_API_USERS_ENDPOINT = 'https://api.twitch.tv/helix/users?id=';
 const TWITCH_API_OAUTH = `https://id.twitch.tv/oauth2/token?client_id=${CONSTANTS?.twitch?.clientId}&client_secret=${CONSTANTS?.twitch?.clientSecret}&grant_type=client_credentials`;
 
 class Twitch extends Livestream {
-  constructor(streamEmitter) {
+  constructor(streamEmitter, silentMode) {
     super(streamEmitter);
+
     this.twitchAPIOptions = {
       url: TWITCH_API_STREAMS_ENDPOINT,
       headers: {
@@ -22,6 +23,7 @@ class Twitch extends Livestream {
       method: 'GET',
     };
 
+    this.silentMode = silentMode;
     this.PLATFORM = 'twitch';
     this.useMultipleCalls = false;
     this.useReduceResponse = true;

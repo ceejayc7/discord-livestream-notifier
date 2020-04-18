@@ -48,12 +48,13 @@ class Livestream {
   };
 
   retrieveLiveChannels = (channelData) => {
-    if (!_.isEmpty(channelData)) {
+    if (!_.isEmpty(channelData) && !this.silentMode) {
       for (const stream of channelData) {
         this.announceIfStreamIsNew(stream);
       }
     }
     this.currentLiveStreams = channelData;
+    this.silentMode = false;
   };
 
   getAPIDataAndAnnounce = (useReduceResponse, useMultipleCalls) => {

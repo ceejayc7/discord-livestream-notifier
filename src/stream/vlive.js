@@ -10,9 +10,10 @@ const VLIVE_VIDEO = 'https://www.vlive.tv/video/';
 const IMG_REGEX = new RegExp(/(http(s?):)([/|.|\w|\s|-])*\.(?:jpg|gif|png)/, 'gi');
 
 class Vlive extends Livestream {
-  constructor(streamEmitter) {
+  constructor(streamEmitter, silentMode) {
     super(streamEmitter);
 
+    this.silentMode = silentMode;
     this.PLATFORM = 'vlive';
     this.useMultipleCalls = true;
     this.useReduceResponse = true;
