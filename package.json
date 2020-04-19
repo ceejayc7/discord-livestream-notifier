@@ -6,7 +6,6 @@
   "author": "Ceejay",
   "scripts": {
     "start": "node dist/discord.js",
-    "start:silent": "node dist/discord.js --silent=true",
     "build": "eslint src/**/*.js && babel src -d dist --copy-files",
     "watch": "concurrently \"npm:watch:babel\" \"npm:watch:eslint\"",
     "watch:babel": "babel --watch src -d dist --copy-files",

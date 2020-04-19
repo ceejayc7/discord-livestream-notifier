@@ -1,3 +1,5 @@
+import { getKpopChannels, printOverrides } from '@root/util';
+
 import Afreeca from '@stream/afreeca';
 import Bot from '@root/bot';
 import { EventEmitter } from 'events';
@@ -9,21 +11,18 @@ import Twitch from '@stream/twitch';
 import Vlive from '@stream/vlive';
 import Youtube from '@stream/youtube';
 import _ from 'lodash';
-import { getKpopChannels } from '@root/util';
 import moment from 'moment-timezone';
-
-const argv = require('yargs')
-  .option('silent', { alias: 's', describe: 'Do not send streams on first load', default: false })
-  .help('h')
-  .alias('h', 'help').argv;
 
 const SERVER_DATABASE = require('@data/db.json');
 const CONSTANTS = require('@data/constants.json').serverConfig;
+const OVERRIDES = require('@data/constants.json').overrides;
 const streamEmitter = new EventEmitter();
 const serverList = Object.keys(SERVER_DATABASE);
 const discordBots = {};
 const streamsList = [];
-console.log(`Silent mode: ${argv.silent}`);
+const silentMode = OVERRIDES?.silentMode ? true : false;
+
+printOverrides();
 
 const initBots = () => {
   // create new bot per each defined discord server
@@ -40,12 +39,12 @@ const initBots = () => {
   });
 
   streamsList.push(
-    new Twitch(streamEmitter, argv.silent),
-    new Mixer(streamEmitter, argv.silent),
-    new Youtube(streamEmitter, argv.silent),
-    new OkRu(streamEmitter, argv.silent),
-    new Vlive(streamEmitter, argv.silent),
-    new Afreeca(streamEmitter, argv.silent)
+    new Twitch(streamEmitter, silentMode),
+    new Mixer(streamEmitter, silentMode),
+    new Youtube(streamEmitter, silentMode),
+    new OkRu(streamEmitter, silentMode),
+    new Vlive(streamEmitter, silentMode),
+    new Afreeca(streamEmitter, silentMode)
   );
 };
 

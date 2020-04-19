@@ -3,6 +3,18 @@ import { BOT_COMMANDS, LOTTO_MAX, SLOTS_MONEY } from '@root/constants';
 import _ from 'lodash';
 
 const CONSTANTS = require('@data/constants.json').serverConfig;
+const OVERRIDES = require('@data/constants.json').overrides;
+
+export const printOverrides = () => {
+  console.log('Overrides');
+  console.log('================================');
+  for (const key in OVERRIDES) {
+    if (OVERRIDES.hasOwnProperty(key)) {
+      console.log(`${key}: ${OVERRIDES[key]}`);
+    }
+  }
+  console.log('================================');
+};
 
 export const getKpopChannels = (discordBots) => {
   const channels = [];
