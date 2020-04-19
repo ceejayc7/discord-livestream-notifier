@@ -99,5 +99,5 @@ const leaderboard = (msg) => {
 
 export const Slots = {
   handleSlots,
-  leaderboard,
+  leaderboard
 };

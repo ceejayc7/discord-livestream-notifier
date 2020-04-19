@@ -46,7 +46,7 @@ const findValidStreams = async (pages, channelName) => {
       if (isValidStream) {
         validStreams.push({
           channel: match[1],
-          stream: match[2],
+          stream: match[2]
         });
       }
     }
@@ -61,7 +61,7 @@ const getAllPageData = (pages) => {
       url: page,
       transform: function (body) {
         return cheerio.load(body);
-      },
+      }
     };
     promises.push(rq(httpOptions));
   });
@@ -85,7 +85,7 @@ const getValidIPTVStreamsFromPage = (linkToPage, channelName) => {
     url: linkToPage,
     transform: function (body) {
       return cheerio.load(body);
-    },
+    }
   };
 
   return rq(httpOptions)
@@ -114,7 +114,7 @@ const processOfflineStreams = async (lines, channel) => {
     if (value) {
       results.push({
         channel: `#EXTINF:-1,${channel}`,
-        stream: lines[index],
+        stream: lines[index]
       });
     }
   }
@@ -191,5 +191,5 @@ generateEndpoints();
 export const IPTV = {
   sendIPTVStreams,
   createMessageToSend,
-  getValidIPTVStreamsFromList,
+  getValidIPTVStreamsFromList
 };

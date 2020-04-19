@@ -4,7 +4,7 @@ import {
   isKpopChannel,
   isTweetingServer,
   messageError,
-  printHelp,
+  printHelp
 } from '@root/util';
 
 import { BOT_COMMANDS } from '@root/constants';

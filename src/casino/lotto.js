@@ -120,5 +120,5 @@ const claimLotto = (msg) => {
 
 export const Lotto = {
   startLotto,
-  claimLotto,
+  claimLotto
 };

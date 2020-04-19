@@ -26,7 +26,7 @@ class Youtube extends Livestream {
   getChannelPromises = (stream) => {
     const httpOptions = {
       url: YOUTUBE_API_ENDPOINT + stream,
-      json: true,
+      json: true
     };
     return request(httpOptions).catch((error) => this.apiError(this.PLATFORM, error));
   };
@@ -48,7 +48,7 @@ class Youtube extends Livestream {
           preview,
           title,
           url,
-          updatedAt: new Date().toISOString(),
+          updatedAt: new Date().toISOString()
         });
       }
     }

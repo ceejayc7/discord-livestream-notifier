@@ -127,7 +127,7 @@ export const decodeHTMLEntities = (encodedString) => {
     amp: '&',
     quot: '"',
     lt: '<',
-    gt: '>',
+    gt: '>'
   };
   return encodedString
     .replace(translateRegex, function (match, entity) {

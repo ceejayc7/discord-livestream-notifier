@@ -39,5 +39,5 @@ const initializeUser = (server, user) => {
 export const Database = {
   getData,
   writeData,
-  initializeUser,
+  initializeUser
 };

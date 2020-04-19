@@ -1,7 +1,7 @@
 import {
   getRandomNumberInRange,
   getRandomNumberInRangeWithExponentialDistribution,
-  printLeaderboard,
+  printLeaderboard
 } from '@casino/util';
 
 import { Database } from '@root/database';
@@ -32,7 +32,7 @@ const printFishingLeaderboard = (msg) => {
   const mapping = {
     '%INDEX%': 'index+1',
     '%PLAYERNAME%': 'player.name',
-    '%NUMBER%': 'player.maxWeightFish.toLocaleString()',
+    '%NUMBER%': 'player.maxWeightFish.toLocaleString()'
   };
   printLeaderboard(msg, ['maxWeightFish'], template, mapping, 'maxWeightFish');
 };
@@ -70,5 +70,5 @@ const printFishLine = (msg) => {
 
 export const Fish = {
   printFishLine,
-  printLeaderboard: printFishingLeaderboard,
+  printLeaderboard: printFishingLeaderboard
 };

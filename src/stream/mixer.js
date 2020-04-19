@@ -26,8 +26,8 @@ class Mixer extends Livestream {
       json: true,
       headers: {
         'Client-ID': CONSTANTS?.mixer?.clientId,
-        'content-type': 'application/json',
-      },
+        'content-type': 'application/json'
+      }
     };
     return request(httpOptions).catch((error) => this.apiError(this.PLATFORM, error));
   };
@@ -47,7 +47,7 @@ class Mixer extends Livestream {
           title: stream?.name,
           logo: stream?.user?.avatarUrl,
           url,
-          updatedAt: stream?.updatedAt,
+          updatedAt: stream?.updatedAt
         });
       }
     }

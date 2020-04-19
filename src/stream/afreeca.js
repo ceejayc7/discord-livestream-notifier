@@ -48,10 +48,10 @@ class Afreeca extends Livestream {
             url: $('LiveInfo url').text(),
             title: '',
             preview,
-            updatedAt: new Date().toISOString(),
+            updatedAt: new Date().toISOString()
           };
         }
-      },
+      }
     };
     return request(httpOptions).catch((error) => this.apiError(this.PLATFORM, error));
   };

@@ -44,7 +44,7 @@ class OkRu extends Livestream {
         logo: channelLogo,
         url,
         preview,
-        updatedAt: timestamp,
+        updatedAt: timestamp
       };
     }
   };
@@ -54,7 +54,7 @@ class OkRu extends Livestream {
       url: OKRU_ENDPOINT + url,
       transform: function (body) {
         return cheerio.load(body);
-      },
+      }
     };
 
     return request(httpOptions)

@@ -28,7 +28,7 @@ class Vlive extends Livestream {
   getChannelPromises = (channelId) => {
     const httpOptions = {
       url: VLIVE_API_ENDPOINT.replace(CHANNEL_ID, channelId),
-      json: true,
+      json: true
     };
     return request(httpOptions)
       .then((response) => {
@@ -69,7 +69,7 @@ class Vlive extends Livestream {
         preview: thumbnail,
         title: stream?.title,
         url: VLIVE_VIDEO + stream?.videoSeq,
-        updatedAt: timestamp,
+        updatedAt: timestamp
       });
     }
     return reducedResponse;

@@ -13,44 +13,44 @@ export const KPOP_SCHEDULE = [
     day: 'Tuesday',
     show: 'The Show',
     channel: ['SBS MTV', 'SBS F!L UHD'],
-    time: () => getRelativeTimeStart('Tuesday 6:00PM'),
+    time: () => getRelativeTimeStart('Tuesday 6:00PM')
   },
   {
     day: 'Wednesday',
     show: 'Show Champion',
     channel: ['MBC Music', 'MBC Every1'],
-    time: () => getRelativeTimeStart('Wednesday 6:00PM'),
+    time: () => getRelativeTimeStart('Wednesday 6:00PM')
   },
   {
     day: 'Thursday',
     show: 'M Countdown',
     channel: ['Mnet'],
-    time: () => getRelativeTimeStart('Thursday 6:00PM'),
+    time: () => getRelativeTimeStart('Thursday 6:00PM')
   },
   {
     day: 'Friday',
     show: 'Simply Kpop',
     channel: ['아리랑 TV'],
-    time: () => getRelativeTimeStart('Friday 1:00PM'),
+    time: () => getRelativeTimeStart('Friday 1:00PM')
   },
   {
     day: 'Friday',
     show: 'Music Bank',
     channel: ['KBS2'],
-    time: () => getRelativeTimeStart('Friday 5:00PM'),
+    time: () => getRelativeTimeStart('Friday 5:00PM')
   },
   {
     day: 'Saturday',
     show: 'Music Core',
     channel: ['MBC'],
-    time: () => getRelativeTimeStart('Saturday 3:30PM'),
+    time: () => getRelativeTimeStart('Saturday 3:30PM')
   },
   {
     day: 'Sunday',
     show: 'Inkigayo',
     channel: ['SBS'],
-    time: () => getRelativeTimeStart('Sunday 3:50PM'),
-  },
+    time: () => getRelativeTimeStart('Sunday 3:50PM')
+  }
 ];
 
 const getRelativeTimeStart = (timestamp) => {
@@ -107,5 +107,5 @@ const onKpopCommand = async (msg) => {
 
 export const Kpop = {
   parseIPTVCommand,
-  onKpopCommand,
+  onKpopCommand
 };

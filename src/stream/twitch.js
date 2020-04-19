@@ -17,10 +17,10 @@ class Twitch extends Livestream {
     this.twitchAPIOptions = {
       url: TWITCH_API_STREAMS_ENDPOINT,
       headers: {
-        'content-type': 'application/json',
+        'content-type': 'application/json'
       },
       json: true,
-      method: 'GET',
+      method: 'GET'
     };
 
     this.silentMode = silentMode;
@@ -35,7 +35,7 @@ class Twitch extends Livestream {
     const options = {
       url: TWITCH_API_OAUTH,
       json: true,
-      method: 'POST',
+      method: 'POST'
     };
     const oauthResponse = await request(options).catch((error) =>
       this.apiError(this.PLATFORM, error)
@@ -88,7 +88,7 @@ class Twitch extends Livestream {
         title: stream?.title,
         logo,
         url,
-        updatedAt: stream?.started_at, // eslint-disable-line
+        updatedAt: stream?.started_at // eslint-disable-line
       });
     }
     return reducedResponse;

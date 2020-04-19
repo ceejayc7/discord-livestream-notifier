@@ -32,7 +32,7 @@ if (CONSTANTS?.twitter) {
     consumer_key: CONSTANTS?.twitter?.consumerKey,
     consumer_secret: CONSTANTS?.twitter?.consumerSecret,
     access_token_key: CONSTANTS?.twitter?.accessTokenKey,
-    access_token_secret: CONSTANTS?.twitter?.accessTokenSecret,
+    access_token_secret: CONSTANTS?.twitter?.accessTokenSecret
   });
 } else {
   client = null;
@@ -48,13 +48,13 @@ const parseDateTimeFromTweetText = (text) => {
     const datetimes = {
       pst: {
         time: momentDatetime.tz('America/Los_Angeles').format(TIME_FORMAT_TO_STORE),
-        date: momentDatetime.tz('America/Los_Angeles').format(DATE_FORMAT_TO_STORE),
+        date: momentDatetime.tz('America/Los_Angeles').format(DATE_FORMAT_TO_STORE)
       },
       est: {
         time: momentDatetime.tz('America/New_York').format(TIME_FORMAT_TO_STORE),
-        date: momentDatetime.tz('America/New_York').format(DATE_FORMAT_TO_STORE),
+        date: momentDatetime.tz('America/New_York').format(DATE_FORMAT_TO_STORE)
       },
-      unix: momentDatetime.tz('America/Los_Angeles').unix(),
+      unix: momentDatetime.tz('America/Los_Angeles').unix()
     };
 
     return datetimes;
@@ -78,7 +78,7 @@ export const sendTweet = (msg) => {
 
   const status = msg.content.replace(BOT_COMMANDS.TWEET.command, '');
   const params = {
-    status,
+    status
   };
   console.log(`[Twitter]: Tweeting ${status}`);
   client.post('statuses/update', params, (error, tweets) => {
@@ -132,7 +132,7 @@ export const getSkpbTimeline = async () => {
     screen_name: 'skpblive',
     include_rts: false,
     exclude_replies: true,
-    tweet_mode: 'extended',
+    tweet_mode: 'extended'
   };
 
   return new Promise((resolve, reject) => {
@@ -154,7 +154,7 @@ export const getSkpbTimeline = async () => {
             time,
             id: idStr,
             showName,
-            link: `${LINK_TO_TWEET}${idStr}`,
+            link: `${LINK_TO_TWEET}${idStr}`
           });
         }
       }
