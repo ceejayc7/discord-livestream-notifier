@@ -20,7 +20,7 @@ const TWEET_TIMEZONE = 'Asia/Seoul';
 const VALID_TIME_OFFSET = 7200;
 
 // Regex
-const DATE_REGEX = /(Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)\s+\d{2}\,\s+\d{4}/;
+const DATE_REGEX = /(Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)\s+\d{2}\,\s+\d{4}/; // eslint-disable-line
 const TIME_REGEX = /(0[0-9]|1[0-9]|2[0-3]|[0-9]):([0-5][0-9])(AM|PM)\s+KST/;
 const SHOWNAME_REGEX = /(\[LIVE\])\s(.+?)$/m;
 

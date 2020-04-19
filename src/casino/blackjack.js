@@ -165,7 +165,7 @@ class Blackjack {
     if (!this.isValidUser(msg)) {
       return;
     }
-    const playerHandValue = this.sumifyHand(this.playerHand);
+    // const playerHandValue = this.sumifyHand(this.playerHand);
     let dealerHandValue = this.sumifyHand(this.dealerHand);
     let dealerHandMessages = `Dealer has **${this.stringifyHand(
       this.dealerHand,

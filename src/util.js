@@ -9,7 +9,7 @@ export const printOverrides = () => {
   console.log('Overrides');
   console.log('================================');
   for (const key in OVERRIDES) {
-    if (OVERRIDES.hasOwnProperty(key)) {
+    if (Object.prototype.hasOwnProperty.call(OVERRIDES, key)) {
       console.log(`${key}: ${OVERRIDES[key]}`);
     }
   }

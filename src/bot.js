@@ -112,6 +112,7 @@ class Bot {
           break;
         case BOT_COMMANDS.FISH_LEADERBOARD.command:
           isFishingServer(msg) && Fish.printLeaderboard(msg);
+          break;
         case BOT_COMMANDS.KPOP.command:
           isKpopChannel(msg) && Kpop.onKpopCommand(msg);
           break;
