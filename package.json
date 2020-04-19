@@ -5,12 +5,13 @@
   "main": "src/discord.js",
   "author": "Ceejay",
   "scripts": {
-    "start": "node dist/discord.js",
     "build": "eslint src/**/*.js && babel src -d dist --copy-files",
+    "debug": "babel-node --inspect-brk src/discord.js",
+    "preinstall": "npx npm-force-resolutions",
+    "start": "node dist/discord.js",
     "watch": "concurrently \"npm:watch:babel\" \"npm:watch:eslint\"",
-    "watch:babel": "babel --watch src -d dist --copy-files",
     "watch:eslint": "esw --w src/**/*.js",
-    "debug": "babel-node --inspect-brk src/discord.js"
+    "watch:babel": "babel --watch src -d dist --copy-files"
   },
   "engines": {
     "node": "12.16.1"
@@ -21,6 +22,9 @@
       "style": "eslint",
       "options": {}
     }
+  },
+  "resolutions": {
+    "minimist": "1.2.5"
   },
   "dependencies": {
     "card-deck": "1.0.1",
@@ -49,6 +53,7 @@
     "eslint": "6.8.0",
     "eslint-config-google": "0.14.0",
     "eslint-config-prettier": "6.10.0",
-    "eslint-watch": "6.0.1"
+    "eslint-watch": "6.0.1",
+    "npm-force-resolutions": "0.0.3"
   }
 }
