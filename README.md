@@ -98,7 +98,7 @@ Add `src/data/constants.json` to include tokens and server configuration
   },
   "overrides": {
     "include24HourYouTubeStreams": false,
-	"silentMode": true
+    "silentMode": true
   }
 }
 
