@@ -7,8 +7,8 @@ const AFREECA_API_ENDPOINT =
   'http://afbbs.afreecatv.com:8080/api/video/get_bj_liveinfo.php?szBjId=';
 
 class Afreeca extends Livestream {
-  constructor(streamEmitter, silentMode) {
-    super(streamEmitter);
+  constructor(sendStreamMessageToServers, silentMode) {
+    super(sendStreamMessageToServers);
 
     this.silentMode = silentMode;
     this.PLATFORM = 'afreeca';

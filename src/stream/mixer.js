@@ -5,8 +5,8 @@ const CONSTANTS = require('@data/constants.json').tokens;
 const MIXER_API_ENDPOINT = 'https://mixer.com/api/v1/channels/';
 
 class Mixer extends Livestream {
-  constructor(streamEmitter, silentMode) {
-    super(streamEmitter);
+  constructor(sendStreamMessageToServers, silentMode) {
+    super(sendStreamMessageToServers);
 
     this.silentMode = silentMode;
     this.PLATFORM = 'mixer';

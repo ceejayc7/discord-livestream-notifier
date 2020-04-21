@@ -2,7 +2,6 @@ import { getKpopChannels, printOverrides } from '@root/util';
 
 import Afreeca from '@stream/afreeca';
 import Bot from '@root/bot';
-import { EventEmitter } from 'events';
 import { IPTV } from '@root/iptv';
 import { KPOP_SCHEDULE } from '@root/kpop';
 import Mixer from '@stream/mixer';
@@ -16,7 +15,6 @@ import moment from 'moment-timezone';
 const SERVER_DATABASE = require('@data/db.json');
 const CONSTANTS = require('@data/constants.json').serverConfig;
 const OVERRIDES = require('@data/constants.json').overrides;
-const streamEmitter = new EventEmitter();
 const serverList = Object.keys(SERVER_DATABASE);
 const discordBots = {};
 const streamsList = [];
@@ -24,27 +22,38 @@ const silentMode = OVERRIDES?.silentMode ? true : false;
 
 printOverrides();
 
-const initBots = () => {
+const sendStreamMessageToServers = (streamData) => {
+  const { stream } = streamData;
+  _.forEach(SERVER_DATABASE, (server, serverName) => {
+    const isChannelInServer = _.includes(_.get(server, [stream.platform]), stream.name);
+    if (isChannelInServer) {
+      console.log(`${stream.name} went live, notifying channel`);
+      discordBots[serverName].sendLiveMessage(streamData);
+    }
+  });
+};
+
+const initBots = async () => {
   // create new bot per each defined discord server
-  _.forEach(serverList, (server) => {
+  for (const server of serverList) {
     const loginToken = CONSTANTS?.[server]?.discordToken;
     if (loginToken) {
       discordBots[server] = new Bot(loginToken, server);
       discordBots[server].attachListeners();
-      discordBots[server].loginToDiscord();
+      await discordBots[server].loginToDiscord();
     } else {
       const error = `Discord token for ${server} doesn't exist`;
       throw new Error(error);
     }
-  });
+  }
 
   streamsList.push(
-    new Twitch(streamEmitter, silentMode),
-    new Mixer(streamEmitter, silentMode),
-    new Youtube(streamEmitter, silentMode),
-    new OkRu(streamEmitter, silentMode),
-    new Vlive(streamEmitter, silentMode),
-    new Afreeca(streamEmitter, silentMode)
+    new Twitch(sendStreamMessageToServers, silentMode),
+    new Mixer(sendStreamMessageToServers, silentMode),
+    new Youtube(sendStreamMessageToServers, silentMode),
+    new OkRu(sendStreamMessageToServers, silentMode),
+    new Vlive(sendStreamMessageToServers, silentMode),
+    new Afreeca(sendStreamMessageToServers, silentMode)
   );
 };
 
@@ -73,24 +82,16 @@ const setMusicShowTimers = () => {
 
 const setTimers = () => {
   const TIME_TO_PING_API = 300000;
-  const FIRST_API_PING = 30000;
-  _.forEach(streamsList, (stream) => {
+  for (const stream of streamsList) {
     setInterval(stream.updateStreams, TIME_TO_PING_API); // continously call API refresh every 5 minutes
-    setTimeout(stream.updateStreams, FIRST_API_PING); // on inital timer set, call API after 30 seconds to allow discord bots to log in
-  });
-  setTimeout(setMusicShowTimers, FIRST_API_PING); // wait for bot login before setting music show timers
+    stream.updateStreams();
+  }
+  setMusicShowTimers();
 };
 
-initBots();
-setTimers();
+const start = async () => {
+  await initBots();
+  setTimers();
+};
 
-streamEmitter.on('event:streamlive', (streamData) => {
-  const { stream } = streamData;
-  _.forEach(SERVER_DATABASE, (server, serverName) => {
-    const isChannelInServer = _.includes(_.get(server, [stream.platform]), stream.name);
-    if (isChannelInServer) {
-      console.log(`${stream.name} went live, notifying channel`);
-      discordBots[serverName].sendLiveMessage(streamData);
-    }
-  });
-});
+start();

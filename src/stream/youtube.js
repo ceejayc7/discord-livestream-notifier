@@ -8,8 +8,8 @@ const include24HourYouTubeStreams =
 const YOUTUBE_API_ENDPOINT = `https://www.googleapis.com/youtube/v3/search?part=snippet&type=video&eventType=live&key=${CONSTANTS.youtube.apiKey}&channelId=`;
 
 class Youtube extends Livestream {
-  constructor(streamEmitter, silentMode) {
-    super(streamEmitter);
+  constructor(sendStreamMessageToServers, silentMode) {
+    super(sendStreamMessageToServers);
 
     this.silentMode = silentMode;
     this.PLATFORM = 'youtube';

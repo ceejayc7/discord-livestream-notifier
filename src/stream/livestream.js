@@ -2,9 +2,9 @@ import { MessageEmbed } from 'discord.js';
 import _ from 'lodash';
 
 class Livestream {
-  constructor(streamEmitter) {
+  constructor(sendStreamMessageToServers) {
     this.currentLiveStreams = [];
-    this.streamEmitter = streamEmitter;
+    this.sendStreamMessageToServers = sendStreamMessageToServers;
     this.streamsDatabase = require('@data/db.json');
     this.PLATFORM = 'livestream';
     this.siteLogo = '';
@@ -43,7 +43,7 @@ class Livestream {
     const currentLiveChannels = _.map(this.currentLiveStreams, 'name');
     if (!_.includes(currentLiveChannels, stream.name)) {
       const streamData = this.getDiscordMessage(stream);
-      this.streamEmitter.emit('event:streamlive', streamData);
+      this.sendStreamMessageToServers(streamData);
     }
   };
 
