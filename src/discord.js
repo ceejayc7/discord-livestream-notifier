@@ -82,9 +82,8 @@ const setMusicShowPolling = () => {
 };
 
 const setLivestreamPolling = (streamsList) => {
-  const TIME_TO_PING_API = 300000;
   for (const stream of streamsList) {
-    setInterval(stream.updateStreams, TIME_TO_PING_API); // continously call API refresh every 5 minutes
+    setInterval(stream.updateStreams, stream.apiRefreshInterval); // refresh api
     stream.updateStreams();
   }
 };

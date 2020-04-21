@@ -1,3 +1,4 @@
+import { FIVE_MINUTES } from '@root/constants';
 import Livestream from '@stream/livestream';
 import _ from 'lodash';
 import request from 'request-promise';
@@ -17,6 +18,7 @@ class Youtube extends Livestream {
     this.useReduceResponse = true;
     this.siteLogo = 'https://puu.sh/Bucut/9645bccf23.png';
     this.embedColor = 16711680;
+    this.apiRefreshInterval = FIVE_MINUTES;
   }
 
   updateStreams = () => {

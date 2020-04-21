@@ -103,6 +103,9 @@ export const MINIMUM_BITCOINS = 10;
 export const PLAYERS = 'players';
 export const LOTTO = 'lotto';
 
+export const ONE_MINUTE = 60000;
+export const FIVE_MINUTES = 300000;
+
 export const IPTV_DATABASE = {
   'SBS MTV': 'sbsmtv.txt',
   'SBS F!L UHD': 'sbsfil.txt',
