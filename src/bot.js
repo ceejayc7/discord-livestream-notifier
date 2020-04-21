@@ -36,7 +36,14 @@ class Bot {
   };
 
   loginToDiscord = async () => {
-    return this.client.login(this.loginToken);
+    this.client.login(this.loginToken);
+    return new Promise((resolve) => {
+      this.client.on('ready', () => {
+        console.log(`Logged in as ${this.client.user.tag}!`);
+        this.isLoggedIn = true;
+        resolve(true);
+      });
+    });
   };
 
   logoutOfDiscord = () => {
@@ -46,11 +53,6 @@ class Bot {
   };
 
   attachListeners = () => {
-    this.client.on('ready', () => {
-      console.log(`Logged in as ${this.client.user.tag}!`);
-      this.isLoggedIn = true;
-    });
-
     this.client.on('error', (error) => {
       console.log(
         `An error occured with the discord client. \t Error name: ${error.name} \t Error message: ${error.message}`

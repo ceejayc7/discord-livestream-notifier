@@ -1,4 +1,4 @@
-import { getKpopChannels, printOverrides, wait } from '@root/util';
+import { getKpopChannels, printOverrides } from '@root/util';
 
 import Afreeca from '@stream/afreeca';
 import Bot from '@root/bot';
@@ -46,9 +46,6 @@ const initBots = async () => {
       throw new Error(error);
     }
   }
-
-  // wait 5 seconds to give discord a chance to login before we set stream objects
-  await wait(5000);
 
   streamsList.push(
     new Twitch(sendStreamMessageToServers, silentMode),
