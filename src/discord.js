@@ -13,12 +13,7 @@ import _ from 'lodash';
 import moment from 'moment-timezone';
 
 const SERVER_DATABASE = require('@data/db.json');
-const CONSTANTS = require('@data/constants.json').serverConfig;
-const OVERRIDES = require('@data/constants.json').overrides;
-const serverList = Object.keys(SERVER_DATABASE);
 const discordBots = {};
-const streamsList = [];
-const silentMode = OVERRIDES?.silentMode ? true : false;
 
 const sendStreamMessageToServers = (streamData) => {
   const { stream } = streamData;
@@ -31,20 +26,27 @@ const sendStreamMessageToServers = (streamData) => {
   });
 };
 
-const createLivestreams = () =>
-  streamsList.push(
+const createLivestreams = () => {
+  const OVERRIDES = require('@data/constants.json').overrides;
+  const silentMode = OVERRIDES?.silentMode ? true : false;
+
+  return [
     new Twitch(sendStreamMessageToServers, silentMode),
     new Mixer(sendStreamMessageToServers, silentMode),
     new Youtube(sendStreamMessageToServers, silentMode),
     new OkRu(sendStreamMessageToServers, silentMode),
     new Vlive(sendStreamMessageToServers, silentMode),
     new Afreeca(sendStreamMessageToServers, silentMode)
-  );
+  ];
+};
 
 const initBots = async () => {
+  const serverConfig = require('@data/constants.json').serverConfig;
+  const serverList = Object.keys(SERVER_DATABASE);
+
   // create new bot per each defined discord server
   for (const server of serverList) {
-    const loginToken = CONSTANTS?.[server]?.discordToken;
+    const loginToken = serverConfig?.[server]?.discordToken;
     if (loginToken) {
       discordBots[server] = new Bot(loginToken, server);
       discordBots[server].attachListeners();
@@ -79,7 +81,7 @@ const setMusicShowPolling = () => {
   }
 };
 
-const setLivestreamPolling = () => {
+const setLivestreamPolling = (streamsList) => {
   const TIME_TO_PING_API = 300000;
   for (const stream of streamsList) {
     setInterval(stream.updateStreams, TIME_TO_PING_API); // continously call API refresh every 5 minutes
@@ -90,8 +92,8 @@ const setLivestreamPolling = () => {
 const start = async () => {
   printOverrides();
   await initBots();
-  createLivestreams();
-  setLivestreamPolling();
+  const streamsList = createLivestreams();
+  setLivestreamPolling(streamsList);
   setMusicShowPolling();
 };
 
