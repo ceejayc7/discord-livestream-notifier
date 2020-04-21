@@ -20,8 +20,6 @@ const discordBots = {};
 const streamsList = [];
 const silentMode = OVERRIDES?.silentMode ? true : false;
 
-printOverrides();
-
 const sendStreamMessageToServers = (streamData) => {
   const { stream } = streamData;
   _.forEach(SERVER_DATABASE, (server, serverName) => {
@@ -32,6 +30,16 @@ const sendStreamMessageToServers = (streamData) => {
     }
   });
 };
+
+const createLivestreams = () =>
+  streamsList.push(
+    new Twitch(sendStreamMessageToServers, silentMode),
+    new Mixer(sendStreamMessageToServers, silentMode),
+    new Youtube(sendStreamMessageToServers, silentMode),
+    new OkRu(sendStreamMessageToServers, silentMode),
+    new Vlive(sendStreamMessageToServers, silentMode),
+    new Afreeca(sendStreamMessageToServers, silentMode)
+  );
 
 const initBots = async () => {
   // create new bot per each defined discord server
@@ -46,24 +54,15 @@ const initBots = async () => {
       throw new Error(error);
     }
   }
-
-  streamsList.push(
-    new Twitch(sendStreamMessageToServers, silentMode),
-    new Mixer(sendStreamMessageToServers, silentMode),
-    new Youtube(sendStreamMessageToServers, silentMode),
-    new OkRu(sendStreamMessageToServers, silentMode),
-    new Vlive(sendStreamMessageToServers, silentMode),
-    new Afreeca(sendStreamMessageToServers, silentMode)
-  );
 };
 
-const setMusicShowTimers = () => {
+const setMusicShowPolling = () => {
   const OFFSET_IN_SECONDS = 960;
   const ONE_WEEK = 604800;
   const channels = getKpopChannels(discordBots);
 
   if (!_.isEmpty(channels)) {
-    KPOP_SCHEDULE.forEach((event) => {
+    for (const event of KPOP_SCHEDULE) {
       let timeWhenEventStarts = (event.time() - moment.tz().unix() - OFFSET_IN_SECONDS) * 1000;
       if (timeWhenEventStarts < 0) {
         timeWhenEventStarts = 0;
@@ -72,15 +71,15 @@ const setMusicShowTimers = () => {
         `Setting timer on ${event.show} on ${event.day} at ${event.time() - OFFSET_IN_SECONDS}`
       );
       setTimeout(() => IPTV.sendIPTVStreams(event, channels), timeWhenEventStarts);
-    });
+    }
 
     // reset weekly timer in 1 week
     console.log(`Setting weekly timer reset at ${ONE_WEEK + moment.tz().unix()}`);
-    setTimeout(setMusicShowTimers, ONE_WEEK * 1000);
+    setTimeout(setMusicShowPolling, ONE_WEEK * 1000);
   }
 };
 
-const setLivestreamTimers = () => {
+const setLivestreamPolling = () => {
   const TIME_TO_PING_API = 300000;
   for (const stream of streamsList) {
     setInterval(stream.updateStreams, TIME_TO_PING_API); // continously call API refresh every 5 minutes
@@ -89,9 +88,11 @@ const setLivestreamTimers = () => {
 };
 
 const start = async () => {
+  printOverrides();
   await initBots();
-  setLivestreamTimers();
-  setMusicShowTimers();
+  createLivestreams();
+  setLivestreamPolling();
+  setMusicShowPolling();
 };
 
 start();
