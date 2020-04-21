@@ -1,4 +1,4 @@
-import { getKpopChannels, printOverrides } from '@root/util';
+import { getKpopChannels, printOverrides, wait } from '@root/util';
 
 import Afreeca from '@stream/afreeca';
 import Bot from '@root/bot';
@@ -47,6 +47,9 @@ const initBots = async () => {
     }
   }
 
+  // wait 5 seconds to give discord a chance to login before we set stream objects
+  await wait(5000);
+
   streamsList.push(
     new Twitch(sendStreamMessageToServers, silentMode),
     new Mixer(sendStreamMessageToServers, silentMode),
@@ -80,18 +83,18 @@ const setMusicShowTimers = () => {
   }
 };
 
-const setTimers = () => {
+const setLivestreamTimers = () => {
   const TIME_TO_PING_API = 300000;
   for (const stream of streamsList) {
     setInterval(stream.updateStreams, TIME_TO_PING_API); // continously call API refresh every 5 minutes
     stream.updateStreams();
   }
-  setMusicShowTimers();
 };
 
 const start = async () => {
   await initBots();
-  setTimers();
+  setLivestreamTimers();
+  setMusicShowTimers();
 };
 
 start();

@@ -1,7 +1,8 @@
+import { getCaseInsensitiveKey, wait } from '@root/util';
+
 import { IPTV_DATABASE } from '@root/constants';
 import _ from 'lodash';
 import cheerio from 'cheerio';
-import { getCaseInsensitiveKey } from '@root/util';
 import request from 'request';
 import rq from 'request-promise';
 
@@ -94,8 +95,6 @@ const getValidIPTVStreamsFromPage = (linkToPage, channelName) => {
     .then((data) => findValidStreams(data, channelName))
     .catch((error) => console.log(`[IPTV]: Error when retrieving IPTV streams. ${error}`));
 };
-
-const wait = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
 const processOfflineStreams = async (lines, channel) => {
   const promises = [];

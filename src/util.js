@@ -5,6 +5,8 @@ import _ from 'lodash';
 const CONSTANTS = require('@data/constants.json').serverConfig;
 const OVERRIDES = require('@data/constants.json').overrides;
 
+export const wait = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+
 export const printOverrides = () => {
   console.log('Overrides');
   console.log('================================');
