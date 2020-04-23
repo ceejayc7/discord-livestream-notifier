@@ -93,7 +93,10 @@ const getValidIPTVStreamsFromPage = (linkToPage, channelName) => {
     .then(scrapePageForLinks)
     .then(getAllPageData)
     .then((data) => findValidStreams(data, channelName))
-    .catch((error) => console.log(`[IPTV]: Error when retrieving IPTV streams. ${error}`));
+    .catch((error) => {
+      console.log(`[IPTV]: Error when retrieving IPTV streams. ${error}`);
+      return [];
+    });
 };
 
 const processOfflineStreams = async (lines, channel) => {
