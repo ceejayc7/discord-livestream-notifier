@@ -1,4 +1,4 @@
-import { LOTTO, LOTTO_MAX, PLAYERS } from '@root/constants';
+import { LOTTO, LOTTO_MAX, ONE_MINUTE, PLAYERS } from '@root/constants';
 import { getRandomElementFromList, getRandomNumberInRange } from '@casino/util';
 
 import { Database } from '@root/database';
@@ -36,7 +36,6 @@ const missedClaim = (msg) => {
 };
 
 const printWinner = (msg) => {
-  const ONE_MINUTE = 60000;
   inLottoWaiting = false;
   sendMessageToChannel(msg, `${winnerObject} has won!!! Type !claim to claim your jackpot`);
   winnerTimeout = setTimeout(() => missedClaim(msg), ONE_MINUTE);

@@ -104,6 +104,9 @@ export const PLAYERS = 'players';
 export const LOTTO = 'lotto';
 
 export const ONE_MINUTE = 60000;
+export const TWO_MINUTES = 120000;
+export const THREE_MINUTES = 180000;
+export const FOUR_MINUTES = 240000;
 export const FIVE_MINUTES = 300000;
 
 export const IPTV_DATABASE = {

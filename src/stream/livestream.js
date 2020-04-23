@@ -1,5 +1,5 @@
 import { MessageEmbed } from 'discord.js';
-import { ONE_MINUTE } from '@root/constants';
+import { TWO_MINUTES } from '@root/constants';
 import _ from 'lodash';
 
 class Livestream {
@@ -10,7 +10,7 @@ class Livestream {
     this.PLATFORM = 'livestream';
     this.siteLogo = '';
     this.embedColor = '';
-    this.apiRefreshInterval = ONE_MINUTE;
+    this.apiRefreshInterval = TWO_MINUTES;
   }
 
   updateStreams = () => {
