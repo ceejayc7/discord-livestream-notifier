@@ -13,7 +13,7 @@ const KOREAN_BLOG_LINKS_TO_QUERY_FOR = [];
 
 const generateEndpoints = () => {
   // initialize blog array
-  for (let page = 1; page <= 10; page++) {
+  for (let page = 1; page <= 4; page++) {
     KOREAN_BLOG_LINKS_TO_QUERY_FOR.push(`https://www.extinf.com/category/korean/page/${page}/`);
   }
 };
