@@ -38,13 +38,23 @@ class Twitch extends Livestream {
       method: 'POST'
     };
     const oauthResponse = await request(options).catch((error) =>
-      this.apiError(this.PLATFORM, error)
+      console.log(
+        `Twitch OAuth error. \t Error name: ${error.name} \t Error message: ${error.message}`
+      )
     );
-    this.twitchAPIOptions.headers.Authorization = `Bearer ${oauthResponse?.access_token}`; // eslint-disable-line
+    if (oauthResponse) {
+      this.twitchAPIOptions.headers.Authorization = `Bearer ${oauthResponse?.access_token}`; // eslint-disable-line
+      return true;
+    }
+    return false;
   };
 
   updateStreams = async () => {
-    await this.updateOAuth();
+    const isOauthUpdated = await this.updateOAuth();
+    if (!isOauthUpdated) {
+      console.log(`Twitch OAuth could not be updated, skipping run`);
+      return;
+    }
     const flattenStreamsString = addQueryParamToList(
       'user_login',
       this.getListOfStreams(this.PLATFORM)
