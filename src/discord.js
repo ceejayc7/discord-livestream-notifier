@@ -59,7 +59,7 @@ const initBots = async () => {
 };
 
 const setMusicShowPolling = () => {
-  const OFFSET_IN_SECONDS = 960;
+  const OFFSET_IN_SECONDS = 900;
   const ONE_WEEK = 604800;
   const channels = getKpopChannels(discordBots);
 
