@@ -19,7 +19,7 @@ class OkRu extends Livestream {
   }
 
   updateStreams = () => {
-    this.getAPIDataAndAnnounce(this.useReduceResponse, this.useMultipleCalls);
+    this.getAPIDataAndAnnounce(this.useReduceResponse, this.useMultipleCalls).catch();
   };
 
   scrapePage = ($) => {

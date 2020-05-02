@@ -61,7 +61,7 @@ class Twitch extends Livestream {
     ).join('');
 
     this.twitchAPIOptions.url = TWITCH_API_STREAMS_ENDPOINT + flattenStreamsString;
-    this.getAPIDataAndAnnounce(this.useReduceResponse, this.useMultipleCalls);
+    this.getAPIDataAndAnnounce(this.useReduceResponse, this.useMultipleCalls).catch();
   };
 
   getChannelPromises = () => {

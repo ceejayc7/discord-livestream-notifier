@@ -22,7 +22,7 @@ class Youtube extends Livestream {
   }
 
   updateStreams = () => {
-    this.getAPIDataAndAnnounce(this.useReduceResponse, this.useMultipleCalls);
+    this.getAPIDataAndAnnounce(this.useReduceResponse, this.useMultipleCalls).catch();
   };
 
   getChannelPromises = (stream) => {
