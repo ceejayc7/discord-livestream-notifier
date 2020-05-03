@@ -1,4 +1,5 @@
-import { BOT_COMMANDS } from '@root/constants';
+import { BOT_COMMANDS, TWITTER_CHARACTER_LIMIT } from '@root/constants';
+
 import _ from 'lodash';
 import moment from 'moment-timezone';
 import { sendMessageToChannel } from '@root/util';
@@ -76,11 +77,13 @@ export const sendTweet = (msg) => {
     return Promise.resolve();
   }
 
-  const status = msg.content.replace(BOT_COMMANDS.TWEET.command, '');
+  let status = msg.content.replace(BOT_COMMANDS.TWEET.command, '');
+  status = _.take(status, TWITTER_CHARACTER_LIMIT).join('');
   const params = {
     status
   };
   console.log(`[Twitter]: Tweeting ${status}`);
+
   client.post('statuses/update', params, (error, tweets) => {
     if (error) {
       console.log(`[Twitter]: Twitter API Error - error: ${error[0].code} ${error[0].message}`);

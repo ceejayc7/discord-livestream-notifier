@@ -109,6 +109,8 @@ export const THREE_MINUTES = 180000;
 export const FOUR_MINUTES = 240000;
 export const FIVE_MINUTES = 300000;
 
+export const TWITTER_CHARACTER_LIMIT = 280;
+
 export const IPTV_DATABASE = {
   'SBS MTV': 'sbsmtv.txt',
   'SBS F!L UHD': 'sbsfil.txt',
