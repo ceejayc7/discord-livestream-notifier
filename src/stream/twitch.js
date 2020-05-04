@@ -87,7 +87,9 @@ class Twitch extends Livestream {
       const logo = _.first(usersResponse.data)?.profile_image_url; // eslint-disable-line
       const game = _.first(gamesResponse.data)?.name;
       const url = `${TWITCH_BASE_URL}/${loginName}`;
-      const displayName = stream?.user_name; // eslint-disable-line
+      const displayName = _.endsWith(stream?.user_name, '_') // eslint-disable-line
+        ? stream?.user_name.substring(0, stream?.user_name.length - 1) // eslint-disable-line
+        : stream?.user_name; // eslint-disable-line
 
       reducedResponse.push({
         platform: this.PLATFORM,
