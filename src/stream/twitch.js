@@ -17,7 +17,8 @@ class Twitch extends Livestream {
     this.twitchAPIOptions = {
       url: TWITCH_API_STREAMS_ENDPOINT,
       headers: {
-        'content-type': 'application/json'
+        'content-type': 'application/json',
+        'client-id': CONSTANTS?.twitch?.clientId
       },
       json: true,
       method: 'GET'
