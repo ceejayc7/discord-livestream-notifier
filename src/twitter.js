@@ -72,9 +72,14 @@ const getShowname = (text) => {
   return '';
 };
 
-const getTweetById = (id, callback) => {
+const getUsernameFromTweetId = (tweetId) => {
   return new Promise((resolve, reject) => {
-    client.get(`statuses/show/${id}`, callback(resolve, reject));
+    client.get(`statuses/show/${tweetId}`, (error, data) => {
+      if (error) {
+        reject(error);
+      }
+      resolve(data?.user?.screen_name); // eslint-disable-line
+    });
   });
 };
 
@@ -112,15 +117,9 @@ export const sendReply = async (msg) => {
   const tweetId = split[1];
 
   try {
-    const handleToReplyTo = await getTweetById(tweetId, (resolve, reject) => (error, data) => {
-      if (error) {
-        reject(error);
-      }
-      resolve(data?.user?.screen_name); // eslint-disable-line
-    });
-
+    const username = await getUsernameFromTweetId(tweetId);
     const msgString = _.slice(split, 2).join(' ');
-    const status = `@${handleToReplyTo} ${msgString}`;
+    const status = `@${username} ${msgString}`;
     const params = {
       status,
       in_reply_to_status_id: tweetId
