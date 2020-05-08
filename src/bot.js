@@ -6,6 +6,7 @@ import {
   messageError,
   printHelp
 } from '@root/util';
+import { retweet, sendReply, sendTweet } from '@root/twitter';
 
 import { BOT_COMMANDS } from '@root/constants';
 import Blackjack from '@casino/blackjack';
@@ -16,7 +17,6 @@ import { Lotto } from '@casino/lotto';
 import { MoneyManager } from '@casino/moneymanager';
 import { Slots } from '@casino/slots';
 import _ from 'lodash';
-import { sendTweet } from '@root/twitter';
 
 const CONSTANTS = require('@data/constants.json').serverConfig;
 
@@ -69,6 +69,12 @@ class Bot {
         return;
       } else if (_.startsWith(msg.content, BOT_COMMANDS.TWEET.command)) {
         isTweetingServer(msg) && sendTweet(msg);
+        return;
+      } else if (_.startsWith(msg.content, BOT_COMMANDS.TWEET_REPLY.command)) {
+        isTweetingServer(msg) && sendReply(msg);
+        return;
+      } else if (_.startsWith(msg.content, BOT_COMMANDS.RETWEET.command)) {
+        isTweetingServer(msg) && retweet(msg);
         return;
       }
 

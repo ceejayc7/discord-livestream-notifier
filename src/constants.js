@@ -86,6 +86,14 @@ export const BOT_COMMANDS = {
   TWEET: {
     command: '!tweet',
     showOnHelp: false
+  },
+  TWEET_REPLY: {
+    command: '!reply',
+    showOnHelp: false
+  },
+  RETWEET: {
+    command: '!rt',
+    showOnHelp: false
   }
 };
 export const SLOTS_MONEY = {
