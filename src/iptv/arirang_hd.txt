@@ -1,3 +1,5 @@
+http://89.217.123.119:9981/stream/channelid/1815225505
+http://188.141.54.12:9981/stream/channelid/1005304346
 http://tv.ultraiptv.org:80/vebrrqcv/kW1y4y0S2v/8657
 http://flow.dyndns.ws:25461/gretchen/12345/37768
 http://flow.dyndns.ws:25461/jin/jin/37768
