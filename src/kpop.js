@@ -64,6 +64,8 @@ const getRelativeTimeStart = (timestamp) => {
   return eventMoment.add(1, 'weeks').unix();
 };
 
+const getTimeInKST = () => moment.tz(new Date(), 'Asia/Seoul').format('dddd h:mmA');
+
 const printSkpbKpopMessage = async (msg, tweets) => {
   const isProtected = await isTwitterProtected();
   for (const tweet of tweets) {
@@ -107,5 +109,6 @@ const onKpopCommand = async (msg) => {
 
 export const Kpop = {
   parseIPTVCommand,
-  onKpopCommand
+  onKpopCommand,
+  getTimeInKST
 };

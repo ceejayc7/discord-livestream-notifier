@@ -94,6 +94,10 @@ export const BOT_COMMANDS = {
   RETWEET: {
     command: '!rt',
     showOnHelp: false
+  },
+  KST: {
+    command: '!kst',
+    showOnHelp: false
   }
 };
 export const SLOTS_MONEY = {

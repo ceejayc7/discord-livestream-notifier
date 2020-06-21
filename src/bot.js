@@ -4,7 +4,8 @@ import {
   isKpopChannel,
   isTweetingServer,
   messageError,
-  printHelp
+  printHelp,
+  sendMessageToChannel
 } from '@root/util';
 import { retweet, sendReply, sendTweet } from '@root/twitter';
 
@@ -123,6 +124,9 @@ class Bot {
           break;
         case BOT_COMMANDS.KPOP.command:
           isKpopChannel(msg) && Kpop.onKpopCommand(msg);
+          break;
+        case BOT_COMMANDS.KST.command:
+          sendMessageToChannel(msg, Kpop.getTimeInKST());
           break;
         case BOT_COMMANDS.HELP.command:
           printHelp(msg);
