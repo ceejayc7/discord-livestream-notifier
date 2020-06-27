@@ -1,3 +1,4 @@
+import { doesMsgContainInstagram, sendInstagramEmbeds } from '@root/instagram';
 import {
   isCasinoChannel,
   isFishingServer,
@@ -76,6 +77,9 @@ class Bot {
         return;
       } else if (_.startsWith(msg.content, BOT_COMMANDS.RETWEET.command)) {
         isTweetingServer(msg) && retweet(msg);
+        return;
+      } else if (doesMsgContainInstagram(msg)) {
+        isKpopChannel(msg) && sendInstagramEmbeds(msg);
         return;
       }
 
