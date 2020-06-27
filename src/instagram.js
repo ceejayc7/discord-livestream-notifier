@@ -64,7 +64,6 @@ export const sendInstagramEmbeds = async (msg) => {
     try {
       const data = await fetchApiData(id);
       const media = parseApiData(data);
-      console.log(media);
       const embeds = getImageEmbeds(media);
       sendMediaToChannel(msg, media, embeds);
     } catch (err) {
