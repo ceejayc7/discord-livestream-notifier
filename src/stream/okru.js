@@ -14,7 +14,7 @@ class OkRu extends Livestream {
     this.PLATFORM = 'okru';
     this.useMultipleCalls = true;
     this.useReduceResponse = false;
-    this.siteLogo = 'http://puu.sh/Bz2nm/aacfb2c3d6.png';
+    this.siteLogo = 'https://i.imgur.com/rbzsU42.png';
     this.embedColor = 16089632;
   }
 

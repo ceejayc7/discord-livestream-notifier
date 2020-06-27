@@ -16,7 +16,7 @@ class Youtube extends Livestream {
     this.PLATFORM = 'youtube';
     this.useMultipleCalls = true;
     this.useReduceResponse = true;
-    this.siteLogo = 'https://puu.sh/Bucut/9645bccf23.png';
+    this.siteLogo = 'https://i.imgur.com/at2dZkI.png';
     this.embedColor = 16711680;
     this.apiRefreshInterval = FIVE_MINUTES;
   }
