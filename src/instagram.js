@@ -85,4 +85,5 @@ export const sendMediaToChannel = (msg, media, embeds) => {
   sendMessageToChannel(msg, description);
   embeds.map((embed) => sendMessageToChannel(msg, embed));
   media.videos.map((videoURL) => sendMessageToChannel(msg, videoURL));
+  msg.suppressEmbeds(true);
 };
