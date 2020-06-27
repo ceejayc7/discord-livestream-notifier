@@ -29,11 +29,18 @@ const fetchApiData = (id) => {
 };
 
 const parseApiData = (apiData) => {
-  const edges = apiData.graphql.shortcode_media.edge_sidecar_to_children.edges;
   const videos = [];
   const pictures = [];
+  const edges = _.get(apiData, 'graphql.shortcode_media.edge_sidecar_to_children.edges', []);
   for (const edge of edges) {
     edge.node.is_video ? videos.push(edge.node.video_url) : pictures.push(edge.node.display_url);
+  }
+
+  // singular video/picture post
+  if (_.isEmpty(edges)) {
+    apiData.graphql.shortcode_media.is_video
+      ? videos.push(apiData.graphql.shortcode_media.video_url)
+      : pictures.push(apiData.graphql.shortcode_media.display_url);
   }
 
   let text = _.get(apiData, 'graphql.shortcode_media.edge_media_to_caption.edges');
@@ -57,6 +64,7 @@ export const sendInstagramEmbeds = async (msg) => {
     try {
       const data = await fetchApiData(id);
       const media = parseApiData(data);
+      console.log(media);
       const embeds = getImageEmbeds(media);
       sendMediaToChannel(msg, media, embeds);
     } catch (err) {
