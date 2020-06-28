@@ -52,9 +52,12 @@ const parseApiData = (apiData) => {
 
   return {
     name: apiData.graphql.shortcode_media.owner.full_name,
+    username: apiData.graphql.shortcode_media.owner.username,
     text,
     videos,
-    pictures
+    pictures,
+    timestamp: apiData.graphql.shortcode_media.taken_at_timestamp * 1000,
+    avatar: apiData.graphql.shortcode_media.owner.profile_pic_url
   };
 };
 
@@ -65,7 +68,7 @@ export const sendInstagramEmbeds = async (msg) => {
       const data = await fetchApiData(id);
       const media = parseApiData(data);
       const embeds = getImageEmbeds(media);
-      sendMediaToChannel(msg, media, embeds);
+      sendMediaToChannel(msg, id, media, embeds);
     } catch (err) {
       console.log(`Couldnt send Instagram embeds from ${msg.content}`);
       console.log(err);
@@ -77,13 +80,22 @@ const createImageEmbed = (url) => new Discord.MessageEmbed().setImage(url).setCo
 
 const getImageEmbeds = (media) => media.pictures.map(createImageEmbed);
 
-export const sendMediaToChannel = (msg, media, embeds) => {
-  const description = `${media.name} on Instagram${
-    !_.isEmpty(media.text) ? ': ' + media.text : ''
-  }`;
+export const sendMediaToChannel = (msg, id, media, embeds) => {
+  const title = `${media.name} on Instagram${!_.isEmpty(media.text) ? ': ' + media.text : ''}`;
+  const author = `${media.name + ' (' + media.username + ')'}`;
 
-  sendMessageToChannel(msg, description);
-  embeds.map((embed) => sendMessageToChannel(msg, embed));
-  media.videos.map((videoURL) => sendMessageToChannel(msg, videoURL));
+  if (_.isEmpty(embeds)) {
+    sendMessageToChannel(msg, title);
+    media.videos.map((videoURL) => sendMessageToChannel(msg, videoURL));
+  } else {
+    _.first(embeds)
+      .setTitle(title)
+      .setAuthor(author, 'https://i.imgur.com/1EybaiS.png')
+      .setTimestamp(media.timestamp)
+      .setURL(`https://instagram.com/p/${id}/`)
+      .setThumbnail(media.avatar);
+    embeds.map((embed) => sendMessageToChannel(msg, embed));
+  }
+
   msg.suppressEmbeds(true);
 };
