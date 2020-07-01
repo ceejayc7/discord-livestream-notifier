@@ -132,9 +132,9 @@ class Bot {
         case BOT_COMMANDS.KST.command:
           sendMessageToChannel(msg, Kpop.getTimeInKST());
           break;
-        case BOT_COMMANDS.HELP.command:
+        /* case BOT_COMMANDS.HELP.command:
           printHelp(msg);
-          break;
+          break; */
       }
     });
   };
