@@ -5,7 +5,6 @@ import {
   isKpopChannel,
   isTweetingServer,
   messageError,
-  printHelp,
   sendMessageToChannel
 } from '@root/util';
 import { retweet, sendReply, sendTweet } from '@root/twitter';
