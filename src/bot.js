@@ -143,7 +143,7 @@ class Bot {
 
     for (const channelToSendTo of channelsToSendTo) {
       this.client.channels.cache
-        .find((channel) => channel.name === channelToSendTo)
+        .find((channel) => channel.name === channelToSendTo && channel.type === 'text')
         .send(streamMessage, embed)
         .catch(messageError);
     }
