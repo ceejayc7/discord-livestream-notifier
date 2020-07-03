@@ -186,9 +186,7 @@ export const getAQPinnedTweet = async () => {
         }
         const pinnedTweetId = user?.data[0]?.pinned_tweet_id; // eslint-disable-line
         if (pinnedTweetId) {
-          return resolve(
-            `https://www.twitter.com/${TEAMAQ_TWITTER_HANDLE}/status/${pinnedTweetId}`
-          );
+          return resolve(`https://twitter.com/${TEAMAQ_TWITTER_HANDLE}/status/${pinnedTweetId}`);
         } else {
           resolve();
         }
