@@ -81,8 +81,10 @@ const createImageEmbed = (url) => new Discord.MessageEmbed().setImage(url).setCo
 const getImageEmbeds = (media) => media.pictures.map(createImageEmbed);
 
 export const sendMediaToChannel = (msg, id, media, embeds) => {
-  const title = `${media.name} on Instagram${!_.isEmpty(media.text) ? ': ' + media.text : ''}`;
+  let title = `${media.name} on Instagram${!_.isEmpty(media.text) ? ': ' + media.text : ''}`;
   const author = `${media.name + ' (' + media.username + ')'}`;
+
+  title = title.substring(0, 255);
 
   if (_.isEmpty(embeds)) {
     sendMessageToChannel(msg, title);
