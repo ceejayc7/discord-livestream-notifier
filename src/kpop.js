@@ -11,9 +11,21 @@ const TIMEZONE = 'Asia/Seoul';
 export const KPOP_SCHEDULE = [
   {
     day: 'Tuesday',
+    show: 'After School Club',
+    channel: ['아리랑 TV'],
+    time: () => getRelativeTimeStart('Tuesday 1:00PM')
+  },
+  {
+    day: 'Tuesday',
     show: 'The Show',
-    channel: ['SBS MTV', 'SBS F!L UHD'],
+    channel: ['SBS MTV'],
     time: () => getRelativeTimeStart('Tuesday 6:00PM')
+  },
+  {
+    day: 'Wednesday',
+    show: 'Rolling in Kpop',
+    channel: ['아리랑 TV'],
+    time: () => getRelativeTimeStart('Wednesday 1:00PM')
   },
   {
     day: 'Wednesday',
