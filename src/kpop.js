@@ -41,15 +41,15 @@ export const KPOP_SCHEDULE = [
   },
   {
     day: 'Friday',
-    show: 'Simply Kpop',
-    channel: ['아리랑 TV'],
-    time: () => getRelativeTimeStart('Friday 1:00PM')
-  },
-  {
-    day: 'Friday',
     show: 'Music Bank',
     channel: ['KBS2'],
     time: () => getRelativeTimeStart('Friday 5:00PM')
+  },
+  {
+    day: 'Friday',
+    show: 'Simply Kpop',
+    channel: ['아리랑 TV'],
+    time: () => getRelativeTimeStart('Saturday 1:00PM')
   },
   {
     day: 'Saturday',
