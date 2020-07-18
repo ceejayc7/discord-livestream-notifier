@@ -6,12 +6,11 @@
   "author": "Ceejay",
   "scripts": {
     "build": "eslint src/**/*.js && babel src -d dist --copy-files",
-    "debug": "babel-node --inspect-brk src/discord.js",
     "preinstall": "npx npm-force-resolutions",
     "start": "node dist/discord.js",
     "watch": "concurrently \"npm:watch:babel\" \"npm:watch:eslint\"",
     "watch:eslint": "esw --w src/**/*.js",
-    "watch:babel": "babel --watch src -d dist --copy-files"
+    "watch:babel": "babel --watch src -d dist --copy-files --source-maps"
   },
   "engines": {
     "node": "12.16.1"
