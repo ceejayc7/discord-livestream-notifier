@@ -37,7 +37,6 @@
     "request": "2.88.2",
     "request-promise": "4.2.5",
     "twitter": "1.7.1",
-    "uws": "10.148.1",
     "weighted-random": "0.1.0"
   },
   "devDependencies": {
