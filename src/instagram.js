@@ -80,7 +80,7 @@ const createImageEmbed = (url) => new Discord.MessageEmbed().setImage(url).setCo
 
 const getImageEmbeds = (media) => media.pictures.map(createImageEmbed);
 
-export const sendMediaToChannel = (msg, id, media, embeds) => {
+export const sendMediaToChannel = async (msg, id, media, embeds) => {
   let title = `${media.name} on Instagram${!_.isEmpty(media.text) ? ': ' + media.text : ''}`;
   const author = `${media.name + ' (' + media.username + ')'}`;
 
@@ -96,8 +96,14 @@ export const sendMediaToChannel = (msg, id, media, embeds) => {
       .setTimestamp(media.timestamp)
       .setURL(`https://instagram.com/p/${id}/`)
       .setThumbnail(media.avatar);
-    embeds.map((embed) => sendMessageToChannel(msg, embed));
-  }
 
-  msg.suppressEmbeds(true);
+    const embedLen = embeds.length;
+    embeds.map((embed, index) => {
+      if (embedLen === index + 1) {
+        sendMessageToChannel(msg, embed).then(() => msg.suppressEmbeds(true));
+      } else {
+        sendMessageToChannel(msg, embed);
+      }
+    });
+  }
 };
