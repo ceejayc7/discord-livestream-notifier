@@ -1,7 +1,8 @@
+import { sendMessageToChannel, wait } from '@root/util';
+
 import Discord from 'discord.js';
 import _ from 'lodash';
 import request from 'request-promise';
-import { sendMessageToChannel } from '@root/util';
 
 const INSTAGRAM_REGEX = /instagram\.com\/(p|tv)\/(.*)/;
 
@@ -97,13 +98,12 @@ export const sendMediaToChannel = async (msg, id, media, embeds) => {
       .setURL(`https://instagram.com/p/${id}/`)
       .setThumbnail(media.avatar);
 
-    const embedLen = embeds.length;
-    embeds.map((embed, index) => {
-      if (embedLen === index + 1) {
-        sendMessageToChannel(msg, embed).then(() => msg.suppressEmbeds(true));
-      } else {
-        sendMessageToChannel(msg, embed);
-      }
-    });
+    embeds.map((embed) => sendMessageToChannel(msg, embed).then(msg.suppressEmbeds(true)));
+
+    // sometimes the official discord ig embed doesnt show until later
+    // not sure why
+    // just wait 2 seconds and try to suppress it again
+    await wait(2000);
+    msg.suppressEmbeds(true);
   }
 };
