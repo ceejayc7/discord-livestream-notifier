@@ -89,7 +89,6 @@ export const sendMediaToChannel = async (msg, id, media, embeds) => {
 
   if (_.isEmpty(embeds)) {
     sendMessageToChannel(msg, title);
-    media.videos.map((videoURL) => sendMessageToChannel(msg, videoURL));
   } else {
     _.first(embeds)
       .setTitle(title)
@@ -99,11 +98,14 @@ export const sendMediaToChannel = async (msg, id, media, embeds) => {
       .setThumbnail(media.avatar);
 
     embeds.map((embed) => sendMessageToChannel(msg, embed).then(msg.suppressEmbeds(true)));
-
-    // sometimes the official discord ig embed doesnt show until later
-    // not sure why
-    // just wait 2 seconds and try to suppress it again
-    await wait(2000);
-    msg.suppressEmbeds(true);
   }
+  if (media.videos.length) {
+    media.videos.map((videoURL) => sendMessageToChannel(msg, videoURL));
+  }
+
+  // sometimes the official discord ig embed doesnt show until later
+  // not sure why
+  // just wait 2 seconds and try to suppress it again
+  await wait(2000);
+  msg.suppressEmbeds(true);
 };
