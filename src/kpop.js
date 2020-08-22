@@ -1,5 +1,5 @@
 import { decodeHTMLEntities, sendMessageToChannel } from '@root/util';
-import { getAQPinnedTweet, getSkpbTimeline, isTwitterProtected } from '@root/twitter';
+import { getPinnedTweet, getSkpbTimeline, isTwitterProtected } from '@root/twitter';
 
 import { IPTV } from '@root/iptv';
 import _ from 'lodash';
@@ -7,6 +7,8 @@ import moment from 'moment-timezone';
 
 const TIME_FORMAT = 'dddd h:mmA';
 const TIMEZONE = 'Asia/Seoul';
+const TEAMAQ_TWITTER_HANDLE = 'team_AQ2';
+const ROLLING_KPOP = 'rolling_kpop';
 
 export const KPOP_SCHEDULE = [
   {
@@ -25,7 +27,8 @@ export const KPOP_SCHEDULE = [
     day: 'Wednesday',
     show: 'Rolling in Kpop',
     channel: ['아리랑 TV'],
-    time: () => getRelativeTimeStart('Wednesday 1:00PM')
+    time: () => getRelativeTimeStart('Wednesday 1:00PM'),
+    pinnedTweet: () => getPinnedTweet(ROLLING_KPOP)
   },
   {
     day: 'Wednesday',
@@ -108,7 +111,7 @@ const parseIPTVCommand = (msg) => {
 
 const onKpopCommand = async (msg) => {
   const skpbTimeline = await getSkpbTimeline();
-  const teamAQTweetLink = await getAQPinnedTweet();
+  const teamAQTweetLink = await getPinnedTweet(TEAMAQ_TWITTER_HANDLE);
 
   if (!_.isEmpty(skpbTimeline)) {
     printSkpbKpopMessage(msg, skpbTimeline);

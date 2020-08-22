@@ -178,9 +178,16 @@ const sendIPTVStreams = async (event, discordChannels) => {
     try {
       const streams = await getValidIPTVStreamsFromList(channel);
       const messageToSend = createMessageToSend(streams, event.show, channel);
+      let tweet = '';
+      if (event?.pinnedTweet) {
+        tweet = await event.pinnedTweet();
+      }
       console.log(`[IPTV] Sending ${event.show} on ${channel}`);
       for (const discordChannel of discordChannels) {
         discordChannel.send(messageToSend);
+        if (tweet) {
+          discordChannel.send(tweet);
+        }
       }
     } catch (error) {
       console.log(`Error retriving IPTV streams. ${error}`);

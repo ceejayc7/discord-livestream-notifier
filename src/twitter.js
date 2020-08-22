@@ -9,7 +9,6 @@ const Twitter = require('twitter');
 
 // Identifiers
 const SKPB_TWITTER_HANDLE = 'skpblive';
-const TEAMAQ_TWITTER_HANDLE = 'team_AQ2';
 const LINK_TO_TWEET = `https://twitter.com/${SKPB_TWITTER_HANDLE}/status/`;
 const TWEET_TEXT_TO_CHECK_FOR = '[LIVE]';
 
@@ -172,21 +171,21 @@ const handleError = (error, reject) => {
   return reject(Error());
 };
 
-export const getAQPinnedTweet = async () => {
+export const getPinnedTweet = async (handle) => {
   if (!client) {
     return Promise.resolve();
   }
 
   return new Promise((resolve, reject) => {
     client.get(
-      `https://api.twitter.com/labs/2/users/by?usernames=${TEAMAQ_TWITTER_HANDLE}&user.fields=pinned_tweet_id`,
+      `https://api.twitter.com/labs/2/users/by?usernames=${handle}&user.fields=pinned_tweet_id`,
       (error, user) => {
         if (error) {
           return handleError(error, reject);
         }
         const pinnedTweetId = user?.data[0]?.pinned_tweet_id; // eslint-disable-line
         if (pinnedTweetId) {
-          return resolve(`https://twitter.com/${TEAMAQ_TWITTER_HANDLE}/status/${pinnedTweetId}`);
+          return resolve(`https://twitter.com/${handle}/status/${pinnedTweetId}`);
         } else {
           resolve();
         }
