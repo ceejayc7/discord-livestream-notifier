@@ -28,7 +28,7 @@ export const KPOP_SCHEDULE = [
     show: 'Rolling in Kpop',
     channel: ['아리랑 TV'],
     time: () => getRelativeTimeStart('Wednesday 1:00PM'),
-    pinnedTweet: () => getPinnedTweet(ROLLING_KPOP)
+    pinnedTweet: async () => await getPinnedTweet(ROLLING_KPOP)
   },
   {
     day: 'Wednesday',
