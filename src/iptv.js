@@ -184,10 +184,10 @@ const sendIPTVStreams = async (event, discordChannels) => {
       }
       console.log(`[IPTV] Sending ${event.show} on ${channel}`);
       for (const discordChannel of discordChannels) {
-        discordChannel.send(messageToSend);
         if (tweet) {
           discordChannel.send(tweet);
         }
+        discordChannel.send(messageToSend);
       }
     } catch (error) {
       console.log(`Error retriving IPTV streams. ${error}`);
