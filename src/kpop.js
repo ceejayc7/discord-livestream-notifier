@@ -10,6 +10,8 @@ const TIMEZONE = 'Asia/Seoul';
 const TEAMAQ_TWITTER_HANDLE = 'team_AQ2';
 const ROLLING_KPOP = 'rolling_kpop';
 
+const pinnedTweet = async () => await getPinnedTweet(TEAMAQ_TWITTER_HANDLE);
+
 export const KPOP_SCHEDULE = [
   {
     day: 'Tuesday',
@@ -21,7 +23,8 @@ export const KPOP_SCHEDULE = [
     day: 'Tuesday',
     show: 'The Show',
     channel: ['SBS MTV'],
-    time: () => getRelativeTimeStart('Tuesday 6:00PM')
+    time: () => getRelativeTimeStart('Tuesday 6:00PM'),
+    pinnedTweet
   },
   {
     day: 'Wednesday',
@@ -34,19 +37,22 @@ export const KPOP_SCHEDULE = [
     day: 'Wednesday',
     show: 'Show Champion',
     channel: ['MBC Music', 'MBC Every1'],
-    time: () => getRelativeTimeStart('Wednesday 6:00PM')
+    time: () => getRelativeTimeStart('Wednesday 6:00PM'),
+    pinnedTweet
   },
   {
     day: 'Thursday',
     show: 'M Countdown',
     channel: ['Mnet'],
-    time: () => getRelativeTimeStart('Thursday 6:00PM')
+    time: () => getRelativeTimeStart('Thursday 6:00PM'),
+    pinnedTweet
   },
   {
     day: 'Friday',
     show: 'Music Bank',
     channel: ['KBS2'],
-    time: () => getRelativeTimeStart('Friday 5:00PM')
+    time: () => getRelativeTimeStart('Friday 5:00PM'),
+    pinnedTweet
   },
   {
     day: 'Friday',
@@ -58,13 +64,15 @@ export const KPOP_SCHEDULE = [
     day: 'Saturday',
     show: 'Music Core',
     channel: ['MBC'],
-    time: () => getRelativeTimeStart('Saturday 3:30PM')
+    time: () => getRelativeTimeStart('Saturday 3:30PM'),
+    pinnedTweet
   },
   {
     day: 'Sunday',
     show: 'Inkigayo',
     channel: ['SBS'],
-    time: () => getRelativeTimeStart('Sunday 3:50PM')
+    time: () => getRelativeTimeStart('Sunday 3:50PM'),
+    pinnedTweet
   }
 ];
 
