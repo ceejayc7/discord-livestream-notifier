@@ -155,13 +155,14 @@ const getValidIPTVStreamsFromList = async (channelName) => {
 
 const createMessageToSend = (listOfStreams, showName, channelName) => {
   if (listOfStreams && listOfStreams.length) {
-    let messageToSend = `>>> Generated IPTV streams`;
-    if (showName && channelName) {
-      messageToSend += ` for **${showName}** on **${channelName}**`;
+    let messageToSend = `>>> IPTV streams`;
+    if (showName) {
+      messageToSend += ` for **${showName}**`;
     }
-    messageToSend += '```diff\n';
+    messageToSend += ` on **${channelName}**`;
+    messageToSend += '```fix\n';
     for (const stream of listOfStreams) {
-      messageToSend += `+  ${stream.stream}\n`;
+      messageToSend += `${stream.stream}\n\n`;
     }
     messageToSend += '```';
     return messageToSend;
