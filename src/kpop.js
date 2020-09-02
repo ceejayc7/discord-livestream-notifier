@@ -15,12 +15,6 @@ const pinnedTweet = async () => await getPinnedTweet(TEAMAQ_TWITTER_HANDLE);
 export const KPOP_SCHEDULE = [
   {
     day: 'Tuesday',
-    show: 'After School Club',
-    channel: ['아리랑 TV'],
-    time: () => getRelativeTimeStart('Tuesday 1:00PM')
-  },
-  {
-    day: 'Tuesday',
     show: 'The Show',
     channel: ['SBS MTV'],
     time: () => getRelativeTimeStart('Tuesday 6:00PM'),
@@ -28,10 +22,9 @@ export const KPOP_SCHEDULE = [
   },
   {
     day: 'Wednesday',
-    show: 'Rolling in Kpop',
+    show: 'After School Club',
     channel: ['아리랑 TV'],
-    time: () => getRelativeTimeStart('Wednesday 1:00PM'),
-    pinnedTweet: async () => await getPinnedTweet(ROLLING_KPOP)
+    time: () => getRelativeTimeStart('Wednesday 5:00AM')
   },
   {
     day: 'Wednesday',
@@ -39,6 +32,13 @@ export const KPOP_SCHEDULE = [
     channel: ['MBC Music', 'MBC Every1'],
     time: () => getRelativeTimeStart('Wednesday 6:00PM'),
     pinnedTweet
+  },
+  {
+    day: 'Thursday',
+    show: 'Rolling in Kpop',
+    channel: ['아리랑 TV'],
+    time: () => getRelativeTimeStart('Thursday 5:00AM'),
+    pinnedTweet: async () => await getPinnedTweet(ROLLING_KPOP)
   },
   {
     day: 'Thursday',
