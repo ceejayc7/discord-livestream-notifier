@@ -175,6 +175,7 @@ const createMessageToSend = (listOfStreams, showName, channelName) => {
 };
 
 const sendIPTVStreams = async (event, discordChannels) => {
+  let sentPinnedTweet = false;
   for (const channel of event.channel) {
     try {
       const streams = await getValidIPTVStreamsFromList(channel);
@@ -185,8 +186,9 @@ const sendIPTVStreams = async (event, discordChannels) => {
       }
       console.log(`[IPTV] Sending ${event.show} on ${channel}`);
       for (const discordChannel of discordChannels) {
-        if (tweet) {
+        if (tweet && !sentPinnedTweet) {
           discordChannel.send(tweet);
+          sentPinnedTweet = true;
         }
         discordChannel.send(messageToSend);
       }
