@@ -8,7 +8,6 @@ import moment from 'moment-timezone';
 const TIME_FORMAT = 'dddd h:mmA';
 const TIMEZONE = 'Asia/Seoul';
 const TEAMAQ_TWITTER_HANDLE = 'team_AQ2';
-const ROLLING_KPOP = 'rolling_kpop';
 
 const pinnedTweet = async () => await getPinnedTweet(TEAMAQ_TWITTER_HANDLE);
 
