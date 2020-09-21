@@ -138,8 +138,18 @@ class Bot {
     });
   };
 
+  getChannelsToSendTo = (embed) => {
+    if (
+      embed?.url.includes('https://www.vlive.tv') &&
+      CONSTANTS?.[this.serverName]?.vliveOverride
+    ) {
+      return CONSTANTS?.[this.serverName]?.vliveOverride;
+    }
+    return CONSTANTS?.[this.serverName]?.streamChannels;
+  };
+
   sendEmbed = (streamMessage, embed = '') => {
-    const channelsToSendTo = CONSTANTS?.[this.serverName]?.streamChannels;
+    const channelsToSendTo = this.getChannelsToSendTo(embed);
 
     for (const channelToSendTo of channelsToSendTo) {
       this.client.channels.cache
