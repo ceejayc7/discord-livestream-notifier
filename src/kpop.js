@@ -21,22 +21,10 @@ export const KPOP_SCHEDULE = [
   },
   {
     day: 'Wednesday',
-    show: 'After School Club',
-    channel: ['아리랑 TV'],
-    time: () => getRelativeTimeStart('Wednesday 5:00AM')
-  },
-  {
-    day: 'Wednesday',
     show: 'Show Champion',
     channel: ['MBC Music', 'MBC Every1'],
     time: () => getRelativeTimeStart('Wednesday 6:00PM'),
     pinnedTweet
-  },
-  {
-    day: 'Thursday',
-    show: 'Rolling in Kpop',
-    channel: ['아리랑 TV'],
-    time: () => getRelativeTimeStart('Thursday 5:00AM')
   },
   {
     day: 'Thursday',
