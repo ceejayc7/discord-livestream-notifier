@@ -96,7 +96,7 @@ const parseIPTVCommand = (msg) => {
     const channel = content.substring(index + 1);
     sendMessageToChannel(msg, `Generating streams for ${channel}...`);
     IPTV.getValidIPTVStreamsFromList(channel)
-      .then((listOfStreams) => IPTV.createMessageToSend(listOfStreams, null, channel))
+      .then((listOfStreams) => IPTV.createMessageToSend(listOfStreams, null, channel, null))
       .then((streams) => sendMessageToChannel(msg, streams));
   } else {
     sendMessageToChannel(msg, `Usage: !iptv (channel name)`);

@@ -153,9 +153,9 @@ const getValidIPTVStreamsFromList = async (channelName) => {
     .then((data) => _.take(_.uniqBy(data, 'stream'), 11));
 };
 
-const createMessageToSend = (listOfStreams, showName, channelName) => {
+const createMessageToSend = (listOfStreams, showName, channelName, roleToPrepend) => {
   if (listOfStreams && listOfStreams.length) {
-    let messageToSend = `>>> IPTV streams`;
+    let messageToSend = `>>> ${roleToPrepend ? roleToPrepend : ''} IPTV streams`;
     if (showName) {
       messageToSend += ` for **${showName}**`;
     }
@@ -174,18 +174,26 @@ const createMessageToSend = (listOfStreams, showName, channelName) => {
   }
 };
 
+const getRoleToPrepend = (discordChannel) => {
+  const OVERRIDES = require('@data/constants.json').overrides;
+  if (OVERRIDES?.kpopRole)
+    return discordChannel.guild.roles.cache.find((role) => role.name === OVERRIDES.kpopRole);
+  else return null;
+};
+
 const sendIPTVStreams = async (event, discordChannels) => {
   let sentPinnedTweet = false;
   for (const channel of event.channel) {
     try {
       const streams = await getValidIPTVStreamsFromList(channel);
-      const messageToSend = createMessageToSend(streams, event.show, channel);
       let tweet = '';
       if (event?.pinnedTweet) {
         tweet = await event.pinnedTweet();
       }
       console.log(`[IPTV] Sending ${event.show} on ${channel}`);
       for (const discordChannel of discordChannels) {
+        const role = getRoleToPrepend(discordChannel);
+        const messageToSend = createMessageToSend(streams, event.show, channel, role);
         if (tweet && !sentPinnedTweet) {
           discordChannel.send(tweet);
           sentPinnedTweet = true;
