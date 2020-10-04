@@ -82,9 +82,8 @@ class Livestream {
   };
 
   apiError = (platform, error) => {
-    console.log(
-      `${platform} API error. \t Error name: ${error.name} \t Error message: ${error.message}`
-    );
+    console.log(`${platform} API error.`);
+    console.log(JSON.stringify(error));
     return Promise.reject(error);
   };
 

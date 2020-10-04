@@ -181,23 +181,40 @@ const getRoleToPrepend = (discordChannel) => {
   else return null;
 };
 
+const handlePinnedTweet = async (event) => {
+  let isTweetError = false;
+  let tweet = '';
+  if (event?.pinnedTweet) {
+    try {
+      tweet = await event.pinnedTweet();
+    } catch {
+      isTweetError = true; // if we couldnt get the tweet, dont send it
+    }
+  }
+  return {
+    tweet,
+    isTweetError
+  };
+};
+
+const sendPinnedTweet = (discordChannels, tweetData) => {
+  if (tweetData?.tweet && !tweetData.isTweetError) {
+    discordChannels?.[0].send(tweetData.tweet);
+  }
+};
+
 const sendIPTVStreams = async (event, discordChannels) => {
-  let sentPinnedTweet = false;
+  let sentPinnedTweet = false; // only send the tweet once
   for (const channel of event.channel) {
     try {
       const streams = await getValidIPTVStreamsFromList(channel);
-      let tweet = '';
-      if (event?.pinnedTweet) {
-        tweet = await event.pinnedTweet();
-      }
+      const tweetData = await handlePinnedTweet(event);
       console.log(`[IPTV] Sending ${event.show} on ${channel}`);
+      !sentPinnedTweet && sendPinnedTweet(discordChannels, tweetData);
+      sentPinnedTweet = true;
       for (const discordChannel of discordChannels) {
         const role = getRoleToPrepend(discordChannel);
         const messageToSend = createMessageToSend(streams, event.show, channel, role);
-        if (tweet && !sentPinnedTweet) {
-          discordChannel.send(tweet);
-          sentPinnedTweet = true;
-        }
         discordChannel.send(messageToSend);
       }
     } catch (error) {
