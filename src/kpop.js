@@ -7,7 +7,7 @@ import moment from 'moment-timezone';
 
 const TIME_FORMAT = 'dddd h:mmA';
 const TIMEZONE = 'Asia/Seoul';
-const TEAMAQ_TWITTER_HANDLE = 'team_AQ2';
+const TEAMAQ_TWITTER_HANDLE = 'AQ_Updates';
 
 const pinnedTweet = async () => await getPinnedTweet(TEAMAQ_TWITTER_HANDLE);
 
