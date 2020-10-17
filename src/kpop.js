@@ -1,6 +1,7 @@
 import { getPinnedTweet, getTimeline } from '@root/twitter';
 
 import { IPTV } from '@root/iptv';
+import _ from 'lodash';
 import moment from 'moment-timezone';
 import { sendMessageToChannel } from '@root/util';
 
@@ -109,12 +110,14 @@ const onKpopCommand = async (msg) => {
   const timeline = await getTimeline(TEAMAQ_TWITTER_HANDLE);
   const tweets = filterForValidSchedule(timeline);
 
-  if (tweets && tweets.length) {
+  if (!_.isEmpty(tweets)) {
     for(const tweet of tweets) {
       sendMessageToChannel(msg, `https://twitter.com/${TEAMAQ_TWITTER_HANDLE}/status/${tweet.id_str}`);
     }
-  } else {
+  } else if (!_.isEmpty(teamAQTweetLink)) {
     sendMessageToChannel(msg, teamAQTweetLink);
+  } else {
+    sendMessageToChannel(msg, 'kpop is dead');
   }
 };
 
