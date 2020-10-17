@@ -120,13 +120,7 @@ const getKpopTweet = async () => {
 
 const onKpopCommand = async (msg) => {
   const tweets = await getKpopTweet();
-  if(_.isArray(tweets) && !_.isEmpty(tweets)) {
-    for(const tweet of tweets) {
-      sendMessageToChannel(msg, tweet);
-    }
-  } else {
-    sendMessageToChannel(msg, tweets);
-  }
+  sendMessageToChannel(msg, tweets);
 };
 
 export const Kpop = {
