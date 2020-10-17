@@ -95,12 +95,15 @@ const getMusicShowsForToday = () => {
 }
 
 const filterForValidSchedule = (tweets) => {
+  /* eslint-disable camelcase */
   const events = getMusicShowsForToday();
-  const mediaTweets = tweets.filter((tweet) => tweet?.entities?.media);
   return events.map((event) => {
     const musicShow = event.show.toLowerCase();
-    const schedule = mediaTweets.filter((tweet) => tweet.full_text.toLowerCase().includes(musicShow) && tweet.full_text.toLowerCase().includes('schedule'));
-    return schedule.map((event) => `https://twitter.com/${TEAMAQ_TWITTER_HANDLE}/status/${event.id_str}`);
+    return tweets.map((tweet) => {
+      if(tweet?.entities?.media && tweet?.full_text.toLowerCase().includes(musicShow) && tweet?.full_text.toLowerCase().includes('schedule')) {
+        return `https://twitter.com/${TEAMAQ_TWITTER_HANDLE}/status/${tweet.id_str}`
+      }
+    });
   }).flat();
 }
 
