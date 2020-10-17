@@ -100,7 +100,8 @@ const filterForValidSchedule = (tweets) => {
   return events.map((event) => {
     const musicShow = event.show.toLowerCase();
     return tweets.map((tweet) => {
-      if(tweet?.entities?.media && tweet?.full_text.toLowerCase().includes(musicShow) && tweet?.full_text.toLowerCase().includes('schedule')) {
+      const tweetText = tweet?.full_text.toLowerCase();
+      if(tweet?.entities?.media && tweetText.includes(musicShow) && tweetText.includes('schedule')) {
         return `https://twitter.com/${TEAMAQ_TWITTER_HANDLE}/status/${tweet.id_str}`
       }
     });
