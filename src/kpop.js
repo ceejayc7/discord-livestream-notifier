@@ -90,7 +90,7 @@ const parseIPTVCommand = (msg) => {
 };
 
 const getMusicShowsForToday = () => {
-  const today = moment.tz(moment.tz().unix(), TIME_FORMAT, TIMEZONE).format('dddd');
+  const today = moment.tz(TIMEZONE).format('dddd');
   return KPOP_SCHEDULE.filter((event) => event.day === today);
 }
 
