@@ -1,9 +1,8 @@
-import { decodeHTMLEntities, sendMessageToChannel } from '@root/util';
-import { getPinnedTweet, getSkpbTimeline, isTwitterProtected } from '@root/twitter';
+import { getPinnedTweet, getTimeline } from '@root/twitter';
 
 import { IPTV } from '@root/iptv';
-import _ from 'lodash';
 import moment from 'moment-timezone';
+import { sendMessageToChannel } from '@root/util';
 
 const TIME_FORMAT = 'dddd h:mmA';
 const TIMEZONE = 'Asia/Seoul';
@@ -75,20 +74,6 @@ const getRelativeTimeStart = (timestamp) => {
 
 const getTimeInKST = () => moment.tz(new Date(), 'Asia/Seoul').format('dddd h:mmA');
 
-const printSkpbKpopMessage = async (msg, tweets) => {
-  const isProtected = await isTwitterProtected();
-  for (const tweet of tweets) {
-    sendMessageToChannel(
-      msg,
-      `${tweet.showName}\n> PST: **${tweet.time.pst.time}** on ${tweet.time.pst.date}\n> EST: **${
-        tweet.time.est.time
-      }** on ${tweet.time.est.date}\n${
-        isProtected ? '```' + decodeHTMLEntities(tweet.text) + '```' : tweet.link
-      }`
-    );
-  }
-};
-
 const parseIPTVCommand = (msg) => {
   const { content } = msg;
   const index = content.indexOf(' ');
@@ -103,16 +88,33 @@ const parseIPTVCommand = (msg) => {
   }
 };
 
-const onKpopCommand = async (msg) => {
-  const skpbTimeline = await getSkpbTimeline();
-  const teamAQTweetLink = await getPinnedTweet(TEAMAQ_TWITTER_HANDLE);
+const getMusicShowsForToday = () => {
+  const today = moment.tz(moment.tz().unix(), 'dddd h:mmA', 'Asia/Seoul').format('dddd');
+  return KPOP_SCHEDULE.filter((event) => event.day === today);
+}
 
-  if (!_.isEmpty(skpbTimeline)) {
-    printSkpbKpopMessage(msg, skpbTimeline);
-  } else if (teamAQTweetLink) {
-    sendMessageToChannel(msg, teamAQTweetLink);
+const filterForValidSchedule = (tweets) => {
+  const events = getMusicShowsForToday();
+  const mediaTweets = tweets.filter((tweet) => tweet?.entities?.media);
+  return events.reduce((accum, event) => {
+    const musicShow = event.show.toLowerCase();
+    const schedule = mediaTweets.filter((tweet) => tweet.full_text.toLowerCase().includes(musicShow) && tweet.full_text.toLowerCase().includes('schedule'));
+    accum.push(schedule);
+    return accum;
+  }, []).flat();
+}
+
+const onKpopCommand = async (msg) => {
+  const teamAQTweetLink = await getPinnedTweet(TEAMAQ_TWITTER_HANDLE);
+  const timeline = await getTimeline(TEAMAQ_TWITTER_HANDLE);
+  const tweets = filterForValidSchedule(timeline);
+
+  if (tweets && tweets.length) {
+    for(const tweet of tweets) {
+      sendMessageToChannel(msg, `https://twitter.com/${TEAMAQ_TWITTER_HANDLE}/status/${tweet.id_str}`);
+    }
   } else {
-    sendMessageToChannel(msg, 'kpop is dead');
+    sendMessageToChannel(msg, teamAQTweetLink);
   }
 };
 
