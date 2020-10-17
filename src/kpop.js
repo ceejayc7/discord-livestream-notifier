@@ -9,7 +9,7 @@ const TIME_FORMAT = 'dddd h:mmA';
 const TIMEZONE = 'Asia/Seoul';
 const TEAMAQ_TWITTER_HANDLE = 'AQ_Updates';
 
-const pinnedTweet = async () => await getPinnedTweet(TEAMAQ_TWITTER_HANDLE);
+const pinnedTweet = async () => await getKpopTweet();
 
 export const KPOP_SCHEDULE = [
   {
@@ -97,27 +97,35 @@ const getMusicShowsForToday = () => {
 const filterForValidSchedule = (tweets) => {
   const events = getMusicShowsForToday();
   const mediaTweets = tweets.filter((tweet) => tweet?.entities?.media);
-  return events.reduce((accum, event) => {
+  return events.map((event) => {
     const musicShow = event.show.toLowerCase();
     const schedule = mediaTweets.filter((tweet) => tweet.full_text.toLowerCase().includes(musicShow) && tweet.full_text.toLowerCase().includes('schedule'));
-    accum.push(schedule);
-    return accum;
-  }, []).flat();
+    return schedule.map((event) => `https://twitter.com/${TEAMAQ_TWITTER_HANDLE}/status/${event.id_str}`);
+  }).flat();
 }
 
-const onKpopCommand = async (msg) => {
+const getKpopTweet = async () => {
   const teamAQTweetLink = await getPinnedTweet(TEAMAQ_TWITTER_HANDLE);
   const timeline = await getTimeline(TEAMAQ_TWITTER_HANDLE);
   const tweets = filterForValidSchedule(timeline);
 
   if (!_.isEmpty(tweets)) {
-    for(const tweet of tweets) {
-      sendMessageToChannel(msg, `https://twitter.com/${TEAMAQ_TWITTER_HANDLE}/status/${tweet.id_str}`);
-    }
+    return tweets;
   } else if (!_.isEmpty(teamAQTweetLink)) {
-    sendMessageToChannel(msg, teamAQTweetLink);
+    return teamAQTweetLink;
   } else {
-    sendMessageToChannel(msg, 'kpop is dead');
+    return 'kpop is dead';
+  }
+}
+
+const onKpopCommand = async (msg) => {
+  const tweets = await getKpopTweet();
+  if(_.isArray(tweets) && !_.isEmpty(tweets)) {
+    for(const tweet of tweets) {
+      sendMessageToChannel(msg, tweet);
+    }
+  } else {
+    sendMessageToChannel(msg, tweets);
   }
 };
 

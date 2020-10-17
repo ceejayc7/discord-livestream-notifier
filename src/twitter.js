@@ -6,9 +6,6 @@ import { sendMessageToChannel } from '@root/util';
 const CONSTANTS = require('@data/constants.json').tokens;
 const Twitter = require('twitter');
 
-// Regex
-const DATE_REGEX = /(Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)\s+\d{2}\,\s+\d{4}/; // eslint-disable-line
-
 let client;
 
 if (CONSTANTS?.twitter) {
