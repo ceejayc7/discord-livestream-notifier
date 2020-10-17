@@ -186,7 +186,7 @@ const handlePinnedTweet = async (event) => {
   let tweet = '';
   if (event?.pinnedTweet) {
     try {
-      tweet = await event.pinnedTweet();
+      tweet = await event.pinnedTweet([event]);
     } catch {
       isTweetError = true; // if we couldnt get the tweet, dont send it
     }

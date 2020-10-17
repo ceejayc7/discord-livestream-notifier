@@ -9,7 +9,7 @@ const TIME_FORMAT = 'dddd h:mmA';
 const TIMEZONE = 'Asia/Seoul';
 const TEAMAQ_TWITTER_HANDLE = 'AQ_Updates';
 
-const pinnedTweet = async () => await getKpopTweet();
+const pinnedTweet = async (events) => await getKpopTweet(events);
 
 export const KPOP_SCHEDULE = [
   {
@@ -94,10 +94,9 @@ const getMusicShowsForToday = () => {
   return KPOP_SCHEDULE.filter((event) => event.day === today);
 }
 
-const filterForValidSchedule = (tweets) => {
+const filterForValidSchedule = (tweets, events) => {
   /* eslint-disable camelcase */
-  const events = getMusicShowsForToday();
-  return events.map((event) => {
+  const schedule = events.map((event) => {
     const musicShow = event.show.toLowerCase();
     return tweets.map((tweet) => {
       const tweetText = tweet?.full_text.toLowerCase();
@@ -105,13 +104,14 @@ const filterForValidSchedule = (tweets) => {
         return `https://twitter.com/${TEAMAQ_TWITTER_HANDLE}/status/${tweet.id_str}`
       }
     });
-  }).flat();
+  });
+  return _.compact(_.flatten(schedule));
 }
 
-const getKpopTweet = async () => {
+const getKpopTweet = async (events = getMusicShowsForToday()) => {
   const teamAQTweetLink = await getPinnedTweet(TEAMAQ_TWITTER_HANDLE);
   const timeline = await getTimeline(TEAMAQ_TWITTER_HANDLE);
-  const tweets = filterForValidSchedule(timeline);
+  const tweets = filterForValidSchedule(timeline, events);
 
   if (!_.isEmpty(tweets)) {
     return tweets;
