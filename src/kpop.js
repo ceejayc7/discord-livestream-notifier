@@ -28,7 +28,7 @@ export const KPOP_SCHEDULE = [
   },
   {
     day: 'Thursday',
-    show: 'M Countdown',
+    show: 'MCountdown',
     channel: ['Mnet'],
     time: () => getRelativeTimeStart('Thursday 6:00PM'),
     pinnedTweet
