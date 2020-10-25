@@ -57,7 +57,7 @@ export const KPOP_SCHEDULE = [
     day: 'Sunday',
     show: 'Inkigayo',
     channel: ['SBS'],
-    time: () => getRelativeTimeStart('Sunday 3:50PM'),
+    time: () => getRelativeTimeStart('Sunday 3:40PM'),
     pinnedTweet
   }
 ];
