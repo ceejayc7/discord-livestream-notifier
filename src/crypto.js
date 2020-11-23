@@ -16,7 +16,7 @@ const getMessageToSend = (coin, prices) => {
     else {
       rate = price.rate;
     }
-    message += `> ${coin}/${price.asset_id_quote}: ${rate} \n`;
+    message += `> ${coin}/${price.asset_id_quote}: **${rate}** \n`;
   }
   return message;
 }
