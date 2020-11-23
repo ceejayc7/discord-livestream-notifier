@@ -18,6 +18,7 @@ import { Lotto } from '@casino/lotto';
 import { MoneyManager } from '@casino/moneymanager';
 import { Slots } from '@casino/slots';
 import _ from 'lodash';
+import { getCryptocurrencyPrice } from '@root/crypto';
 
 const CONSTANTS = require('@data/constants.json').serverConfig;
 
@@ -79,6 +80,10 @@ class Bot {
         return;
       } else if (doesMsgContainInstagram(msg)) {
         isKpopChannel(msg) && sendInstagramEmbeds(msg);
+        return;
+      }
+      else if (_.startsWith(msg.content, '$')) {
+        getCryptocurrencyPrice(msg);
         return;
       }
 
