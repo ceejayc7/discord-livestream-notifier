@@ -11,7 +11,10 @@ const getMessageToSend = (coin, prices) => {
   
   for(const price of prices) {
     if(price.asset_id_quote === "USD") {
-      rate = `$${_.round(price.rate,2)}`;
+      rate = price.rate.toLocaleString('en-US', {
+        style: 'currency',
+        currency: 'USD',
+      });
     }
     else {
       rate = price.rate;
