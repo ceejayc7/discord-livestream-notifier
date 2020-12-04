@@ -21,7 +21,7 @@ const getMessageToSend = (coin, prices) => {
     }
     message += `> ${coin}/${price.asset_id_quote}: **${rate}** \n`;
   }
-  return message;
+  return message.slice(0,-1);
 }
 
 export const getCryptocurrencyPrice = async (msg) => {
