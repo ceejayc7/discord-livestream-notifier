@@ -40,12 +40,12 @@ export const KPOP_SCHEDULE = [
     time: () => getRelativeTimeStart('Friday 5:00PM'),
     pinnedTweet
   },
-  {
+  /* {
     day: 'Friday',
     show: 'Simply Kpop',
     channel: ['아리랑 TV'],
     time: () => getRelativeTimeStart('Saturday 1:00PM')
-  },
+  },*/
   {
     day: 'Saturday',
     show: 'Music Core',
