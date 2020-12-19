@@ -98,6 +98,10 @@ export const BOT_COMMANDS = {
   KST: {
     command: '!kst',
     showOnHelp: false
+  },
+  IRCRESET: {
+    command: '!restart',
+    showOnHelp: false
   }
 };
 export const SLOTS_MONEY = {

@@ -18,9 +18,11 @@ import { Lotto } from '@casino/lotto';
 import { MoneyManager } from '@casino/moneymanager';
 import { Slots } from '@casino/slots';
 import _ from 'lodash';
+import { exec } from 'child_process';
 import { getCryptocurrencyPrice } from '@root/crypto';
 
 const CONSTANTS = require('@data/constants.json').serverConfig;
+const OVERRIDES = require('@data/constants.json').overrides;
 
 class Bot {
   constructor(loginToken, serverName) {
@@ -136,9 +138,11 @@ class Bot {
         case BOT_COMMANDS.KST.command:
           sendMessageToChannel(msg, Kpop.getTimeInKST());
           break;
-        /* case BOT_COMMANDS.HELP.command:
-          printHelp(msg);
-          break; */
+        case BOT_COMMANDS.IRCRESET.command:
+          if(OVERRIDES?.shellCommand) {
+            exec(OVERRIDES.shellCommand);
+          }
+          break;
       }
     });
   };
