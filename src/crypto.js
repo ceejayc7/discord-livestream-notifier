@@ -15,6 +15,8 @@ const getMessageToSend = (coin, prices) => {
         style: 'currency',
         currency: 'USD'
       });
+    } else if (price.asset_id_quote === 'BTC') {
+      rate = price.rate.toFixed(8);
     } else {
       rate = price.rate;
     }
