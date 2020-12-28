@@ -20,6 +20,7 @@ import { Slots } from '@casino/slots';
 import _ from 'lodash';
 import { exec } from 'child_process';
 import { getCryptocurrencyPrice } from '@root/crypto';
+import { sendCosplayTweet } from '@root/cosplay';
 
 const CONSTANTS = require('@data/constants.json').serverConfig;
 const OVERRIDES = require('@data/constants.json').overrides;
@@ -141,6 +142,9 @@ class Bot {
           if (OVERRIDES?.shellCommand) {
             exec(OVERRIDES.shellCommand);
           }
+          break;
+        case BOT_COMMANDS.COSPLAY.command:
+          sendCosplayTweet(msg);
           break;
       }
     });

@@ -102,6 +102,10 @@ export const BOT_COMMANDS = {
   IRCRESET: {
     command: '!restart',
     showOnHelp: false
+  },
+  COSPLAY: {
+    command: '!cosplay',
+    showOnHelp: false
   }
 };
 export const SLOTS_MONEY = {

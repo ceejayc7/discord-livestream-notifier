@@ -167,4 +167,3 @@ export const getTimeline = async (username) => {
     });
   });
 };
-
