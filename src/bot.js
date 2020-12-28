@@ -83,8 +83,7 @@ class Bot {
       } else if (doesMsgContainInstagram(msg)) {
         isKpopChannel(msg) && sendInstagramEmbeds(msg);
         return;
-      }
-      else if (_.startsWith(msg.content, '$')) {
+      } else if (_.startsWith(msg.content, '$')) {
         getCryptocurrencyPrice(msg);
         return;
       }
@@ -139,7 +138,7 @@ class Bot {
           sendMessageToChannel(msg, Kpop.getTimeInKST());
           break;
         case BOT_COMMANDS.IRCRESET.command:
-          if(OVERRIDES?.shellCommand) {
+          if (OVERRIDES?.shellCommand) {
             exec(OVERRIDES.shellCommand);
           }
           break;

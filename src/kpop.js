@@ -92,7 +92,7 @@ const parseIPTVCommand = (msg) => {
 const getMusicShowsForToday = () => {
   const today = moment.tz(TIMEZONE).format('dddd');
   return KPOP_SCHEDULE.filter((event) => event.day === today);
-}
+};
 
 const filterForValidSchedule = (tweets, events) => {
   /* eslint-disable camelcase */
@@ -100,13 +100,17 @@ const filterForValidSchedule = (tweets, events) => {
     const musicShow = event.show.toLowerCase();
     return tweets.map((tweet) => {
       const tweetText = tweet?.full_text.toLowerCase();
-      if(tweet?.entities?.media && tweetText.includes(musicShow) && tweetText.includes('schedule')) {
-        return `https://twitter.com/${TEAMAQ_TWITTER_HANDLE}/status/${tweet.id_str}`
+      if (
+        tweet?.entities?.media &&
+        tweetText.includes(musicShow) &&
+        tweetText.includes('schedule')
+      ) {
+        return `https://twitter.com/${TEAMAQ_TWITTER_HANDLE}/status/${tweet.id_str}`;
       }
     });
   });
   return _.compact(_.flatten(schedule));
-}
+};
 
 const getKpopTweet = async (events = getMusicShowsForToday()) => {
   const teamAQTweetLink = await getPinnedTweet(TEAMAQ_TWITTER_HANDLE);
@@ -120,7 +124,7 @@ const getKpopTweet = async (events = getMusicShowsForToday()) => {
   } else {
     return 'kpop is dead';
   }
-}
+};
 
 const onKpopCommand = async (msg) => {
   const tweets = await getKpopTweet();

@@ -52,6 +52,7 @@
     "eslint-config-google": "0.14.0",
     "eslint-config-prettier": "6.11.0",
     "eslint-watch": "7.0.0",
-    "npm-force-resolutions": "0.0.3"
+    "npm-force-resolutions": "0.0.3",
+    "prettier": "2.2.1"
   }
 }
