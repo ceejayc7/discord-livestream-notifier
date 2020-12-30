@@ -106,6 +106,10 @@ export const BOT_COMMANDS = {
   COSPLAY: {
     command: '!cosplay',
     showOnHelp: false
+  },
+  TRIVIA: {
+    command: '!trivia',
+    showOnHelp: false
   }
 };
 export const SLOTS_MONEY = {

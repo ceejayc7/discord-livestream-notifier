@@ -17,6 +17,7 @@ import { Kpop } from '@root/kpop';
 import { Lotto } from '@casino/lotto';
 import { MoneyManager } from '@casino/moneymanager';
 import { Slots } from '@casino/slots';
+import TriviaManager from '@casino/triviamanager';
 import _ from 'lodash';
 import { exec } from 'child_process';
 import { getCryptocurrencyPrice } from '@root/crypto';
@@ -32,6 +33,7 @@ class Bot {
     this.loginToken = loginToken;
     this.blackjack = new Blackjack();
     this.serverName = serverName;
+    this.triviaManager = new TriviaManager();
   }
 
   initializeDiscordClient = () => {
@@ -145,6 +147,9 @@ class Bot {
           break;
         case BOT_COMMANDS.COSPLAY.command:
           sendCosplayTweet(msg);
+          break;
+        case BOT_COMMANDS.TRIVIA.command:
+          isCasinoChannel(msg) && this.triviaManager.createNewTrivia(msg, this.client);
           break;
       }
     });
