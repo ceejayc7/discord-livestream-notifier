@@ -18,7 +18,8 @@ class Trivia {
       hintTimer: null,
       questions: [],
       currentReward: 0,
-      currentDifficulty: null
+      currentDifficulty: null,
+      winners: {}
     };
     this.event = event;
     this.init();
@@ -44,8 +45,26 @@ class Trivia {
     this.gameState.triviaTimer = setTimeout(this.stopGame.bind(this), 120000);
   }
 
+  sendSessionStats() {
+    if (_.isEmpty(this.gameState.winners)) {
+      sendMessageToChannel(this.gameState.msg, `${this.gameState.msg.member.user} bro?`);
+      return;
+    }
+
+    const stats = new Discord.MessageEmbed().setTitle('Results').setColor('#ccffcc');
+    for (const user in this.gameState.winners) {
+      if (user in this.gameState.winners) {
+        stats.addField(
+          user,
+          `${this.gameState.winners[user].roundsWon} answered correctly and won ${this.gameState.winners[user].bitcoinWon} bitcoin`
+        );
+      }
+    }
+    sendMessageToChannel(this.gameState.msg, stats);
+  }
+
   stopGame() {
-    sendMessageToChannel(this.gameState.msg, 'Ending trivia due to inactivity');
+    this.sendSessionStats();
     this.event.emit('deleteTrivia', this.gameState.msg);
     this.removeChannelListener();
     this.gameState.isGameStarted = false;
@@ -53,6 +72,25 @@ class Trivia {
     this.gameState.currentQuestion = null;
     this.clearQuestionTimer();
     this.gameState.triviaTimer = null;
+    this.gameState.winners = {};
+  }
+
+  handleWinner(msg) {
+    const username = msg.member.displayName;
+    if (this.gameState.winners?.[username]) {
+      const roundsWon = this.gameState.winners[username].roundsWon + 1;
+      const bitcoinWon = this.gameState.winners[username].bitcoinWon + this.gameState.currentReward;
+
+      this.gameState.winners[username] = {
+        roundsWon,
+        bitcoinWon
+      };
+    } else {
+      this.gameState.winners[username] = {
+        roundsWon: 1,
+        bitcoinWon: this.gameState.currentReward
+      };
+    }
   }
 
   onMessage(msg) {
@@ -66,6 +104,7 @@ class Trivia {
       const answer = this.decodeCurrentQuestion('correct_answer');
       if (msg.content.toLowerCase() === answer.toLowerCase()) {
         sendMessageToChannel(msg, `${msg.member.user} got it! The answer was: **${answer}**`);
+        this.handleWinner(msg);
         MoneyManager.addMoney(msg, this.currentReward);
         this.sendNextQuestion();
       }
@@ -92,16 +131,16 @@ class Trivia {
   getEmbedColorAndSetReward() {
     switch (this.decodeCurrentQuestion('difficulty')) {
       case 'easy':
-        this.currentReward = 10;
+        this.gameState.currentReward = 10;
         return '#66d9ff';
       case 'medium':
-        this.currentReward = 50;
+        this.gameState.currentReward = 50;
         return '#009933';
       case 'hard':
-        this.currentReward = 100;
+        this.gameState.currentReward = 100;
         return '#ff3300';
       default:
-        this.currentReward = 10;
+        this.gameState.currentReward = 10;
         return '#ffffff';
     }
   }
@@ -137,7 +176,6 @@ class Trivia {
         hidden += '-';
       }
     }
-
     sendMessageToChannel(this.gameState.msg, `\`\`\`Hint: ${hidden}\`\`\``);
   }
 
