@@ -1,5 +1,6 @@
 import Discord from 'discord.js';
 import { MoneyManager } from '@casino/moneymanager';
+import _ from 'lodash';
 import request from 'request-promise';
 import { sendMessageToChannel } from '@root/util';
 
@@ -14,6 +15,7 @@ class Trivia {
       isGameStarted: false,
       questionTimer: null,
       triviaTimer: null,
+      hintTimer: null,
       questions: [],
       currentReward: 0,
       currentDifficulty: null
@@ -116,13 +118,39 @@ class Trivia {
       .setDescription(this.decodeCurrentQuestion('category'));
   }
 
+  getRevealedCharacters() {
+    const answer = this.decodeCurrentQuestion('correct_answer').replace(' ', '');
+    const length = Math.ceil(answer.length / 4);
+    return _.sampleSize(answer, length);
+  }
+
+  hintCallback() {
+    const answer = this.decodeCurrentQuestion('correct_answer');
+    const revealed = this.getRevealedCharacters();
+    let hidden = '';
+    for (const char of answer) {
+      if (char === ' ') {
+        hidden += ' ';
+      } else if (revealed.includes(char)) {
+        hidden += char;
+      } else {
+        hidden += '-';
+      }
+    }
+
+    sendMessageToChannel(this.gameState.msg, `\`\`\`Hint: ${hidden}\`\`\``);
+  }
+
   startQuestionTimer() {
-    this.gameState.questionTimer = setTimeout(this.questionTimerCallback.bind(this), 60000);
+    this.gameState.questionTimer = setTimeout(this.questionTimerCallback.bind(this), 45000);
+    this.gameState.hintTimer = setTimeout(this.hintCallback.bind(this), 20000);
   }
 
   clearQuestionTimer() {
     clearTimeout(this.gameState.questionTimer);
     this.gameState.questionTimer = null;
+    clearTimeout(this.gameState.hintTimer);
+    this.gameState.hintTimer = null;
   }
 
   questionTimerCallback() {
