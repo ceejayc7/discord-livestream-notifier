@@ -18,6 +18,7 @@ class Trivia {
       hintTimer: null,
       questions: [],
       currentReward: 0,
+      currentQuestion: null,
       currentDifficulty: null,
       winners: {}
     };
@@ -36,6 +37,7 @@ class Trivia {
   }
 
   completedQuestion() {
+    this.gameState.currentQuestion = null;
     this.clearQuestionTimer();
     this.gameState.questions.shift();
   }
