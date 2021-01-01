@@ -107,7 +107,7 @@ class Trivia {
       if (msg.content.toLowerCase() === answer.toLowerCase()) {
         sendMessageToChannel(msg, `${msg.member.user} got it! The answer was: **${answer}**`);
         this.handleWinner(msg);
-        MoneyManager.addMoney(msg, this.currentReward);
+        MoneyManager.addMoney(msg, this.gameState.currentReward);
         this.sendNextQuestion();
       }
     }
