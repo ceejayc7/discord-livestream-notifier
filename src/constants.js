@@ -110,6 +110,10 @@ export const BOT_COMMANDS = {
   TRIVIA: {
     command: '!trivia',
     showOnHelp: false
+  },
+  STOP: {
+    command: '!stop',
+    showOnHelp: false
   }
 };
 export const SLOTS_MONEY = {

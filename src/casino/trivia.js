@@ -1,3 +1,4 @@
+import { BOT_COMMANDS } from '@root/constants';
 import Discord from 'discord.js';
 import { MoneyManager } from '@casino/moneymanager';
 import _ from 'lodash';
@@ -96,6 +97,11 @@ class Trivia {
   }
 
   onMessage(msg) {
+    if (this.gameState.isGameStarted && msg.content === BOT_COMMANDS.STOP.command) {
+      clearTimeout(this.gameState.triviaTimer);
+      this.stopGame();
+      return;
+    }
     if (
       msg.channel.name === this.gameState.channel &&
       msg.member.user.bot === false &&
@@ -127,7 +133,7 @@ class Trivia {
 
   sendNextQuestion() {
     this.completedQuestion();
-    setTimeout(this.sendQuestion.bind(this), 5000);
+    setTimeout(this.sendQuestion.bind(this), 10000);
   }
 
   getEmbedColorAndSetReward() {
@@ -148,10 +154,7 @@ class Trivia {
   }
 
   createMessageEmbed() {
-    let question = this.decodeCurrentQuestion('question');
-    if (this.decodeCurrentQuestion('type') === 'boolean') {
-      question = `[True or False] ${question}`;
-    }
+    const question = this.decodeCurrentQuestion('question');
     const color = this.getEmbedColorAndSetReward();
     return new Discord.MessageEmbed()
       .setColor(color)
@@ -203,11 +206,26 @@ class Trivia {
     }
   }
 
-  async sendQuestion() {
+  async setQuestion() {
     if (this.gameState.questions.length === 0) {
       await this.fetchQuestions();
     }
     this.gameState.currentQuestion = this.gameState.questions[0];
+    if (this.decodeCurrentQuestion('type') === 'boolean') {
+      this.gameState.currentQuestion = null;
+      this.gameState.questions.shift();
+      this.setQuestion();
+    }
+  }
+
+  async sendQuestion() {
+    if (!this.gameState.isGameStarted) {
+      return;
+    }
+    if (this.gameState.questions.length === 0) {
+      await this.fetchQuestions();
+    }
+    await this.setQuestion();
     const question = this.createMessageEmbed();
     sendMessageToChannel(this.gameState.msg, question);
     // console.log(this.decodeCurrentQuestion('correct_answer'));
