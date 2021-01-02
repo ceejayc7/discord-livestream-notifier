@@ -68,6 +68,7 @@ const removeMoney = (msg, cost) => {
 };
 
 const addMoney = (msg, cost) => {
+  Database.initializeUser(msg.channel.guild.name, msg.author.username);
   const currentMoney = getUsersMoney(msg);
   Database.writeData(getUserKey(msg), currentMoney + cost);
 };
