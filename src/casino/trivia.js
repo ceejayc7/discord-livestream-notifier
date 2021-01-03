@@ -6,6 +6,7 @@ import request from 'request-promise';
 import { sendMessageToChannel } from '@root/util';
 
 const TRIVIA_API = 'https://opentdb.com/api.php?amount=25&encode=url3986';
+const TOKEN_API = 'https://opentdb.com/api_token.php?command=request';
 
 class Trivia {
   constructor(msg, client, event) {
@@ -21,13 +22,15 @@ class Trivia {
       currentReward: 0,
       currentQuestion: null,
       currentDifficulty: null,
-      winners: {}
+      winners: {},
+      token: null
     };
     this.event = event;
     this.init();
   }
 
   async init() {
+    await this.fetchToken();
     const wasUpdated = await this.fetchQuestions();
     if (wasUpdated) {
       this.gameState.isGameStarted = true;
@@ -211,19 +214,23 @@ class Trivia {
       await this.fetchQuestions();
     }
     this.gameState.currentQuestion = this.gameState.questions[0];
-    if (this.decodeCurrentQuestion('type') === 'boolean') {
-      this.gameState.currentQuestion = null;
+
+    while (
+      this.decodeCurrentQuestion('type') === 'boolean' ||
+      this.decodeCurrentQuestion('question').toLowerCase().includes('of the following') ||
+      this.decodeCurrentQuestion('question').toLowerCase().includes('which of these')
+    ) {
       this.gameState.questions.shift();
-      this.setQuestion();
+      if (this.gameState.questions.length === 0) {
+        await this.fetchQuestions();
+      }
+      this.gameState.currentQuestion = this.gameState.questions[0];
     }
   }
 
   async sendQuestion() {
     if (!this.gameState.isGameStarted) {
       return;
-    }
-    if (this.gameState.questions.length === 0) {
-      await this.fetchQuestions();
     }
     await this.setQuestion();
     const question = this.createMessageEmbed();
@@ -232,23 +239,34 @@ class Trivia {
     this.startQuestionTimer();
   }
 
+  async fetchToken() {
+    const response = await this.networkRequest(TOKEN_API);
+    if (response && response?.token) {
+      this.gameState.token = response.token;
+    }
+  }
+
   async fetchQuestions() {
+    const response = await this.networkRequest(`${TRIVIA_API}&token=${this.gameState.token}`);
+    if (response && response?.results) {
+      this.gameState.questions = response.results;
+      return true;
+    }
+    return false;
+  }
+
+  async networkRequest(url) {
     const options = {
-      url: TRIVIA_API,
+      url,
       json: true
     };
 
     try {
-      const response = await request(options);
-      if (response && response?.results) {
-        this.gameState.questions = response.results;
-        return true;
-      }
+      return await request(options);
     } catch (err) {
-      console.log('Unable to fetch questions from trivia API');
+      console.log('Unable to run network request');
       console.log(JSON.stringify(err));
     }
-    return false;
   }
 }
 
