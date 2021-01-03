@@ -99,11 +99,14 @@ const filterForValidSchedule = (tweets, events) => {
   const schedule = events.map((event) => {
     const musicShow = event.show.toLowerCase();
     return tweets.map((tweet) => {
+      const createdTime = moment(tweet?.created_at, 'dd MMM DD HH:mm:ss ZZ YYYY', 'en');
+      const limit = moment(new Date()).subtract(5, 'days');
       const tweetText = tweet?.full_text.toLowerCase();
       if (
         tweet?.entities?.media &&
         tweetText.includes(musicShow) &&
-        tweetText.includes('schedule')
+        tweetText.includes('schedule') &&
+        createdTime.isAfter(limit)
       ) {
         return `https://twitter.com/${TEAMAQ_TWITTER_HANDLE}/status/${tweet.id_str}`;
       }

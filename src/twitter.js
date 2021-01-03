@@ -154,7 +154,7 @@ export const getTimeline = async (username) => {
     include_rts: false,
     exclude_replies: true,
     tweet_mode: 'extended',
-    count: 50
+    count: 200
   };
 
   return new Promise((resolve, reject) => {
