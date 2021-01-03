@@ -23,6 +23,7 @@ class Trivia {
       currentQuestion: null,
       currentDifficulty: null,
       winners: {},
+      questionNumber: 0,
       token: null
     };
     this.event = event;
@@ -161,7 +162,7 @@ class Trivia {
     const color = this.getEmbedColorAndSetReward();
     return new Discord.MessageEmbed()
       .setColor(color)
-      .setTitle(question)
+      .setTitle(`${this.gameState.questionNumber}. ${question}`)
       .setDescription(this.decodeCurrentQuestion('category'));
   }
 
@@ -226,6 +227,7 @@ class Trivia {
       }
       this.gameState.currentQuestion = this.gameState.questions[0];
     }
+    this.gameState.questionNumber = this.gameState.questionNumber + 1;
   }
 
   async sendQuestion() {
