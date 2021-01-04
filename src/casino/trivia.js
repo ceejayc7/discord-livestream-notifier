@@ -7,6 +7,7 @@ import { sendMessageToChannel } from '@root/util';
 
 const TRIVIA_API = 'https://opentdb.com/api.php?amount=25&encode=url3986';
 const TOKEN_API = 'https://opentdb.com/api_token.php?command=request';
+const DATE_REGEX = /(Jan(uary)?|Feb(ruary)?|Mar(ch)?|Apr(il)?|May|Jun(e)?|Jul(y)?|Aug(ust)?|Sep(tember)?|Oct(ober)?|Nov(ember)?|Dec(ember)?)\s+\d{1,2},\s+\d{4}/g;
 
 class Trivia {
   constructor(msg, client, event) {
@@ -114,7 +115,7 @@ class Trivia {
     ) {
       this.handleTriviaTimer();
       const answer = this.decodeCurrentQuestion('correct_answer');
-      if (msg.content.toLowerCase() === answer.toLowerCase()) {
+      if (msg.content.toLowerCase() === answer.toLowerCase().trim()) {
         sendMessageToChannel(msg, `${msg.member.user} got it! The answer was: **${answer}**`);
         this.handleWinner(msg);
         MoneyManager.addMoney(msg, this.gameState.currentReward);
@@ -219,7 +220,10 @@ class Trivia {
     while (
       this.decodeCurrentQuestion('type') === 'boolean' ||
       this.decodeCurrentQuestion('question').toLowerCase().includes('of the following') ||
-      this.decodeCurrentQuestion('question').toLowerCase().includes('which of these')
+      this.decodeCurrentQuestion('question').toLowerCase().includes('which of these') ||
+      this.decodeCurrentQuestion('question').toLowerCase().includes('which one of these') ||
+      this.decodeCurrentQuestion('question').toLowerCase().includes('magic: the gathering') ||
+      DATE_REGEX.test(this.decodeCurrentQuestion('correct_answer'))
     ) {
       this.gameState.questions.shift();
       if (this.gameState.questions.length === 0) {
