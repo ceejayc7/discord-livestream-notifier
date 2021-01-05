@@ -5,23 +5,45 @@ import { sendMessageToChannel } from '@root/util';
 const endpoint = 'https://rest.coinapi.io/v1/exchangerate';
 const CONSTANTS = require('@data/constants.json').tokens;
 
-const getMessageToSend = (coin, prices) => {
-  let message = '';
+const getPriceObject = (prices, pair) => {
+  return _.find(prices, (price) => price.asset_id_quote === pair);
+};
+
+const formatMessage = (price, coin) => {
+  if (_.isEmpty(price)) {
+    return '';
+  }
   let rate = null;
 
-  for (const price of prices) {
-    if (price.asset_id_quote === 'USD') {
-      rate = price.rate.toLocaleString('en-US', {
-        style: 'currency',
-        currency: 'USD'
-      });
-    } else if (price.asset_id_quote === 'BTC') {
+  switch (price.asset_id_quote) {
+    case 'USD':
+      if (price.rate < 0.1) {
+        rate = `$${price.rate}`;
+      } else {
+        rate = price.rate.toLocaleString('en-US', {
+          style: 'currency',
+          currency: 'USD'
+        });
+      }
+      break;
+    case 'BTC':
       rate = price.rate.toFixed(8);
-    } else {
+      break;
+    default:
       rate = price.rate;
-    }
-    message += `> ${coin}/${price.asset_id_quote}: **${rate}** \n`;
+      break;
   }
+  return `> ${coin}/${price.asset_id_quote}: **${rate}** \n`;
+};
+
+const getMessageToSend = (coin, prices) => {
+  let message = '';
+  const usdPrice = getPriceObject(prices, 'USD');
+  const btcPrice = getPriceObject(prices, 'BTC');
+
+  message += formatMessage(usdPrice, coin);
+  message += formatMessage(btcPrice, coin);
+
   return message.slice(0, -1);
 };
 
