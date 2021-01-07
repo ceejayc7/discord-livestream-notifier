@@ -1,5 +1,5 @@
 import { EventEmitter } from 'events';
-import Trivia from '@casino/trivia';
+import Trivia from '@casino/trivia/trivia';
 import { sendMessageToChannel } from '@root/util';
 
 class TriviaManager {

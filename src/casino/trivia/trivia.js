@@ -2,12 +2,8 @@ import { BOT_COMMANDS } from '@root/constants';
 import Discord from 'discord.js';
 import { MoneyManager } from '@casino/moneymanager';
 import _ from 'lodash';
-import request from 'request-promise';
+import { getQuestions } from '@casino/trivia/triviaquestions';
 import { sendMessageToChannel } from '@root/util';
-
-const TRIVIA_API = 'https://opentdb.com/api.php?amount=25&encode=url3986';
-const TOKEN_API = 'https://opentdb.com/api_token.php?command=request';
-const DATE_REGEX = /(Jan(uary)?|Feb(ruary)?|Mar(ch)?|Apr(il)?|May|Jun(e)?|Jul(y)?|Aug(ust)?|Sep(tember)?|Oct(ober)?|Nov(ember)?|Dec(ember)?)\s+\d{1,2},\s+\d{4}/g;
 
 class Trivia {
   constructor(msg, client, event) {
@@ -25,14 +21,14 @@ class Trivia {
       currentDifficulty: null,
       winners: {},
       questionNumber: 0,
-      token: null
+      token: null,
+      color: null
     };
     this.event = event;
     this.init();
   }
 
   async init() {
-    await this.fetchToken();
     const wasUpdated = await this.fetchQuestions();
     if (wasUpdated) {
       this.gameState.isGameStarted = true;
@@ -114,7 +110,7 @@ class Trivia {
       this.gameState.currentQuestion
     ) {
       this.handleTriviaTimer();
-      const answer = this.decodeCurrentQuestion('correct_answer');
+      const answer = this.gameState.currentQuestion.correct_answer;
       if (msg.content.toLowerCase() === answer.toLowerCase().trim()) {
         sendMessageToChannel(msg, `${msg.member.user} got it! The answer was: **${answer}**`);
         this.handleWinner(msg);
@@ -132,49 +128,49 @@ class Trivia {
     this.gameState.client.off('message', this.onMessage);
   }
 
-  decodeCurrentQuestion(key) {
-    return decodeURIComponent(this.gameState.currentQuestion[key]);
-  }
-
   sendNextQuestion() {
     this.completedQuestion();
     setTimeout(this.sendQuestion.bind(this), 10000);
   }
 
-  getEmbedColorAndSetReward() {
-    switch (this.decodeCurrentQuestion('difficulty')) {
+  setEmbedColorAndSetReward() {
+    switch (this.gameState.currentQuestion.difficulty) {
       case 'easy':
-        this.gameState.currentReward = 10;
-        return '#66d9ff';
-      case 'medium':
-        this.gameState.currentReward = 50;
-        return '#009933';
-      case 'hard':
         this.gameState.currentReward = 100;
-        return '#ff3300';
+        this.gameState.color = '#66d9ff';
+        break;
+      case 'medium':
+        this.gameState.currentReward = 500;
+        this.gameState.color = '#009933';
+        break;
+      case 'hard':
+        this.gameState.currentReward = 1000;
+        this.gameState.color = '#ff3300';
+        break;
       default:
-        this.gameState.currentReward = 10;
-        return '#ffffff';
+        this.gameState.currentReward = 500;
+        this.gameState.color = '#ffffff';
+        break;
     }
   }
 
   createMessageEmbed() {
-    const question = this.decodeCurrentQuestion('question');
-    const color = this.getEmbedColorAndSetReward();
+    const question = this.gameState.currentQuestion.question;
+    this.setEmbedColorAndSetReward();
     return new Discord.MessageEmbed()
-      .setColor(color)
+      .setColor(this.gameState.color)
       .setTitle(`${this.gameState.questionNumber}. ${question}`)
-      .setDescription(this.decodeCurrentQuestion('category'));
+      .setDescription(this.gameState.currentQuestion.category);
   }
 
   getRevealedCharacters() {
-    const answer = this.decodeCurrentQuestion('correct_answer').replace(' ', '');
-    const length = Math.ceil(answer.length / 4);
+    const answer = this.gameState.currentQuestion.correct_answer.replace(' ', '');
+    const length = Math.ceil(answer.length / 3);
     return _.sampleSize(answer, length);
   }
 
   hintCallback() {
-    const answer = this.decodeCurrentQuestion('correct_answer');
+    const answer = this.gameState.currentQuestion.correct_answer;
     const revealed = this.getRevealedCharacters();
     let hidden = '';
     for (const char of answer) {
@@ -205,7 +201,7 @@ class Trivia {
     if (this.gameState.isGameStarted) {
       sendMessageToChannel(
         this.gameState.msg,
-        `Nobody got it. The correct answer was: **${this.decodeCurrentQuestion('correct_answer')}**`
+        `Nobody got it. The correct answer was: **${this.gameState.currentQuestion.correct_answer}**`
       );
       this.sendNextQuestion();
     }
@@ -216,21 +212,6 @@ class Trivia {
       await this.fetchQuestions();
     }
     this.gameState.currentQuestion = this.gameState.questions[0];
-
-    while (
-      this.decodeCurrentQuestion('type') === 'boolean' ||
-      this.decodeCurrentQuestion('question').toLowerCase().includes('of the following') ||
-      this.decodeCurrentQuestion('question').toLowerCase().includes('which of these') ||
-      this.decodeCurrentQuestion('question').toLowerCase().includes('which one of these') ||
-      this.decodeCurrentQuestion('question').toLowerCase().includes('magic: the gathering') ||
-      DATE_REGEX.test(this.decodeCurrentQuestion('correct_answer'))
-    ) {
-      this.gameState.questions.shift();
-      if (this.gameState.questions.length === 0) {
-        await this.fetchQuestions();
-      }
-      this.gameState.currentQuestion = this.gameState.questions[0];
-    }
     this.gameState.questionNumber = this.gameState.questionNumber + 1;
   }
 
@@ -241,38 +222,17 @@ class Trivia {
     await this.setQuestion();
     const question = this.createMessageEmbed();
     sendMessageToChannel(this.gameState.msg, question);
-    // console.log(this.decodeCurrentQuestion('correct_answer'));
+    console.log(this.gameState.currentQuestion.correct_answer);
     this.startQuestionTimer();
   }
 
-  async fetchToken() {
-    const response = await this.networkRequest(TOKEN_API);
-    if (response && response?.token) {
-      this.gameState.token = response.token;
-    }
-  }
-
   async fetchQuestions() {
-    const response = await this.networkRequest(`${TRIVIA_API}&token=${this.gameState.token}`);
-    if (response && response?.results) {
-      this.gameState.questions = response.results;
-      return true;
+    const questions = await getQuestions();
+    if (_.isEmpty(questions)) {
+      return false;
     }
-    return false;
-  }
-
-  async networkRequest(url) {
-    const options = {
-      url,
-      json: true
-    };
-
-    try {
-      return await request(options);
-    } catch (err) {
-      console.log('Unable to run network request');
-      console.log(JSON.stringify(err));
-    }
+    this.gameState.questions = questions;
+    return true;
   }
 }
 

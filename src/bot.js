@@ -17,7 +17,7 @@ import { Kpop } from '@root/kpop';
 import { Lotto } from '@casino/lotto';
 import { MoneyManager } from '@casino/moneymanager';
 import { Slots } from '@casino/slots';
-import TriviaManager from '@casino/triviamanager';
+import TriviaManager from '@casino/trivia/triviamanager';
 import _ from 'lodash';
 import { exec } from 'child_process';
 import { getCryptocurrencyPrice } from '@root/crypto';
