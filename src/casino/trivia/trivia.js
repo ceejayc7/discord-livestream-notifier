@@ -222,7 +222,7 @@ class Trivia {
     await this.setQuestion();
     const question = this.createMessageEmbed();
     sendMessageToChannel(this.gameState.msg, question);
-    console.log(this.gameState.currentQuestion.correct_answer);
+    // console.log(this.gameState.currentQuestion.correct_answer);
     this.startQuestionTimer();
   }
 
