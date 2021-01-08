@@ -21,7 +21,6 @@ class Trivia {
       currentDifficulty: null,
       winners: {},
       questionNumber: 0,
-      token: null,
       color: null
     };
     this.event = event;
