@@ -11,8 +11,8 @@ export const getQuestions = async () => {
     let jeopardy = await Jeopardy.getQuestions();
     let otdb = await opentdb.getQuestions();
 
-    jeopardy = _.take(jeopardy, 7);
-    otdb = _.take(otdb, 3);
+    jeopardy = _.take(jeopardy, 70);
+    otdb = _.take(otdb, 30);
 
     return _.shuffle(_.concat(jeopardy, otdb));
   } catch (err) {
