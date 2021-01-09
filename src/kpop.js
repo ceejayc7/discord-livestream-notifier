@@ -17,6 +17,7 @@ export const KPOP_SCHEDULE = [
     show: 'The Show',
     channel: ['SBS MTV'],
     time: () => getRelativeTimeStart('Tuesday 6:00PM'),
+    sendIPTV: false,
     pinnedTweet
   },
   {
@@ -24,6 +25,7 @@ export const KPOP_SCHEDULE = [
     show: 'Show Champion',
     channel: ['MBC Music', 'MBC Every1'],
     time: () => getRelativeTimeStart('Wednesday 6:00PM'),
+    sendIPTV: false,
     pinnedTweet
   },
   {
@@ -31,6 +33,7 @@ export const KPOP_SCHEDULE = [
     show: 'MCountdown',
     channel: ['Mnet'],
     time: () => getRelativeTimeStart('Thursday 6:00PM'),
+    sendIPTV: false,
     pinnedTweet
   },
   {
@@ -38,19 +41,24 @@ export const KPOP_SCHEDULE = [
     show: 'Music Bank',
     channel: ['KBS2'],
     time: () => getRelativeTimeStart('Friday 5:00PM'),
+    sendIPTV: true,
     pinnedTweet
   },
-  /* {
+  /*
+   {
     day: 'Friday',
     show: 'Simply Kpop',
     channel: ['아리랑 TV'],
-    time: () => getRelativeTimeStart('Saturday 1:00PM')
-  },*/
+    time: () => getRelativeTimeStart('Saturday 1:00PM'),
+    sendIPTV: true,
+  },
+  */
   {
     day: 'Saturday',
     show: 'Music Core',
     channel: ['MBC'],
     time: () => getRelativeTimeStart('Saturday 3:30PM'),
+    sendIPTV: true,
     pinnedTweet
   },
   {
@@ -58,6 +66,7 @@ export const KPOP_SCHEDULE = [
     show: 'Inkigayo',
     channel: ['SBS'],
     time: () => getRelativeTimeStart('Sunday 3:40PM'),
+    sendIPTV: true,
     pinnedTweet
   }
 ];

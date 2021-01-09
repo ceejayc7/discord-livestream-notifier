@@ -65,14 +65,16 @@ const setMusicShowPolling = () => {
 
   if (!_.isEmpty(channels)) {
     for (const event of KPOP_SCHEDULE) {
-      let timeWhenEventStarts = (event.time() - moment.tz().unix() - OFFSET_IN_SECONDS) * 1000;
-      if (timeWhenEventStarts < 0) {
-        timeWhenEventStarts = 0;
+      if (event?.sendIPTV) {
+        let timeWhenEventStarts = (event.time() - moment.tz().unix() - OFFSET_IN_SECONDS) * 1000;
+        if (timeWhenEventStarts < 0) {
+          timeWhenEventStarts = 0;
+        }
+        console.log(
+          `Setting timer on ${event.show} on ${event.day} at ${event.time() - OFFSET_IN_SECONDS}`
+        );
+        setTimeout(() => IPTV.sendIPTVStreams(event, channels), timeWhenEventStarts);
       }
-      console.log(
-        `Setting timer on ${event.show} on ${event.day} at ${event.time() - OFFSET_IN_SECONDS}`
-      );
-      setTimeout(() => IPTV.sendIPTVStreams(event, channels), timeWhenEventStarts);
     }
 
     // reset weekly timer in 1 week
