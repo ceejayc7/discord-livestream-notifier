@@ -33,6 +33,7 @@ export class OpenTDB {
     const filtered = questions.filter((question) => {
       if (
         question?.type === 'boolean' ||
+        question?.question.length === 0 ||
         question?.question.toLowerCase().includes('of the following') ||
         question?.question.toLowerCase().includes('which of these') ||
         question?.question.toLowerCase().includes('which one of these') ||
