@@ -59,7 +59,11 @@ class Trivia {
       if (user in this.gameState.winners) {
         stats.addField(
           user,
-          `${this.gameState.winners[user].roundsWon} answered correctly and won ${this.gameState.winners[user].bitcoinWon} bitcoin`
+          `${
+            this.gameState.winners[user].roundsWon
+          } answered correctly and won ${this.gameState.winners[
+            user
+          ].bitcoinWon.toLocaleString()} bitcoin`
         );
       }
     }
@@ -221,7 +225,7 @@ class Trivia {
     await this.setQuestion();
     const question = this.createMessageEmbed();
     sendMessageToChannel(this.gameState.msg, question);
-    // console.log(this.gameState.currentQuestion.correct_answer);
+    console.log(this.gameState.currentQuestion.correct_answer);
     this.startQuestionTimer();
   }
 
