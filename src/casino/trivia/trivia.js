@@ -164,7 +164,7 @@ class Trivia {
 
   getRevealedCharacters() {
     const answer = this.gameState.currentQuestion.correct_answer.replace(' ', '');
-    const length = Math.ceil(answer.length / 3);
+    const length = Math.ceil(answer.length / 4);
     return _.sampleSize(answer, length);
   }
 
