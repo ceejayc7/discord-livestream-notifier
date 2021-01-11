@@ -1,4 +1,5 @@
-import { OpenTDB } from '@casino/trivia/opentdb';
+import { filterQuestions, removeArticles } from '@casino/trivia/filter';
+
 import _ from 'lodash';
 import { networkRequest } from '@casino/trivia/network';
 
@@ -24,7 +25,7 @@ const normalizeFormat = (questions) =>
       type: 'jeopardy',
       difficulty: determineDifficulty(question.value),
       question: question.question,
-      correct_answer: question.answer
+      correct_answer: removeArticles(question.answer)
     };
   });
 
@@ -32,7 +33,7 @@ export const getQuestions = async () => {
   const response = await networkRequest(API);
   if (response && response.length) {
     const normalized = normalizeFormat(response);
-    const filtered = OpenTDB.filterQuestions(normalized);
+    const filtered = filterQuestions(normalized);
     return filtered;
   }
   return [];
