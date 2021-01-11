@@ -4,7 +4,6 @@ const SPECIAL_CHARACTERS_REGEX = /[^a-zA-Z\d\s]/g;
 
 export const removeArticles = (answer) => {
   const lower = _.toLower(answer);
-  console.log(lower);
   if (_.startsWith(lower, 'a ') || _.startsWith(lower, 'an ') || _.startsWith(lower, 'the ')) {
     return answer.substr(answer.indexOf(' ') + 1);
   }
