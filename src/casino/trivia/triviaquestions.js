@@ -4,7 +4,10 @@ import { OpenTDB } from '@casino/trivia/opentdb';
 import _ from 'lodash';
 
 const opentdb = new OpenTDB();
-opentdb.setToken();
+
+export const setToken = async () => {
+  await opentdb.setToken();
+};
 
 export const getQuestions = async () => {
   try {

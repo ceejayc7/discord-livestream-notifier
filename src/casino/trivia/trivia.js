@@ -1,8 +1,9 @@
+import { getQuestions, setToken } from '@casino/trivia/triviaquestions';
+
 import { BOT_COMMANDS } from '@root/constants';
 import Discord from 'discord.js';
 import { MoneyManager } from '@casino/moneymanager';
 import _ from 'lodash';
-import { getQuestions } from '@casino/trivia/triviaquestions';
 import { sendMessageToChannel } from '@root/util';
 
 class Trivia {
@@ -28,6 +29,7 @@ class Trivia {
   }
 
   async init() {
+    await setToken();
     const wasUpdated = await this.fetchQuestions();
     if (wasUpdated) {
       this.gameState.isGameStarted = true;
@@ -225,7 +227,7 @@ class Trivia {
     await this.setQuestion();
     const question = this.createMessageEmbed();
     sendMessageToChannel(this.gameState.msg, question);
-    console.log(this.gameState.currentQuestion.correct_answer);
+    // console.log(this.gameState.currentQuestion.correct_answer);
     this.startQuestionTimer();
   }
 
