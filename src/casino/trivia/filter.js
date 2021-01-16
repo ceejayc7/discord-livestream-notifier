@@ -1,6 +1,6 @@
 import _ from 'lodash';
 
-const SPECIAL_CHARACTERS_REGEX = /[^a-zA-Z\d\s]/g;
+const SPECIAL_CHARACTERS_REGEX = /[^a-zA-Z\d\s]/;
 
 export const removeArticles = (answer) => {
   const lower = _.toLower(answer);
