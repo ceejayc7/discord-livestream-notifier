@@ -57,18 +57,21 @@ class Trivia {
     }
 
     const stats = new Discord.MessageEmbed().setTitle('Results').setColor('#ccffcc');
-    for (const user in this.gameState.winners) {
-      if (user in this.gameState.winners) {
-        stats.addField(
-          user,
-          `${
-            this.gameState.winners[user].roundsWon
-          } answered correctly and won ${this.gameState.winners[
-            user
-          ].bitcoinWon.toLocaleString()} bitcoin`
-        );
-      }
+    const sortedUsers = Object.keys(this.gameState.winners).sort(
+      (a, b) => this.gameState.winners[b].bitcoinWon - this.gameState.winners[a].bitcoinWon
+    );
+
+    for (const user of sortedUsers) {
+      stats.addField(
+        user,
+        `${
+          this.gameState.winners[user].roundsWon
+        } answered correctly and won ${this.gameState.winners[
+          user
+        ].bitcoinWon.toLocaleString()} bitcoin`
+      );
     }
+
     sendMessageToChannel(this.gameState.msg, stats);
   }
 
