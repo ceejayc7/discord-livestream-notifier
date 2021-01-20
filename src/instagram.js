@@ -2,6 +2,7 @@ import { sendMessageToChannel, wait } from '@root/util';
 
 import Discord from 'discord.js';
 import _ from 'lodash';
+import { getWebhook } from '@root/webhook';
 import request from 'request-promise';
 
 const INSTAGRAM_REGEX = /instagram\.com\/(p|tv)\/(.*)/;
@@ -63,13 +64,17 @@ const parseApiData = (apiData) => {
 };
 
 export const sendInstagramEmbeds = async (msg) => {
+  const webhook = await getWebhook(msg);
+  if (_.isEmpty(webhook)) {
+    return;
+  }
   const id = getInstagramId(msg);
   if (!_.isEmpty(id)) {
     try {
       const data = await fetchApiData(id);
       const media = parseApiData(data);
-      const embeds = getImageEmbeds(media);
-      sendMediaToChannel(msg, id, media, embeds);
+      const embeds = getImageEmbeds(id, media);
+      sendMediaToChannel(msg, media, embeds, webhook);
     } catch (err) {
       console.log(`Couldnt send Instagram embeds from ${msg.content}`);
       console.log(err);
@@ -77,27 +82,44 @@ export const sendInstagramEmbeds = async (msg) => {
   }
 };
 
-const createImageEmbed = (url) => new Discord.MessageEmbed().setImage(url).setColor('#e91129');
+const getTitle = (media) => {
+  const title = `${media.name} on Instagram${!_.isEmpty(media.text) ? ': ' + media.text : ''}`;
+  return title.substring(0, 255);
+};
 
-const getImageEmbeds = (media) => media.pictures.map(createImageEmbed);
+const createImageEmbed = (title, author, timestamp, id, url) => {
+  return new Discord.MessageEmbed()
+    .setImage(url)
+    .setColor('#e91129')
+    .setURL('https://twitter.com')
+    .setTitle(title)
+    .setAuthor(author, 'https://i.imgur.com/1EybaiS.png')
+    .setTimestamp(timestamp)
+    .setURL(`https://instagram.com/p/${id}/`);
+};
 
-export const sendMediaToChannel = async (msg, id, media, embeds) => {
-  let title = `${media.name} on Instagram${!_.isEmpty(media.text) ? ': ' + media.text : ''}`;
+const getImageEmbeds = (id, media) => {
+  const title = getTitle(media);
   const author = `${media.name + ' (' + media.username + ')'}`;
+  const timestamp = media.timestamp;
+  return media.pictures.map((url) => createImageEmbed(title, author, timestamp, id, url));
+};
 
-  title = title.substring(0, 255);
-
+const sendMediaToChannel = async (msg, media, embeds, webhook) => {
+  let fourEmbeds = [];
   if (_.isEmpty(embeds)) {
-    sendMessageToChannel(msg, title);
+    sendMessageToChannel(msg, getTitle(media));
   } else {
-    _.first(embeds)
-      .setTitle(title)
-      .setAuthor(author, 'https://i.imgur.com/1EybaiS.png')
-      .setTimestamp(media.timestamp)
-      .setURL(`https://instagram.com/p/${id}/`)
-      .setThumbnail(media.avatar);
-
-    embeds.map((embed) => sendMessageToChannel(msg, embed).then(msg.suppressEmbeds(true)));
+    for (const [index, embed] of embeds.entries()) {
+      fourEmbeds.push(embed);
+      if ((index + 1) % 4 === 0) {
+        await webhook.send(fourEmbeds);
+        fourEmbeds = [];
+      }
+    }
+    if (!_.isEmpty(fourEmbeds)) {
+      await webhook.send(fourEmbeds);
+    }
   }
   if (media.videos.length) {
     media.videos.map((videoURL) => sendMessageToChannel(msg, videoURL));
