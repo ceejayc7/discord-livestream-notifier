@@ -87,14 +87,15 @@ const getTitle = (media) => {
   return title.substring(0, 255);
 };
 
-const createImageEmbed = (title, author, timestamp, id, url) => {
+const createImageEmbed = (title, author, timestamp, id, url, avatar) => {
   return new Discord.MessageEmbed()
     .setImage(url)
     .setColor('#e91129')
     .setURL('https://twitter.com')
     .setTitle(title)
-    .setAuthor(author, 'https://i.imgur.com/1EybaiS.png')
+    .setAuthor(author, avatar)
     .setTimestamp(timestamp)
+    .setFooter('Instagram', 'https://i.imgur.com/1EybaiS.png')
     .setURL(`https://instagram.com/p/${id}/`);
 };
 
@@ -102,7 +103,8 @@ const getImageEmbeds = (id, media) => {
   const title = getTitle(media);
   const author = `${media.name + ' (' + media.username + ')'}`;
   const timestamp = media.timestamp;
-  return media.pictures.map((url) => createImageEmbed(title, author, timestamp, id, url));
+  const avatar = media.avatar;
+  return media.pictures.map((url) => createImageEmbed(title, author, timestamp, id, url, avatar));
 };
 
 const sendMediaToChannel = async (msg, media, embeds, webhook) => {
