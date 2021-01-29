@@ -44,15 +44,14 @@ export const KPOP_SCHEDULE = [
     sendIPTV: true,
     pinnedTweet
   },
-  /*
-   {
+  {
     day: 'Friday',
     show: 'Simply Kpop',
     channel: ['아리랑 TV'],
-    time: () => getRelativeTimeStart('Saturday 1:00PM'),
-    sendIPTV: true,
+    time: () => getRelativeTimeStart('Friday 1:00PM'),
+    sendIPTV: false,
+    pinnedTweet
   },
-  */
   {
     day: 'Saturday',
     show: 'Music Core',
