@@ -136,6 +136,11 @@ export const getCryptocurrencyPrice = async (msg) => {
   }
 
   const rates = await getPricingData(coin);
+
+  if (_.isEmpty(rates)) {
+    console.log(`Unable to get rates for ${coin}`);
+    return;
+  }
   const formattedRates = formatRates(rates);
 
   const embed = createEmbed(formattedRates, coin);
