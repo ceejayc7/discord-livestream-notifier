@@ -139,7 +139,6 @@ export const getCryptocurrencyPrice = async (msg) => {
   }
 
   const rates = await getPricingData(coin);
-  console.log(rates);
   if (_.isEmpty(rates)) {
     console.log(`Unable to get rates for ${coin}`);
     return;
