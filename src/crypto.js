@@ -62,9 +62,12 @@ const getPricingData = async (coin) => {
   };
 
   const response = await runRequest(requestOptions);
-  return response.rates.filter(
-    (price) => price.asset_id_quote === 'USD' || price.asset_id_quote === 'BTC'
-  );
+  if (!_.isEmpty(response)) {
+    return response.rates.filter(
+      (price) => price.asset_id_quote === 'USD' || price.asset_id_quote === 'BTC'
+    );
+  }
+  return [];
 };
 
 const findCoin = (data, coin) => {
@@ -136,7 +139,7 @@ export const getCryptocurrencyPrice = async (msg) => {
   }
 
   const rates = await getPricingData(coin);
-
+  console.log(rates);
   if (_.isEmpty(rates)) {
     console.log(`Unable to get rates for ${coin}`);
     return;
