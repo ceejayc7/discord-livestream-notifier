@@ -15,6 +15,7 @@ import { onBotStart as setCryptoMetadata } from '@root/crypto';
 
 const SERVER_DATABASE = require('@data/db.json');
 const discordBots = {};
+const OVERRIDES = require('@data/constants.json').overrides;
 
 const sendStreamMessageToServers = (streamData) => {
   const { stream } = streamData;
@@ -28,7 +29,6 @@ const sendStreamMessageToServers = (streamData) => {
 };
 
 const createLivestreams = () => {
-  const OVERRIDES = require('@data/constants.json').overrides;
   const silentMode = OVERRIDES?.silentMode ? true : false;
 
   return [
@@ -94,7 +94,8 @@ const setLivestreamPolling = (streamsList) => {
 const start = async () => {
   printOverrides();
   await initBots();
-  setCryptoMetadata();
+  (OVERRIDES?.enableCryptoStartup === undefined || OVERRIDES?.enableCryptoStartup === true) &&
+    setCryptoMetadata();
   const streamsList = createLivestreams();
   setLivestreamPolling(streamsList);
   setMusicShowPolling();
