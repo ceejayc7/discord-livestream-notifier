@@ -11,6 +11,7 @@ import Vlive from '@stream/vlive';
 import Youtube from '@stream/youtube';
 import _ from 'lodash';
 import moment from 'moment-timezone';
+import { onBotStart as setCryptoMetadata } from '@root/crypto';
 
 const SERVER_DATABASE = require('@data/db.json');
 const discordBots = {};
@@ -93,6 +94,7 @@ const setLivestreamPolling = (streamsList) => {
 const start = async () => {
   printOverrides();
   await initBots();
+  setCryptoMetadata();
   const streamsList = createLivestreams();
   setLivestreamPolling(streamsList);
   setMusicShowPolling();
