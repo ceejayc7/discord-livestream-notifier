@@ -113,10 +113,10 @@ const createEmbed = (formattedRates, coin) => {
     embed.setThumbnail(icons.url);
   }
 
-  if (_.isEmpty(assetData)) {
-    embed.setTitle(coin);
-  } else {
+  if (!_.isEmpty(assetData) && assetData?.name) {
     embed.setTitle(`${assetData.name}`);
+  } else {
+    embed.setTitle(coin);
   }
 
   let description = `Current Price: **${formattedRates['USD'].rate}**`;
