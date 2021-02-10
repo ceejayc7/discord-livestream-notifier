@@ -47,7 +47,7 @@ class Trivia {
 
   handleTriviaTimer() {
     clearTimeout(this.gameState.triviaTimer);
-    this.gameState.triviaTimer = setTimeout(this.stopGame.bind(this), 120000);
+    this.gameState.triviaTimer = setTimeout(this.stopGame.bind(this), 180000);
   }
 
   sendSessionStats() {
