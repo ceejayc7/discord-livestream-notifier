@@ -46,9 +46,9 @@ const setAssetIcons = async () => {
   assetIcons = await runRequest(requestOptions);
 };
 
-export const onBotStart = () => {
-  setAssetMap();
-  setAssetIcons();
+export const onBotStart = async () => {
+  await setAssetMap();
+  await setAssetIcons();
 };
 
 const getPricingData = async (coin) => {
