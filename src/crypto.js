@@ -51,6 +51,19 @@ export const onBotStart = async () => {
   await setAssetIcons();
 };
 
+const getOHLCV = async (coin) => {
+  const requestOptions = {
+    url: `${endpoint}/ohlcv/${coin}/USD/latest?period_id=1DAY`,
+    json: true,
+    method: 'GET',
+    headers: {
+      'X-CoinAPI-Key': key
+    }
+  };
+
+  return await runRequest(requestOptions);
+};
+
 const getPricingData = async (coin) => {
   const requestOptions = {
     url: `${endpoint}/exchangerate/${coin}`,
@@ -101,7 +114,7 @@ const formatRates = (rates) => {
   return formatted;
 };
 
-const createEmbed = (formattedRates, coin) => {
+const createEmbed = (formattedRates, coin, dailyChange) => {
   const assetData = findCoin(assetMap, coin);
   const icons = findCoin(assetIcons, coin);
 
@@ -125,9 +138,20 @@ const createEmbed = (formattedRates, coin) => {
     description = `${description}\n${coin}/BTC: **${formattedRates['BTC'].rate}**`;
   }
 
-  embed.setDescription(description);
+  if (!_.isEmpty(dailyChange)) {
+    description = `${description}\nPercent Change: \`\`\`diff\n${dailyChange}\n\`\`\``;
+  }
 
+  embed.setDescription(description);
   return embed;
+};
+
+const calculateDailyChange = (ohlcv) => {
+  const calc = parseFloat(((ohlcv.price_close - ohlcv.price_open) / ohlcv.price_open) * 100);
+  if (calc > 0) {
+    return `+${calc.toFixed(2)}%`;
+  }
+  return `${calc.toFixed(2)}%`;
 };
 
 export const getCryptocurrencyPrice = async (msg) => {
@@ -143,8 +167,11 @@ export const getCryptocurrencyPrice = async (msg) => {
     console.log(`Unable to get rates for ${coin}`);
     return;
   }
-  const formattedRates = formatRates(rates);
 
-  const embed = createEmbed(formattedRates, coin);
+  const ohlcv = await getOHLCV(coin);
+  const formattedRates = formatRates(rates);
+  const dailyChange = calculateDailyChange(_.head(ohlcv));
+
+  const embed = createEmbed(formattedRates, coin, dailyChange);
   sendMessageToChannel(msg, embed);
 };
