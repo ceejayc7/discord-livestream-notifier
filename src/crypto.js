@@ -147,6 +147,10 @@ const createEmbed = (formattedRates, coin, dailyChange) => {
 };
 
 const calculateDailyChange = (ohlcv) => {
+  /* eslint-disable camelcase */
+  if (!ohlcv?.price_close || !ohlcv?.price_open) {
+    return false;
+  }
   const calc = parseFloat(((ohlcv.price_close - ohlcv.price_open) / ohlcv.price_open) * 100);
   if (calc > 0) {
     return `+${calc.toFixed(2)}%`;
