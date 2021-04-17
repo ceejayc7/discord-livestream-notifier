@@ -41,7 +41,6 @@ http://61.253.106.84:9981/stream/channelid/459570441
 http://61.253.106.84:9981/stream/channelid/1872816937
 http://61.253.106.84:9981/stream/channelid/1600480650
 http://210.97.107.132:9981/stream/channelid/1319741369
-http://58.126.179.43:9981/stream/channelid/1024747134
 http://218.51.211.89:9981/stream/channelid/7
 http://211.177.227.57:9981/stream/channelid/1
 http://121.160.116.26:9981/stream/channelid/1057439990
