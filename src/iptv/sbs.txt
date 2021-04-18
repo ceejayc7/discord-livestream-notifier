@@ -1,6 +1,5 @@
 http://14.6.200.22:9981/stream/channelid/1417735164
 http://218.148.9.66:9981/stream/channelid/91
-http://1.242.192.174:9981/stream/channelid/1837257545
 http://14.6.51.124:9981/stream/channelid/1
 http://58.225.103.223:9981/stream/channelid/3
 http://182.214.253.210:9981/stream/channelid/87
