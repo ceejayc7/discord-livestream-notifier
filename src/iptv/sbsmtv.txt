@@ -1,5 +1,3 @@
-http://61.101.190.218:9981/stream/channelid/1772505486
-http://61.101.190.218:9981/stream/channelid/89787470
 http://125.179.36.64:9981/stream/channelid/57797974
 http://121.143.198.133:9981/stream/channelid/1878203904
 http://121.143.198.133:9981/stream/channelid/777199218
