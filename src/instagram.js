@@ -82,10 +82,7 @@ export const sendInstagramEmbeds = async (msg) => {
   }
 };
 
-const getTitle = (media) => {
-  const title = `${media.name} on Instagram${!_.isEmpty(media.text) ? ': ' + media.text : ''}`;
-  return title.substring(0, 255);
-};
+const getTitle = (media) => media.text.substring(0, 255);
 
 const createImageEmbed = (title, author, timestamp, id, url, avatar) => {
   return new Discord.MessageEmbed()
