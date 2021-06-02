@@ -24,7 +24,7 @@ export const KPOP_SCHEDULE = [
     day: 'Wednesday',
     show: 'Show Champion',
     channel: ['MBC Music', 'MBC Every1'],
-    time: () => getRelativeTimeStart('Wednesday 6:00PM'),
+    time: () => getRelativeTimeStart('Wednesday 5:00PM'),
     sendIPTV: true,
     pinnedTweet
   },
