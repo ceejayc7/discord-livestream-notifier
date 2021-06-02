@@ -141,7 +141,7 @@ export const TWITTER_CHARACTER_LIMIT = 280;
 
 export const IPTV_DATABASE = {
   'SBS MTV': 'sbsmtv.txt',
-  'SBS F!L UHD': 'sbsfil.txt',
+  'SBS F!L': 'sbsfil.txt',
   'MBC Music': 'mbcmusic.txt',
   'MBC Every1': 'mbcevery1.txt',
   Mnet: 'mnet.txt',

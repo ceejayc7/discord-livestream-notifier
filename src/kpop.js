@@ -15,7 +15,7 @@ export const KPOP_SCHEDULE = [
   {
     day: 'Tuesday',
     show: 'The Show',
-    channel: ['SBS MTV'],
+    channel: ['SBS MTV', 'SBS F!L'],
     time: () => getRelativeTimeStart('Tuesday 6:00PM'),
     sendIPTV: true,
     pinnedTweet
