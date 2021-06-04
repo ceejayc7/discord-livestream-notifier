@@ -8,14 +8,12 @@ http://14.33.186.88:9981/stream/channelid/79
 http://39.124.173.224:9981/stream/channelid/4
 http://222.98.109.224:9981/stream/channelid/74
 http://125.133.234.66:9981/stream/channelid/1937806264
-http://180.71.13.4:9981/stream/channelid/591008785
 http://211.197.181.113:9981/stream/channelid/1121571515
 http://183.96.171.76:9981/stream/channelid/15
 http://119.66.83.26:9981/stream/channelid/94
 http://119.66.83.26:9981/stream/channelid/2
 http://115.136.148.34:8881/stream/channelid/286128503
 http://1.231.202.65:9981/stream/channelid/631705698
-http://1.231.202.65:9981/stream/channelid/1318529061
 http://221.147.114.183:9981/stream/channelid/795035695
 http://221.147.114.183:9981/stream/channelid/1370191917
 http://112.187.218.162:9981/stream/channelid/100
