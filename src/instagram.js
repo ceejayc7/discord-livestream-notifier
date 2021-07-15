@@ -1,9 +1,8 @@
-import { sendMessageToChannel, wait } from '@root/util';
-
 import Discord from 'discord.js';
 import _ from 'lodash';
 import { getWebhook } from '@root/webhook';
 import request from 'request-promise';
+import { sendMessageToChannel } from '@root/util';
 
 const INSTAGRAM_REGEX = /instagram\.com\/(p|tv)\/(.*)/;
 
@@ -127,6 +126,6 @@ const sendMediaToChannel = async (msg, media, embeds, webhook) => {
   // sometimes the official discord ig embed doesnt show until later
   // not sure why
   // just wait 2 seconds and try to suppress it again
-  await wait(2000);
-  msg.suppressEmbeds(true);
+  // await wait(2000);
+  // msg.suppressEmbeds(true);
 };
