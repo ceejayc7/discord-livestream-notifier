@@ -46,15 +46,24 @@ class Vlive extends Livestream {
   reduceResponse = (response) => {
     const reducedResponse = [];
     for (const stream of response) {
+      const timestamp = new Date(0);
+      timestamp.setUTCMilliseconds(stream?.officialVideo?.onAirStartAt);
+
+      let preview = stream?.officialVideo?.thumb;
+
+      if (preview.endsWith('/thumb')) {
+        preview += '?type=f640_362';
+      }
+
       reducedResponse.push({
         platform: this.PLATFORM,
         name: stream?.id,
         displayName: stream?.author?.nickname,
         logo: stream?.author?.profileImageUrl,
-        preview: stream?.officialVideo?.thumb,
+        preview,
         title: stream?.officialVideo?.title,
         url: stream?.url,
-        updatedAt: Date(stream?.officialVideo?.onAirStartAt)
+        updatedAt: timestamp
       });
     }
     return reducedResponse;
