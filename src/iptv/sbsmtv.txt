@@ -4,13 +4,11 @@ http://140.238.29.16:9981/stream/channelid/788780716
 http://140.238.29.16:9981/stream/channelid/1287267548
 http://1.228.225.113:9981/stream/channelid/580980292
 http://1.228.225.113:9981/stream/channelid/1445431516
-http://1.228.225.113:9981/stream/channelid/1405573742
 http://180.69.2.73:9981/stream/channelid/38503003
 http://180.69.2.73:9981/stream/channelid/154839821
 http://180.69.2.73:9981/stream/channelid/2071202589
 http://14.33.124.161:9981/stream/channelid/2000348187
 http://49.172.159.159:9981/stream/channelid/1275772609
-http://218.237.206.72:9981/stream/channelid/1628727129
 http://112.221.8.212:9981/stream/channelid/155
 http://39.122.225.204:9981/stream/channelid/439414328
 http://132.145.80.35:9876/stream/channelid/554374937
