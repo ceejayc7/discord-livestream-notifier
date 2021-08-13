@@ -8,6 +8,7 @@ import { sendMessageToChannel } from '@root/util';
 const TIME_FORMAT = 'dddd h:mmA';
 const TIMEZONE = 'Asia/Seoul';
 const TEAMAQ_TWITTER_HANDLE = 'AQ_Updates';
+const WHEEIN_FAIRY = 'Wheein_Fairy';
 
 const pinnedTweet = async (events) => await getKpopTweet(events);
 
@@ -48,8 +49,9 @@ export const KPOP_SCHEDULE = [
     day: 'Friday',
     show: 'Simply Kpop',
     channel: ['아리랑 TV'],
-    time: () => getRelativeTimeStart('Friday 1:00PM'),
-    sendIPTV: true
+    time: () => getRelativeTimeStart('Friday 12:15PM'),
+    sendIPTV: true,
+    pinnedTweet
   },
   {
     day: 'Saturday',
@@ -101,9 +103,12 @@ const getMusicShowsForToday = () => {
   return KPOP_SCHEDULE.filter((event) => event.day === today);
 };
 
-const filterForValidSchedule = (tweets, events) => {
+const filterForValidSchedule = (tweets, events, simplyKpopScheduleLink) => {
   /* eslint-disable camelcase */
   const schedule = events.map((event) => {
+    if (event.show === 'Simply Kpop') {
+      return simplyKpopScheduleLink;
+    }
     const musicShow = event.show.toLowerCase();
     return tweets.map((tweet) => {
       const createdTime = moment(tweet?.created_at, 'dd MMM DD HH:mm:ss ZZ YYYY', 'en');
@@ -124,8 +129,9 @@ const filterForValidSchedule = (tweets, events) => {
 
 const getKpopTweet = async (events = getMusicShowsForToday()) => {
   const teamAQTweetLink = await getPinnedTweet(TEAMAQ_TWITTER_HANDLE);
+  const simplyKpopScheduleLink = await getPinnedTweet(WHEEIN_FAIRY);
   const timeline = await getTimeline(TEAMAQ_TWITTER_HANDLE);
-  const tweets = filterForValidSchedule(timeline, events);
+  const tweets = filterForValidSchedule(timeline, events, simplyKpopScheduleLink);
 
   if (!_.isEmpty(tweets)) {
     return tweets;
