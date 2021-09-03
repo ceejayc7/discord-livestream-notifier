@@ -51,7 +51,7 @@ class Vlive extends Livestream {
 
       let preview = stream?.officialVideo?.thumb;
 
-      if (preview.endsWith('/thumb')) {
+      if (preview && preview.endsWith('/thumb')) {
         preview += '?type=f640_362';
       }
 
