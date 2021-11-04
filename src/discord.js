@@ -47,9 +47,9 @@ const initBots = async () => {
 
   // create new bot per each defined discord server
   for (const server of serverList) {
-    const loginToken = serverConfig?.[server]?.discordToken;
-    if (loginToken) {
-      discordBots[server] = new Bot(loginToken, server);
+    const discordToken = serverConfig?.[server]?.discordToken;
+    if (discordToken) {
+      discordBots[server] = new Bot(serverConfig[server], server);
       discordBots[server].attachListeners();
       await discordBots[server].loginToDiscord();
     } else {

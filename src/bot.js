@@ -1,3 +1,4 @@
+import { client as TwitterClient, retweet, sendReply, sendTweet } from '@root/twitter';
 import { doesMsgContainInstagram, sendInstagramEmbeds } from '@root/instagram';
 import {
   isCasinoChannel,
@@ -7,7 +8,6 @@ import {
   messageError,
   sendMessageToChannel
 } from '@root/util';
-import { retweet, sendReply, sendTweet } from '@root/twitter';
 
 import { BOT_COMMANDS } from '@root/constants';
 import Blackjack from '@casino/blackjack';
@@ -28,23 +28,49 @@ const CONSTANTS = require('@data/constants.json').serverConfig;
 const OVERRIDES = require('@data/constants.json').overrides;
 
 class Bot {
-  constructor(loginToken, serverName) {
+  constructor(serverConfig, serverName) {
     this.client = new Discord.Client();
     this.isLoggedIn = false;
-    this.loginToken = loginToken;
+    this.discordToken = serverConfig.discordToken;
+    this.serverConfig = serverConfig;
     this.blackjack = new Blackjack();
     this.serverName = serverName;
     this.triviaManager = new TriviaManager();
   }
 
-  initializeDiscordClient = () => {
-    this.client = new Discord.Client();
-    this.client.attachListeners();
-    this.client.loginToDiscord();
+  handleTwitterStream = () => {
+    if (
+      this.serverConfig?.dumpTweets &&
+      this.serverConfig.dumpTweets?.channel &&
+      this.serverConfig.dumpTweets?.twitterId
+    ) {
+      TwitterClient.stream(
+        'statuses/filter',
+        { follow: this.serverConfig.dumpTweets.twitterId },
+        (stream) => {
+          stream.on('data', (event) => {
+            console.log(
+              `Twitter stream: received tweet from ${this.serverConfig.dumpTweets.twitterId}`
+            );
+            this.client.channels.cache
+              .find(
+                (channel) =>
+                  channel.name === this.serverConfig.dumpTweets.channel && channel.type === 'text'
+              )
+              .send(`https://twitter.com/${event?.user?.screen_name}/status/${event?.id_str}`); // eslint-disable-line
+          });
+
+          stream.on('error', (error) => {
+            console.log('Twitter stream: error');
+            console.log(JSON.stringify(error));
+          });
+        }
+      );
+    }
   };
 
   loginToDiscord = async () => {
-    this.client.login(this.loginToken);
+    this.client.login(this.discordToken);
     return new Promise((resolve) => {
       this.client.on('ready', () => {
         console.log(`Logged in as ${this.client.user.tag}!`);
@@ -61,6 +87,7 @@ class Bot {
   };
 
   attachListeners = () => {
+    this.handleTwitterStream();
     this.client.on('error', (error) => {
       console.log(
         `An error occured with the discord client. \t Error name: ${error.name} \t Error message: ${error.message}`

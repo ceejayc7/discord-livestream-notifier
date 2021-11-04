@@ -6,7 +6,7 @@ import { sendMessageToChannel } from '@root/util';
 const CONSTANTS = require('@data/constants.json').tokens;
 const Twitter = require('twitter');
 
-let client;
+export let client;
 
 if (CONSTANTS?.twitter) {
   // Twitter client
