@@ -44,33 +44,38 @@ class Bot {
       this.serverConfig.dumpTweets?.channel &&
       this.serverConfig.dumpTweets?.twitterId
     ) {
-      TwitterClient.stream(
-        'statuses/filter',
-        { follow: this.serverConfig.dumpTweets.twitterId },
-        (stream) => {
-          stream.on('data', (event) => {
-            // eslint-disable-next-line
-            if (event?.retweeted_status !== undefined) {
-              return;
-            }
+      this.twitterStream = TwitterClient.stream('statuses/filter', {
+        follow: this.serverConfig.dumpTweets.twitterId
+      });
 
-            console.log(
-              `Twitter stream: received tweet from ${this.serverConfig.dumpTweets.twitterId}`
-            );
-            this.client.channels.cache
-              .find(
-                (channel) =>
-                  channel.name === this.serverConfig.dumpTweets.channel && channel.type === 'text'
-              )
-              .send(`https://twitter.com/${event?.user?.screen_name}/status/${event?.id_str}`); // eslint-disable-line
-          });
-
-          stream.on('error', (error) => {
-            console.log('Twitter stream: error');
-            console.log(JSON.stringify(error));
-          });
+      this.twitterStream.on('data', (event) => {
+        // eslint-disable-next-line
+        if (event?.retweeted_status !== undefined) {
+          return;
         }
-      );
+
+        console.log(
+          `Twitter stream: received tweet from ${this.serverConfig.dumpTweets.twitterId}`
+        );
+        this.client.channels.cache
+          .find(
+            (channel) =>
+              channel.name === this.serverConfig.dumpTweets.channel && channel.type === 'text'
+          )
+          .send(`https://twitter.com/${event?.user?.screen_name}/status/${event?.id_str}`); // eslint-disable-line
+      });
+
+      this.twitterStream.on('error', (error) => {
+        console.log('Twitter stream: error');
+        console.log(JSON.stringify(error));
+      });
+
+      this.twitterStream.on('end', (response) => {
+        console.log('Twitter stream: end');
+        console.log(JSON.stringify(response));
+        this.twitterStream.destroy();
+        this.handleTwitterStream();
+      });
     }
   };
 
