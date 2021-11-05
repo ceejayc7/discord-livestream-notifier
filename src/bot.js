@@ -49,6 +49,11 @@ class Bot {
         { follow: this.serverConfig.dumpTweets.twitterId },
         (stream) => {
           stream.on('data', (event) => {
+            // eslint-disable-next-line
+            if (event?.retweeted_status !== undefined) {
+              return;
+            }
+
             console.log(
               `Twitter stream: received tweet from ${this.serverConfig.dumpTweets.twitterId}`
             );
