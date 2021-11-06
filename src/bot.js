@@ -36,6 +36,7 @@ class Bot {
     this.blackjack = new Blackjack();
     this.serverName = serverName;
     this.triviaManager = new TriviaManager();
+    this.twitterStream = null;
   }
 
   handleTwitterStream = () => {
@@ -70,9 +71,7 @@ class Bot {
         console.log(JSON.stringify(error));
       });
 
-      this.twitterStream.on('end', (response) => {
-        console.log('Twitter stream: end');
-        console.log(JSON.stringify(response));
+      this.twitterStream.on('end', () => {
         this.twitterStream.destroy();
         this.handleTwitterStream();
       });
