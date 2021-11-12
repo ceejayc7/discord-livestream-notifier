@@ -50,8 +50,13 @@ class Bot {
       });
 
       this.twitterStream.on('data', (event) => {
+        const isTweet = _.conforms({
+          contributors: _.isObject,
+          id_str: _.isString,
+          text: _.isString
+        });
         // eslint-disable-next-line
-        if (event?.retweeted_status !== undefined) {
+        if (!isTweet) {
           return;
         }
 
