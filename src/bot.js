@@ -56,7 +56,7 @@ class Bot {
           text: _.isString
         });
         // eslint-disable-next-line
-        if (!isTweet) {
+        if (!isTweet || event?.retweeted_status !== undefined) {
           return;
         }
 
