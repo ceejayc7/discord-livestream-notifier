@@ -56,7 +56,10 @@ class Bot {
           text: _.isString
         });
         // eslint-disable-next-line
-        if (!isTweet || event?.retweeted_status !== undefined) {
+        const isOriginalAuthor = event?.user?.id_str === this.serverConfig.dumpTweets?.twitterId;
+
+        // eslint-disable-next-line
+        if (!isTweet || event?.retweeted_status !== undefined || !isOriginalAuthor) {
           return;
         }
 
