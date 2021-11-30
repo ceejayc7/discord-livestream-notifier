@@ -21,8 +21,7 @@ import TriviaManager from '@casino/trivia/triviamanager';
 import _ from 'lodash';
 import { exec } from 'child_process';
 import { getCryptocurrencyPrice } from '@root/crypto';
-
-// import { sendCosplayTweet } from '@root/cosplay';
+import { sendCosplayTweet } from '@root/cosplay';
 
 const CONSTANTS = require('@data/constants.json').serverConfig;
 const OVERRIDES = require('@data/constants.json').overrides;
@@ -191,7 +190,7 @@ class Bot {
           }
           break;
         case BOT_COMMANDS.COSPLAY.command:
-          // sendCosplayTweet(msg);
+          sendCosplayTweet(msg);
           break;
         case BOT_COMMANDS.TRIVIA.command:
           isCasinoChannel(msg) && this.triviaManager.createNewTrivia(msg, this.client);
