@@ -34,16 +34,16 @@ const fetchApiData = async (id) => {
   // main api throttled, try proxy
   if (!result?.graphql) {
     console.log('Instagram: Using RapidAPI');
-    const post = `https://www.instagram.com/p/${id}`;
     httpOptions = {
-      url: `https://${TOKENS?.HOST}/media-info-by-url?url=${encodeURIComponent(post)}`,
+      url: `https://${TOKENS?.HOST}/post_details?shortcode=${encodeURIComponent(id)}`,
       headers: {
         'x-rapidapi-host': `${TOKENS?.HOST}`,
         'x-rapidapi-key': `${TOKENS?.KEY}`
       },
       json: true
     };
-    return request(httpOptions);
+    const res = await request(httpOptions);
+    return res?.body;
   }
   return result?.graphql.shortcode_media;
 };
