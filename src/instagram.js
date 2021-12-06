@@ -1,18 +1,72 @@
 /* eslint-disable camelcase */
 
+import { getInstagramStories, getInstagramUserId, getUserPostData } from '@root/request/instagram';
+
 import Discord from 'discord.js';
 import _ from 'lodash';
 import { getWebhook } from '@root/webhook';
-import request from 'request-promise';
 import { sendMessageToChannel } from '@root/util';
 
 const INSTAGRAM_REGEX = /instagram\.com(?:\/.*)?\/(?:p|tv)\/(.*)/;
-const TOKENS = require('@data/constants.json')?.tokens?.instagram;
+const INSTAGRAM_STORIES_REGEX = /instagram\.com\/(?:stories)\/(.*?)\/(.*)/;
 
-export const doesMsgContainInstagram = (msg) => INSTAGRAM_REGEX.test(msg.content);
+export const doesMsgContainInstagramPost = (msg) => INSTAGRAM_REGEX.test(msg.content);
 
-const getInstagramId = (msg) => {
-  const match = INSTAGRAM_REGEX.exec(msg.content);
+export const doesMsgContainInstagramStory = (msg) => INSTAGRAM_STORIES_REGEX.test(msg.content);
+
+const massageStoryResponse = (stories, handle) => {
+  const avatar = stories?.profilePic;
+  const videos = [];
+  const pictures = [];
+  stories?.downloadLinks.map((story) => {
+    const link = story?.url;
+    if (!link) {
+      return;
+    }
+    switch (story?.mediaType) {
+      case 'video':
+        videos.push(link);
+        break;
+      case 'image':
+        pictures.push(link);
+        break;
+      default:
+        break;
+    }
+  });
+  return {
+    name: '',
+    username: handle,
+    text: '',
+    videos,
+    pictures,
+    timestamp: 0,
+    avatar,
+    type: 'story'
+  };
+};
+
+export const sendInstagramStory = async (msg) => {
+  const handle = getInstagramId(msg, INSTAGRAM_STORIES_REGEX);
+  try {
+    const webhook = await getWebhook(msg);
+    if (_.isEmpty(webhook)) {
+      return;
+    }
+
+    const id = await getInstagramUserId(handle);
+    const stories = await getInstagramStories(id);
+    const media = massageStoryResponse(stories, handle);
+    const embeds = getImageEmbeds(id, media);
+    sendMediaToChannel(msg, media, embeds, webhook);
+  } catch (err) {
+    console.log(`Unable to send IG story for ${handle}`);
+    console.log(JSON.stringify(err));
+  }
+};
+
+const getInstagramId = (msg, regex) => {
+  const match = regex.exec(msg.content);
   if (match && match.length > 1) {
     let id = match[1];
     if (id.includes('?')) {
@@ -24,34 +78,7 @@ const getInstagramId = (msg) => {
   return '';
 };
 
-const fetchApiData = async (id) => {
-  let httpOptions = {
-    url: `https://instagram.com/p/${id}/?__a=1`,
-    json: true
-  };
-  const result = await request(httpOptions);
-
-  // main api throttled, try proxy
-  if (!result?.graphql) {
-    console.log('Instagram: Using RapidAPI');
-    httpOptions = {
-      url: `https://${TOKENS?.HOST}/post_details?shortcode=${encodeURIComponent(id)}`,
-      headers: {
-        'x-rapidapi-host': `${TOKENS?.HOST}`,
-        'x-rapidapi-key': `${TOKENS?.KEY}`
-      },
-      json: true
-    };
-    const res = await request(httpOptions);
-    if (!res?.body) {
-      console.log(res);
-    }
-    return res?.body;
-  }
-  return result?.graphql.shortcode_media;
-};
-
-const parseApiData = (apiData) => {
+const parseUserPostData = (apiData) => {
   const videos = [];
   const pictures = [];
   const edges = apiData?.edge_sidecar_to_children?.edges ?? [];
@@ -78,7 +105,8 @@ const parseApiData = (apiData) => {
     videos,
     pictures,
     timestamp: apiData.taken_at_timestamp * 1000,
-    avatar: apiData.owner.profile_pic_url
+    avatar: apiData.owner.profile_pic_url,
+    type: 'post'
   };
 };
 
@@ -87,11 +115,11 @@ export const sendInstagramEmbeds = async (msg) => {
   if (_.isEmpty(webhook)) {
     return;
   }
-  const id = getInstagramId(msg);
+  const id = getInstagramId(msg, INSTAGRAM_REGEX);
   if (!_.isEmpty(id)) {
     try {
-      const data = await fetchApiData(id);
-      const media = parseApiData(data);
+      const data = await getUserPostData(id);
+      const media = parseUserPostData(data);
       const embeds = getImageEmbeds(id, media);
       sendMediaToChannel(msg, media, embeds, webhook);
     } catch (err) {
@@ -101,7 +129,7 @@ export const sendInstagramEmbeds = async (msg) => {
   }
 };
 
-const getTitle = (media) => media.text.substring(0, 255);
+const getTitle = (media) => media?.text.substring(0, 255);
 
 const createImageEmbed = (title, author, timestamp, id, url, avatar) => {
   return new Discord.MessageEmbed()
@@ -115,11 +143,22 @@ const createImageEmbed = (title, author, timestamp, id, url, avatar) => {
     .setURL(`https://instagram.com/p/${id}/`);
 };
 
+const getAuthor = (media) => {
+  switch (media.type) {
+    case 'post':
+      return `${media?.name + ' (' + media?.username + ')'}`;
+    case 'story':
+      return media?.username;
+    default:
+      return '';
+  }
+};
+
 const getImageEmbeds = (id, media) => {
   const title = getTitle(media);
-  const author = `${media.name + ' (' + media.username + ')'}`;
-  const timestamp = media.timestamp;
-  const avatar = media.avatar;
+  const author = getAuthor(media);
+  const timestamp = media?.timestamp;
+  const avatar = media?.avatar;
   return media.pictures.map((url) => createImageEmbed(title, author, timestamp, id, url, avatar));
 };
 

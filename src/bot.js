@@ -1,5 +1,10 @@
 import { client as TwitterClient, retweet, sendReply, sendTweet } from '@root/twitter';
-import { doesMsgContainInstagram, sendInstagramEmbeds } from '@root/instagram';
+import {
+  doesMsgContainInstagramPost,
+  doesMsgContainInstagramStory,
+  sendInstagramEmbeds,
+  sendInstagramStory
+} from '@root/instagram';
 import {
   isCasinoChannel,
   isFishingServer,
@@ -127,8 +132,11 @@ class Bot {
       } else if (_.startsWith(msg.content, BOT_COMMANDS.RETWEET.command)) {
         isTweetingServer(msg) && retweet(msg);
         return;
-      } else if (doesMsgContainInstagram(msg)) {
+      } else if (doesMsgContainInstagramPost(msg)) {
         isKpopChannel(msg) && sendInstagramEmbeds(msg);
+        return;
+      } else if (doesMsgContainInstagramStory(msg)) {
+        isKpopChannel(msg) && sendInstagramStory(msg);
         return;
       } else if (_.startsWith(msg.content, '$')) {
         getCryptocurrencyPrice(msg);
