@@ -10,7 +10,7 @@ const TIMEZONE = 'Asia/Seoul';
 const TEAMAQ_TWITTER_HANDLE = 'AQ_Updates';
 const WHEEIN_FAIRY = 'Wheein_Fairy';
 
-const pinnedTweet = async (events) => await getKpopTweet(events);
+// const pinnedTweet = async (events) => await getKpopTweet(events);
 
 export const KPOP_SCHEDULE = [
   {
@@ -18,56 +18,49 @@ export const KPOP_SCHEDULE = [
     show: 'The Show',
     channel: ['SBS MTV', 'SBS F!L'],
     time: () => getRelativeTimeStart('Tuesday 6:00PM'),
-    sendIPTV: true,
-    pinnedTweet
+    sendIPTV: true
   },
   {
     day: 'Wednesday',
     show: 'Show Champion',
     channel: ['MBC Music', 'MBC Every1'],
     time: () => getRelativeTimeStart('Wednesday 5:00PM'),
-    sendIPTV: true,
-    pinnedTweet
+    sendIPTV: true
   },
   {
     day: 'Thursday',
     show: 'MCountdown',
     channel: ['Mnet'],
     time: () => getRelativeTimeStart('Thursday 6:00PM'),
-    sendIPTV: true,
-    pinnedTweet
+    sendIPTV: true
   },
   {
     day: 'Friday',
     show: 'Music Bank',
     channel: ['KBS2'],
     time: () => getRelativeTimeStart('Friday 5:00PM'),
-    sendIPTV: true,
-    pinnedTweet
+    sendIPTV: true
   },
   {
     day: 'Friday',
     show: 'Simply Kpop',
     channel: ['아리랑 TV'],
     time: () => getRelativeTimeStart('Friday 1:00PM'),
-    sendIPTV: true,
-    pinnedTweet
+    sendIPTV: true
   },
   {
     day: 'Saturday',
     show: 'Music Core',
     channel: ['MBC'],
     time: () => getRelativeTimeStart('Saturday 3:30PM'),
-    sendIPTV: true,
-    pinnedTweet
+    sendIPTV: true
   },
   {
     day: 'Sunday',
     show: 'Inkigayo',
     channel: ['SBS'],
     time: () => getRelativeTimeStart('Sunday 3:40PM'),
-    sendIPTV: true,
-    pinnedTweet
+    sendIPTV: true
   }
 ];
 
