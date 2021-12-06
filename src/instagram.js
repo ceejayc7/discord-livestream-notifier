@@ -6,15 +6,15 @@ import { getWebhook } from '@root/webhook';
 import request from 'request-promise';
 import { sendMessageToChannel } from '@root/util';
 
-const INSTAGRAM_REGEX = /instagram\.com\/(p|tv)\/(.*)/;
+const INSTAGRAM_REGEX = /instagram\.com(?:\/.*)?\/(?:p|tv)\/(.*)/;
 const TOKENS = require('@data/constants.json')?.tokens?.instagram;
 
 export const doesMsgContainInstagram = (msg) => INSTAGRAM_REGEX.test(msg.content);
 
 const getInstagramId = (msg) => {
   const match = INSTAGRAM_REGEX.exec(msg.content);
-  if (match && match.length > 2) {
-    let id = match[2];
+  if (match && match.length > 1) {
+    let id = match[1];
     if (id.includes('?')) {
       id = id.substring(0, id.indexOf('?'));
     }
@@ -43,6 +43,9 @@ const fetchApiData = async (id) => {
       json: true
     };
     const res = await request(httpOptions);
+    if (!res?.body) {
+      console.log(res);
+    }
     return res?.body;
   }
   return result?.graphql.shortcode_media;
