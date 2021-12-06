@@ -165,7 +165,10 @@ const getImageEmbeds = (id, media) => {
 const sendMediaToChannel = async (msg, media, embeds, webhook) => {
   let fourEmbeds = [];
   if (_.isEmpty(embeds)) {
-    sendMessageToChannel(msg, getTitle(media));
+    const title = getTitle(media);
+    if (title) {
+      sendMessageToChannel(msg, title);
+    }
   } else {
     for (const [index, embed] of embeds.entries()) {
       fourEmbeds.push(embed);
