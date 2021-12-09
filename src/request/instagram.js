@@ -40,8 +40,31 @@ export const getInstagramStories = async (id) => {
   return request(httpOptions);
 };
 
+const getUserPostDataFromProxy = async (id, retryAttempt) => {
+  if (retryAttempt === 2) {
+    console.log(`Unable to get proxy data for id: ${id} after retryAttempt: ${retryAttempt}`);
+    return null;
+  }
+  console.log('Instagram: Using RapidAPI');
+  const httpOptions = {
+    url: `https://${TOKENS?.HOST}/post_details?shortcode=${id}`,
+    headers: {
+      'x-rapidapi-host': `${TOKENS?.HOST}`,
+      'x-rapidapi-key': `${TOKENS?.KEY}`
+    },
+    json: true
+  };
+  const res = await request(httpOptions);
+  if (!res?.body) {
+    console.log(res);
+    console.log('Retrying...');
+    return getUserPostDataFromProxy(id, ++retryAttempt);
+  }
+  return res?.body;
+};
+
 export const getUserPostData = async (id) => {
-  let httpOptions = {
+  const httpOptions = {
     url: `https://instagram.com/p/${id}/?__a=1`,
     json: true
   };
@@ -49,20 +72,8 @@ export const getUserPostData = async (id) => {
 
   // main api throttled, try proxy
   if (!result?.graphql) {
-    console.log('Instagram: Using RapidAPI');
-    httpOptions = {
-      url: `https://${TOKENS?.HOST}/post_details?shortcode=${encodeURIComponent(id)}`,
-      headers: {
-        'x-rapidapi-host': `${TOKENS?.HOST}`,
-        'x-rapidapi-key': `${TOKENS?.KEY}`
-      },
-      json: true
-    };
-    const res = await request(httpOptions);
-    if (!res?.body) {
-      console.log(res);
-    }
-    return res?.body;
+    const retryAttempt = 0;
+    return getUserPostDataFromProxy(id, retryAttempt);
   }
   return result?.graphql.shortcode_media;
 };
