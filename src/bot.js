@@ -50,7 +50,8 @@ class Bot {
       this.serverConfig.dumpTweets?.channel &&
       this.serverConfig.dumpTweets?.twitterId
     ) {
-      // reset the stream every hour
+      // destroy any pending stream and reset the stream every hour
+      this.twitterStream?.destroy();
       setTimeout(this.handleTwitterStream, ONE_HOUR_IN_SECONDS * 1000);
       this.twitterStream = TwitterClient.stream('statuses/filter', {
         follow: this.serverConfig.dumpTweets.twitterId
@@ -84,11 +85,6 @@ class Bot {
       this.twitterStream.on('error', (error) => {
         console.log('Twitter stream: error');
         console.log(JSON.stringify(error));
-      });
-
-      this.twitterStream.on('end', () => {
-        this.twitterStream.destroy();
-        this.handleTwitterStream();
       });
     }
   };
