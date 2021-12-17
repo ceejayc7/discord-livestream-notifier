@@ -44,11 +44,14 @@ class Bot {
   }
 
   handleTwitterStream = () => {
+    const ONE_HOUR_IN_SECONDS = 3600;
     if (
       this.serverConfig?.dumpTweets &&
       this.serverConfig.dumpTweets?.channel &&
       this.serverConfig.dumpTweets?.twitterId
     ) {
+      // reset the stream every hour
+      setTimeout(this.handleTwitterStream, ONE_HOUR_IN_SECONDS * 1000);
       this.twitterStream = TwitterClient.stream('statuses/filter', {
         follow: this.serverConfig.dumpTweets.twitterId
       });
