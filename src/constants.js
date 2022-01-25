@@ -136,6 +136,11 @@ export const TWO_MINUTES = 120000;
 export const THREE_MINUTES = 180000;
 export const FOUR_MINUTES = 240000;
 export const FIVE_MINUTES = 300000;
+export const SIX_MINUTES = 360000;
+export const SEVEN_MINUTES = 420000;
+export const EIGHT_MINUTES = 480000;
+export const NINE_MINUTES = 540000;
+export const TEN_MINUTES = 600000;
 
 export const TWITTER_CHARACTER_LIMIT = 280;
 
