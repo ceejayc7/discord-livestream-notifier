@@ -3,10 +3,12 @@ import { TWENTY_MINUTES } from '@root/constants';
 import _ from 'lodash';
 import request from 'request-promise';
 
-const CONSTANTS = require('@data/constants.json').tokens;
+// const CONSTANTS = require('@data/constants.json').tokens;
 const include24HourYouTubeStreams =
   require('@data/constants.json')?.overrides?.include24HourYouTubeStreams ?? true;
-const YOUTUBE_API_ENDPOINT = `https://www.googleapis.com/youtube/v3/search?part=snippet&type=video&eventType=live&key=${CONSTANTS.youtube.apiKey}&channelId=`;
+// const YOUTUBE_API_ENDPOINT = `https://www.googleapis.com/youtube/v3/search?part=snippet&type=video&eventType=live&key=${CONSTANTS.youtube.apiKey}&channelId=`;
+const YOUTUBE_API_ENDPOINT = `https://youtube-v31.p.rapidapi.com/search`;
+const TOKENS = require('@data/constants.json')?.tokens?.instagram;
 
 class Youtube extends Livestream {
   constructor(sendStreamMessageToServers, silentMode) {
@@ -27,7 +29,11 @@ class Youtube extends Livestream {
 
   getChannelPromises = (stream) => {
     const httpOptions = {
-      url: YOUTUBE_API_ENDPOINT + stream,
+      headers: {
+        'x-rapidapi-host': 'youtube-v31.p.rapidapi.com',
+        'x-rapidapi-key': `${TOKENS?.KEY}`
+      },
+      url: `${YOUTUBE_API_ENDPOINT}?channelId=${stream}&part=snippet,id&order=date&maxResults=100`,
       json: true
     };
     return request(httpOptions).catch((error) => this.apiError(this.PLATFORM, error));
@@ -36,7 +42,11 @@ class Youtube extends Livestream {
   reduceResponse = (response) => {
     const reducedResponse = [];
     const flattenedResponse = _.flatten(_.map(response, 'items'));
-    for (const stream of flattenedResponse) {
+    const livestreams = _.filter(
+      flattenedResponse,
+      (stream) => stream.snippet.liveBroadcastContent === 'live'
+    );
+    for (const stream of livestreams) {
       const title = stream?.snippet?.title;
       if (include24HourYouTubeStreams || !_.includes(title, '24/7')) {
         const url = `https://www.youtube.com/watch?v=${stream?.id?.videoId}`;
