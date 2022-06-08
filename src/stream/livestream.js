@@ -61,11 +61,24 @@ class Livestream {
 
   getAPIDataAndAnnounce = (useReduceResponse, useMultipleCalls) => {
     let promise;
+
+    const delayMyPromise = (myPromise, myDelay) => {
+      return new Promise(function (resolve, reject) {
+        setTimeout(function () {
+          return resolve(myPromise);
+        }, myDelay);
+      });
+    };
+
+    let delay = 0;
+    const delayIncrement = 1000;
+
     if (useMultipleCalls) {
       const flattenStreamsString = this.getListOfStreams(this.PLATFORM);
       const listOfPromises = [];
       for (const stream of flattenStreamsString) {
-        listOfPromises.push(this.getChannelPromises(stream));
+        listOfPromises.push(delayMyPromise(this.getChannelPromises(stream), delay));
+        delay += delayIncrement;
       }
       promise = Promise.all(listOfPromises);
     } else {
