@@ -115,6 +115,8 @@ export const sendInstagramEmbeds = async (msg) => {
   if (_.isEmpty(webhook)) {
     return;
   }
+  // < and > tags can wrap around the link to prevent the default IG embed
+  msg.content = msg.content.replace('<', '').replace('>', '');
   const id = getInstagramId(msg, INSTAGRAM_REGEX);
   if (!_.isEmpty(id)) {
     try {
