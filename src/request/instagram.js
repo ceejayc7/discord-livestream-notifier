@@ -65,7 +65,7 @@ const getUserPostDataFromProxy = async (id, retryAttempt) => {
 
 export const getUserPostData = async (id) => {
   const httpOptions = {
-    url: `https://instagram.com/p/${id}/?__a=1`,
+    url: `https://instagram.com/p/${id}/?__a=1&__d=dis`,
     json: true
   };
   const result = await request(httpOptions);
