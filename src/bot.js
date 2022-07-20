@@ -24,12 +24,10 @@ import { MoneyManager } from '@casino/moneymanager';
 import { Slots } from '@casino/slots';
 import TriviaManager from '@casino/trivia/triviamanager';
 import _ from 'lodash';
-import { exec } from 'child_process';
 import { getCryptocurrencyPrice } from '@root/crypto';
 import { sendCosplayTweet } from '@root/cosplay';
 
 const CONSTANTS = require('@data/constants.json').serverConfig;
-const OVERRIDES = require('@data/constants.json').overrides;
 
 class Bot {
   constructor(serverConfig, serverName) {
@@ -185,16 +183,8 @@ class Bot {
         case BOT_COMMANDS.FISH_LEADERBOARD.command:
           isFishingServer(msg) && Fish.printLeaderboard(msg);
           break;
-        case BOT_COMMANDS.KPOP.command:
-          isKpopChannel(msg) && Kpop.onKpopCommand(msg);
-          break;
         case BOT_COMMANDS.KST.command:
           sendMessageToChannel(msg, Kpop.getTimeInKST());
-          break;
-        case BOT_COMMANDS.IRCRESET.command:
-          if (OVERRIDES?.shellCommand) {
-            exec(OVERRIDES.shellCommand);
-          }
           break;
         case BOT_COMMANDS.COSPLAY.command:
           sendCosplayTweet(msg);

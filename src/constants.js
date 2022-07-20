@@ -75,10 +75,6 @@ export const BOT_COMMANDS = {
     command: '!claim',
     showOnHelp: false
   },
-  KPOP: {
-    command: '!kpop',
-    showOnHelp: false
-  },
   GENERATE: {
     command: '!iptv',
     showOnHelp: false
@@ -97,10 +93,6 @@ export const BOT_COMMANDS = {
   },
   KST: {
     command: '!kst',
-    showOnHelp: false
-  },
-  IRCRESET: {
-    command: '!restart',
     showOnHelp: false
   },
   COSPLAY: {

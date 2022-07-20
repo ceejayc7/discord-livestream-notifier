@@ -4,8 +4,6 @@ import Afreeca from '@stream/afreeca';
 import Bot from '@root/bot';
 import { IPTV } from '@root/iptv';
 import { KPOP_SCHEDULE } from '@root/kpop';
-import Mixer from '@stream/mixer';
-import OkRu from '@stream/okru';
 import Twitch from '@stream/twitch';
 import Vlive from '@stream/vlive';
 import Youtube from '@stream/youtube';
@@ -33,9 +31,7 @@ const createLivestreams = () => {
 
   return [
     new Twitch(sendStreamMessageToServers, silentMode),
-    new Mixer(sendStreamMessageToServers, silentMode),
     new Youtube(sendStreamMessageToServers, silentMode),
-    new OkRu(sendStreamMessageToServers, silentMode),
     new Vlive(sendStreamMessageToServers, silentMode),
     new Afreeca(sendStreamMessageToServers, silentMode)
   ];

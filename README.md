@@ -5,9 +5,7 @@ Broadcasts when a livestream goes live to a discord channel. Also contains rando
 Supports the following platforms:
 
 > - Twitch.tv
-> - Mixer
 > - Youtube
-> - Ok.RU (via web scraping)
 > - Vlive
 > - Afreeca
 
@@ -35,16 +33,9 @@ Add `src/data/db.json` to include the streams to be watching
       "streamer1",
       "streamer2"
     ],
-    "mixer": [
-      "streamer3"
-    ],
     "youtube": [
       "channelID1",
       "channelID2"
-    ],
-    "okru": [
-      "profile1",
-      "profile2"
     ],
     "vlive": [
       "channelCode1",
