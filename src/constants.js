@@ -133,6 +133,7 @@ export const SEVEN_MINUTES = 420000;
 export const EIGHT_MINUTES = 480000;
 export const NINE_MINUTES = 540000;
 export const TEN_MINUTES = 600000;
+export const FIFTEEN_MINUTES = 900000;
 export const TWENTY_MINUTES = 1200000;
 export const FORTY_FIVE_MINUTES = 2700000;
 
