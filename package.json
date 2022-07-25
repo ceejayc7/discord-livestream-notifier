@@ -13,7 +13,7 @@
     "watch:babel": "babel --watch src -d dist --copy-files --source-maps"
   },
   "engines": {
-    "node": "12.16.1"
+    "node": "16.16.0"
   },
   "importSort": {
     ".js": {
