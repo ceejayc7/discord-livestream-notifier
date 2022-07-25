@@ -1,6 +1,7 @@
+import * as cheerio from 'cheerio';
+
 import Livestream from '@stream/livestream';
 import _ from 'lodash';
-import cheerio from 'cheerio';
 import request from 'request-promise';
 
 const AFREECA_API_ENDPOINT =
