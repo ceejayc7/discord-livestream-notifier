@@ -6,7 +6,6 @@
   "author": "Ceejay",
   "scripts": {
     "build": "eslint src/**/*.js && babel src -d dist --copy-files",
-    "preinstall": "npx npm-force-resolutions",
     "start": "node dist/discord.js",
     "watch": "concurrently \"npm:watch:babel\" \"npm:watch:eslint\"",
     "watch:eslint": "esw --w src/**/*.js",
@@ -21,9 +20,6 @@
       "style": "eslint",
       "options": {}
     }
-  },
-  "resolutions": {
-    "minimist": "1.2.5"
   },
   "dependencies": {
     "card-deck": "1.0.1",
@@ -52,7 +48,6 @@
     "eslint-config-google": "0.14.0",
     "eslint-config-prettier": "8.5.0",
     "eslint-watch": "8.0.0",
-    "npm-force-resolutions": "0.0.10",
     "prettier": "2.7.1"
   }
 }
