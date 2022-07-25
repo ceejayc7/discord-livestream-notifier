@@ -3,12 +3,12 @@ module.exports = {
     es6: true,
     node: true
   },
-  extends: ['eslint:recommended', 'google', 'prettier', 'prettier/babel'],
+  extends: ['eslint:recommended', 'google', 'prettier'],
   globals: {
     Atomics: 'readonly',
     SharedArrayBuffer: 'readonly'
   },
-  parser: 'babel-eslint',
+  parser: '@babel/eslint-parser',
   parserOptions: {
     ecmaVersion: 2018,
     sourceType: 'module'
