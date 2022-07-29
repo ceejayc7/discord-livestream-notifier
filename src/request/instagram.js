@@ -47,7 +47,7 @@ const getUserPostDataFromProxy = async (id, retryAttempt) => {
   }
   console.log('Instagram: Using RapidAPI');
   const httpOptions = {
-    url: `https://${TOKENS?.HOST}/media-info?code=${id}`,
+    url: `https://${TOKENS?.HOST}/media-info-by-url?url=https://www.instagram.com/p/${id}`,
     headers: {
       'x-rapidapi-host': `${TOKENS?.HOST}`,
       'x-rapidapi-key': `${TOKENS?.KEY}`
