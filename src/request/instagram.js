@@ -54,26 +54,37 @@ const getUserPostDataFromProxy = async (id, retryAttempt) => {
     },
     json: true
   };
-  const res = await request(httpOptions);
-  if (!res?.id) {
-    console.log(res);
-    console.log('Retrying...');
+  let res;
+  try {
+    res = await request(httpOptions);
+  } catch (e) {
+    console.log(`Retry: ${retryAttempt}`);
     return getUserPostDataFromProxy(id, ++retryAttempt);
   }
+
   return res;
 };
 
 export const getUserPostData = async (id) => {
+  const retryAttempt = 0;
   const httpOptions = {
     url: `https://instagram.com/p/${id}/?__a=1&__d=dis`,
     json: true
   };
-  const result = await request(httpOptions);
+  let result;
 
-  // main api throttled, try proxy
-  if (!result?.graphql) {
-    const retryAttempt = 0;
+  try {
+    result = await request(httpOptions);
+    if (!result?.graphql) {
+      return getUserPostDataFromProxy(id, retryAttempt);
+    }
+  } catch (e) {
+    console.log(`Unable to retrieve user post data from id ${id}`);
+    console.log(`Status Code: ${e?.statusCode}`);
+    console.log(e?.error);
+
     return getUserPostDataFromProxy(id, retryAttempt);
   }
+
   return result?.graphql.shortcode_media;
 };

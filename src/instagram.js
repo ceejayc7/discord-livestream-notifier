@@ -126,7 +126,8 @@ export const sendInstagramEmbeds = async (msg) => {
       sendMediaToChannel(msg, media, embeds, webhook);
     } catch (err) {
       console.log(`Couldnt send Instagram embeds from ${msg.content}`);
-      console.log(err);
+      console.log(`Status Code: ${err?.statusCode}`);
+      console.log(err?.error);
     }
   }
 };
