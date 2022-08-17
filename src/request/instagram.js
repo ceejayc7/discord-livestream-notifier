@@ -41,7 +41,7 @@ export const getInstagramStories = async (id) => {
 };
 
 const getUserPostDataFromProxy = async (id, retryAttempt) => {
-  if (retryAttempt === 8) {
+  if (retryAttempt === 20) {
     console.log(`Unable to get proxy data for id: ${id} after retryAttempt: ${retryAttempt}`);
     return null;
   }
