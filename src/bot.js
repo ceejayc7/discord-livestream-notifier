@@ -38,52 +38,54 @@ class Bot {
     this.blackjack = new Blackjack();
     this.serverName = serverName;
     this.triviaManager = new TriviaManager();
-    this.twitterStream = null;
+    this.twitterStream = [];
   }
+
+  onTwitterStreamData = (event) => {
+    const isTweet = _.conforms({
+      contributors: _.isObject,
+      id_str: _.isString,
+      text: _.isString
+    });
+
+    for (const twitterConfig of this.serverConfig.dumpTweets) {
+      // eslint-disable-next-line
+      const isOriginalAuthor = event?.user?.id_str === twitterConfig?.twitterId;
+
+      // eslint-disable-next-line
+      if (!isTweet || event?.retweeted_status !== undefined || !isOriginalAuthor) {
+        return;
+      }
+
+      console.log(
+        `Twitter stream: received tweet from ${twitterConfig.twitterId}. Sending to ${twitterConfig.channel}`
+      );
+      this.client.channels.cache
+        .find((channel) => channel.name === twitterConfig.channel && channel.type === 'text')
+        .send(`https://twitter.com/${event?.user?.screen_name}/status/${event?.id_str}`); // eslint-disable-line
+    }
+  };
 
   handleTwitterStream = () => {
     const ONE_HOUR_IN_SECONDS = 3600;
-    if (
-      this.serverConfig?.dumpTweets &&
-      this.serverConfig.dumpTweets?.channel &&
-      this.serverConfig.dumpTweets?.twitterId
-    ) {
+    if (this.serverConfig?.dumpTweets) {
       // destroy any pending stream and reset the stream every hour
-      this.twitterStream?.destroy();
+      for (const twitterStream of this.twitterStream) {
+        twitterStream?.destroy();
+      }
       setTimeout(this.handleTwitterStream, ONE_HOUR_IN_SECONDS * 1000);
-      this.twitterStream = TwitterClient.stream('statuses/filter', {
-        follow: this.serverConfig.dumpTweets.twitterId
-      });
 
-      this.twitterStream.on('data', (event) => {
-        const isTweet = _.conforms({
-          contributors: _.isObject,
-          id_str: _.isString,
-          text: _.isString
+      for (const twitterConfig of this.serverConfig.dumpTweets) {
+        const twitterStream = TwitterClient.stream('statuses/filter', {
+          follow: twitterConfig.twitterId
         });
-        // eslint-disable-next-line
-        const isOriginalAuthor = event?.user?.id_str === this.serverConfig.dumpTweets?.twitterId;
-
-        // eslint-disable-next-line
-        if (!isTweet || event?.retweeted_status !== undefined || !isOriginalAuthor) {
-          return;
-        }
-
-        console.log(
-          `Twitter stream: received tweet from ${this.serverConfig.dumpTweets.twitterId}`
-        );
-        this.client.channels.cache
-          .find(
-            (channel) =>
-              channel.name === this.serverConfig.dumpTweets.channel && channel.type === 'text'
-          )
-          .send(`https://twitter.com/${event?.user?.screen_name}/status/${event?.id_str}`); // eslint-disable-line
-      });
-
-      this.twitterStream.on('error', (error) => {
-        console.log('Twitter stream: error');
-        console.log(JSON.stringify(error));
-      });
+        twitterStream.on('data', this.onTwitterStreamData);
+        twitterStream.on('error', (error) => {
+          console.log('Twitter stream: error');
+          console.log(JSON.stringify(error));
+        });
+        this.twitterStream.push(twitterStream);
+      }
     }
   };
 

@@ -74,9 +74,6 @@ Add `src/data/constants.json` to include tokens and server configuration
       "clientId": "TWITCH_CLIENT_ID",
       "clientSecret": "TWITCH_CLIENT_SECRET"
     },
-    "mixer": {
-      "clientId": "MIXER_CLIENT_ID"
-    },
     "youtube": {
       "apiKey": "YOUTUBE_API_KEY"
     },
