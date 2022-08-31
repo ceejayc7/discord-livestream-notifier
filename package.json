@@ -27,7 +27,7 @@
     "discord.js": "12.2.0",
     "lodash": "4.17.21",
     "moment": "2.29.4",
-    "moment-timezone": "0.5.34",
+    "moment-timezone": "0.5.35",
     "node-json-db": "0.7.5",
     "prob.js": "1.0.6",
     "request": "2.88.2",
