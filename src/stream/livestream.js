@@ -84,7 +84,6 @@ class Livestream {
   apiError = (platform, error) => {
     console.log(`${platform} API error.`);
     console.log(JSON.stringify(error));
-    return Promise.reject(error);
   };
 
   getListOfStreams = (streamSite) => {
