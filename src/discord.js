@@ -5,7 +5,7 @@ import Bot from '@root/bot';
 import { IPTV } from '@root/iptv';
 import { KPOP_SCHEDULE } from '@root/kpop';
 import Twitch from '@stream/twitch';
-import Vlive from '@stream/vlive';
+// import Vlive from '@stream/vlive';
 import Youtube from '@stream/youtube';
 import _ from 'lodash';
 import moment from 'moment-timezone';
@@ -32,7 +32,7 @@ const createLivestreams = () => {
   return [
     new Twitch(sendStreamMessageToServers, silentMode),
     new Youtube(sendStreamMessageToServers, silentMode),
-    new Vlive(sendStreamMessageToServers, silentMode),
+    // new Vlive(sendStreamMessageToServers, silentMode),
     new Afreeca(sendStreamMessageToServers, silentMode)
   ];
 };
