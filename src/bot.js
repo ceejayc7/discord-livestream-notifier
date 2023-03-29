@@ -1,4 +1,3 @@
-import { client as TwitterClient, retweet, sendReply, sendTweet } from '@root/twitter';
 import {
   doesMsgContainInstagramPost,
   doesMsgContainInstagramStory,
@@ -13,6 +12,7 @@ import {
   messageError,
   sendMessageToChannel
 } from '@root/util';
+import { retweet, sendReply, sendTweet } from '@root/twitter';
 
 import { BOT_COMMANDS } from '@root/constants';
 import Blackjack from '@casino/blackjack';
@@ -41,54 +41,6 @@ class Bot {
     this.twitterStream = [];
   }
 
-  onTwitterStreamData = (event) => {
-    const isTweet = _.conforms({
-      contributors: _.isObject,
-      id_str: _.isString,
-      text: _.isString
-    });
-
-    for (const twitterConfig of this.serverConfig.dumpTweets) {
-      // eslint-disable-next-line
-      const isOriginalAuthor = event?.user?.id_str === twitterConfig?.twitterId;
-
-      // eslint-disable-next-line
-      if (!isTweet || event?.retweeted_status !== undefined || !isOriginalAuthor) {
-        return;
-      }
-
-      console.log(
-        `Twitter stream: received tweet from ${twitterConfig.twitterId}. Sending to ${twitterConfig.channel}`
-      );
-      this.client.channels.cache
-        .find((channel) => channel.name === twitterConfig.channel && channel.type === 'text')
-        .send(`https://twitter.com/${event?.user?.screen_name}/status/${event?.id_str}`); // eslint-disable-line
-    }
-  };
-
-  handleTwitterStream = () => {
-    const ONE_HOUR_IN_SECONDS = 3600;
-    if (this.serverConfig?.dumpTweets) {
-      // destroy any pending stream and reset the stream every hour
-      for (const twitterStream of this.twitterStream) {
-        twitterStream?.destroy();
-      }
-      setTimeout(this.handleTwitterStream, ONE_HOUR_IN_SECONDS * 1000);
-
-      for (const twitterConfig of this.serverConfig.dumpTweets) {
-        const twitterStream = TwitterClient.stream('statuses/filter', {
-          follow: twitterConfig.twitterId
-        });
-        twitterStream.on('data', this.onTwitterStreamData);
-        twitterStream.on('error', (error) => {
-          console.log('Twitter stream: error');
-          console.log(JSON.stringify(error));
-        });
-        this.twitterStream.push(twitterStream);
-      }
-    }
-  };
-
   loginToDiscord = async () => {
     this.client.login(this.discordToken);
     return new Promise((resolve) => {
@@ -107,7 +59,6 @@ class Bot {
   };
 
   attachListeners = () => {
-    this.handleTwitterStream();
     this.client.on('error', (error) => {
       console.log(
         `An error occured with the discord client. \t Error name: ${error.name} \t Error message: ${error.message}`
