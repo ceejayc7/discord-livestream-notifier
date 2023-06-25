@@ -158,7 +158,7 @@ export const getTimeline = async (username) => {
   };
 
   return new Promise((resolve, reject) => {
-    client.get('statuses/user_timeline', params, (error, tweets) => {
+    client.get('//statuses/user_timeline', params, (error, tweets) => {
       if (error) {
         return handleError(error, reject);
       }
