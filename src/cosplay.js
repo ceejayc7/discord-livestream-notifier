@@ -8,19 +8,25 @@ const TOKENS = require('@data/constants.json')?.tokens?.cosplay;
 const getRandomTwitterHandle = () => _.sample(twitterHandles);
 
 const getTweet = async (userId) => {
-  const httpOptions = {
-    url: `https://twitter154.p.rapidapi.com/user/medias`,
-    headers: {
-      'X-RapidAPI-Key': TOKENS.KEY,
-      'X-RapidAPI-Host': TOKENS.HOST
-    },
-    qs: {
-      user_id: userId,
-      limit: 20
-    },
-    json: true
-  };
-  return request(httpOptions);
+  try {
+    const httpOptions = {
+      url: `https://twitter154.p.rapidapi.com/user/medias`,
+      headers: {
+        'X-RapidAPI-Key': TOKENS.KEY,
+        'X-RapidAPI-Host': TOKENS.HOST
+      },
+      qs: {
+        user_id: userId,
+        limit: 20
+      },
+      json: true
+    };
+    return request(httpOptions);
+  } catch (err) {
+    console.log(`Unable to retrieve tweets for ${userId}`);
+    console.log(JSON.stringify(err));
+    return {};
+  }
 };
 
 export const sendCosplayTweet = async (msg) => {
