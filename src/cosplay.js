@@ -34,7 +34,7 @@ export const sendCosplayTweet = async (msg) => {
   const tweets = await getTweet(twitterUserId);
   if (tweets?.results) {
     const tweet = _.sample(tweets.results);
-    const link = `|| https://twitter.com/${tweet?.user?.username}/status/${tweet.tweet_id} ||`;
+    const link = `|| https://vxtwitter.com/${tweet?.user?.username}/status/${tweet.tweet_id} ||`;
     sendMessageToChannel(msg, link);
   }
 };
