@@ -36,5 +36,7 @@ export const sendCosplayTweet = async (msg) => {
     const tweet = _.sample(tweets.results);
     const link = `|| https://vxtwitter.com/${tweet?.user?.username}/status/${tweet.tweet_id} ||`;
     sendMessageToChannel(msg, link);
+  } else {
+    console.log(`Unable to retrieve tweets for ${twitterUserId}`);
   }
 };
