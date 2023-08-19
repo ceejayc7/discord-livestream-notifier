@@ -32,7 +32,7 @@ const getTweet = async (userId) => {
 export const sendCosplayTweet = async (msg) => {
   const twitterUserId = getRandomTwitterHandle();
   const tweets = await getTweet(twitterUserId);
-  if (tweets?.results) {
+  if (tweets?.results?.length) {
     const tweet = _.sample(tweets.results);
     const link = `|| https://vxtwitter.com/${tweet?.user?.username}/status/${tweet.tweet_id} ||`;
     sendMessageToChannel(msg, link);
