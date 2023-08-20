@@ -38,5 +38,6 @@ export const sendCosplayTweet = async (msg) => {
     sendMessageToChannel(msg, link);
   } else {
     console.log(`Unable to retrieve tweets for ${twitterUserId}`);
+    console.log(tweets);
   }
 };
