@@ -2,6 +2,7 @@ import _ from 'lodash';
 import request from 'request-promise';
 import { sendMessageToChannel } from '@root/util';
 import { default as twitterHandles } from '@data/cosplay.json';
+import { setTimeout } from 'timers/promises';
 
 const TOKENS = require('@data/constants.json')?.tokens?.cosplay;
 
@@ -30,6 +31,7 @@ const getTweet = async (userId, retry = 0) => {
       return result;
     }
     console.log(`Retry ${retry} for ${userId}`);
+    await setTimeout(5000, 'resolved');
     return getTweet(userId, retry + 1);
   } catch (err) {
     console.log(`Unable to retrieve tweets for ${userId}`);
