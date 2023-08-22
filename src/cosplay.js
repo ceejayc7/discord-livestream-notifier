@@ -9,10 +9,6 @@ const TOKENS = require('@data/constants.json')?.tokens?.cosplay;
 const getRandomTwitterHandle = () => _.sample(twitterHandles);
 
 const getTweet = async (userId, retry = 0) => {
-  if (retry >= 5) {
-    console.log(`Unable to retrieve tweets for ${userId} after $${retry} tries`);
-    return {};
-  }
   try {
     const httpOptions = {
       url: `https://twitter154.p.rapidapi.com/user/medias`,
@@ -30,9 +26,15 @@ const getTweet = async (userId, retry = 0) => {
     if (result?.results?.length) {
       return result;
     }
-    console.log(`Retry ${retry} for ${userId}`);
+
+    const nextRetry = retry + 1;
+    if (nextRetry >= 5) {
+      console.log(`Unable to retrieve tweets for ${userId} after ${nextRetry} tries`);
+      console.log(JSON.stringify(result));
+    }
+    console.log(`Retry ${nextRetry} for ${userId}`);
     await setTimeout(5000, 'resolved');
-    return getTweet(userId, retry + 1);
+    return getTweet(userId, nextRetry);
   } catch (err) {
     console.log(`Unable to retrieve tweets for ${userId}`);
     console.log(JSON.stringify(err));
