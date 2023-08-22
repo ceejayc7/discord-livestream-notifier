@@ -34,6 +34,7 @@ const getTweet = async (userId, retry = 0) => {
       return {};
     }
     console.log(`Retry ${nextRetry} for ${userId}`);
+    console.log(JSON.stringify(result));
     await setTimeout(5000, 'resolved');
     return getTweet(userId, nextRetry);
   } catch (err) {
