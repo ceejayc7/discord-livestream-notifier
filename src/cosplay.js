@@ -28,9 +28,10 @@ const getTweet = async (userId, retry = 0) => {
     }
 
     const nextRetry = retry + 1;
-    if (nextRetry >= 5) {
+    if (nextRetry >= 10) {
       console.log(`Unable to retrieve tweets for ${userId} after ${nextRetry} tries`);
       console.log(JSON.stringify(result));
+      return {};
     }
     console.log(`Retry ${nextRetry} for ${userId}`);
     await setTimeout(5000, 'resolved');
