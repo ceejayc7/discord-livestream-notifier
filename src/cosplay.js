@@ -8,7 +8,8 @@ const TOKENS = require('@data/constants.json')?.tokens?.cosplay;
 
 const getRandomTwitterHandle = () => _.sample(twitterHandles);
 
-const getTweet = async (userId, retry = 0) => {
+const getTweet = async (retry = 0) => {
+  const userId = getRandomTwitterHandle();
   try {
     const httpOptions = {
       url: `https://twitter154.p.rapidapi.com/user/medias`,
@@ -28,15 +29,15 @@ const getTweet = async (userId, retry = 0) => {
     }
 
     const nextRetry = retry + 1;
-    if (nextRetry >= 10) {
+    if (nextRetry >= 60) {
       console.log(`Unable to retrieve tweets for ${userId} after ${nextRetry} tries`);
       console.log(JSON.stringify(result));
       return {};
     }
     console.log(`Retry ${nextRetry} for ${userId}`);
     console.log(JSON.stringify(result));
-    await setTimeout(5000, 'resolved');
-    return getTweet(userId, nextRetry);
+    await setTimeout(1000, 'resolved');
+    return getTweet(nextRetry);
   } catch (err) {
     console.log(`Unable to retrieve tweets for ${userId}`);
     console.log(JSON.stringify(err));
@@ -45,14 +46,13 @@ const getTweet = async (userId, retry = 0) => {
 };
 
 export const sendCosplayTweet = async (msg) => {
-  const twitterUserId = getRandomTwitterHandle();
-  const tweets = await getTweet(twitterUserId);
+  const tweets = await getTweet();
   if (tweets?.results?.length) {
     const tweet = _.sample(tweets.results);
     const link = `|| https://vxtwitter.com/${tweet?.user?.username}/status/${tweet.tweet_id} ||`;
     sendMessageToChannel(msg, link);
   } else {
-    console.log(`Unable to retrieve tweets for ${twitterUserId}`);
+    console.log('Unable to send cosplay tweet');
     console.log(tweets);
   }
 };
